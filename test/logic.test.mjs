@@ -7,7 +7,8 @@ import { readFileSync } from 'node:fs';
 import vm from 'node:vm';
 
 const html = readFileSync(new URL('../app/index.html', import.meta.url), 'utf8');
-const code = html.slice(html.indexOf('<script>') + 8, html.lastIndexOf('</script>'));
+// every inline script, in page order (the translations come before the app)
+const code = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(m => m[1]).join('\n;\n');
 
 // Any element the script asks for: every property is another stub, calls return stubs, nothing is iterable.
 const stub = new Proxy(function () {}, {
@@ -18,7 +19,7 @@ const stub = new Proxy(function () {}, {
 let A;
 const ctx = { window: { __budgeterTest: fns => { A = fns; } }, document: stub, localStorage: stub, addEventListener() {}, setInterval() {}, CSS: { escape: s => s } };
 vm.runInNewContext(code, ctx);
-const { pn, pd, dateOrder, parseCSV, freshRows, aiRows, occ, bizBefore, sim, cleanPlan, cleanTx, blank, chunkText, esc, setData } = A;
+const { holidays, T, TN, dl, sched, cn, catKey, setLang, f0, f2, kfmt, pn, pd, dateOrder, parseCSV, freshRows, aiRows, occ, bizBefore, sim, cleanPlan, cleanTx, blank, chunkText, esc, setData } = A;
 // values made in the script's own realm compare by content, not by prototype
 const eq = (got, want, msg) => assert.deepEqual(JSON.parse(JSON.stringify(got)), want, msg);
 
@@ -133,4 +134,56 @@ test('long statements split on line breaks', () => {
   const parts = chunkText(['a'.repeat(30) + '\n' + 'b'.repeat(30), 'c'.repeat(10)], 40);
   assert.ok(parts.every(p => p.length <= 40));
   assert.equal(parts.join('').replace(/\s/g, ''), 'a'.repeat(30) + 'b'.repeat(30) + 'c'.repeat(10));
+});
+
+test('money in the plan currency and number format', () => {
+  const show = (currency, numfmt) => { setData({ ...blank(), currency, numfmt }); return [f2(-1234.5), f0(1234.4), kfmt(12500), kfmt(800)].join(' | ').replace(/[\u00a0\u202f]/g, ' '); };
+  assert.equal(show('USD', ''), '−$1,234.50 | $1,234 | $12.5k | $800');
+  assert.equal(show('SEK', ''), '−1 234,50 kr | 1 234 kr | 12,5k kr | 800 kr');
+  assert.equal(show('EUR', ''), '−1.234,50 € | 1.234 € | 12,5k € | 800 €');
+  assert.equal(show('EUR', 'sv-SE'), '−1 234,50 € | 1 234 € | 12,5k € | 800 €');
+  assert.equal(show('JPY', ''), '−￥1,235 | ￥1,234 | ￥12.5k | ￥800');
+});
+
+test('an unknown currency in a backup falls back to USD', () => {
+  const p = Object.assign(blank(), { currency: '<b>', numfmt: 'xx' });
+  cleanPlan(p);
+  assert.deepEqual([p.currency, p.numfmt], ['USD', '']);
+});
+
+test('Russian: text, plurals, dates and categories', () => {
+  setData(blank());
+  setLang('ru');
+  try {
+    assert.equal(T('Add {what}', { what: T('goal') }), 'Добавить цель');
+    assert.deepEqual([1, 2, 5, 11, 21, 22, 25].map(n => `${n} ${TN(n, 'payment', 'payments')}`),
+      ['1 платёж', '2 платежа', '5 платежей', '11 платежей', '21 платёж', '22 платежа', '25 платежей']);
+    assert.equal(dl('2026-11-05'), '5 ноября');
+    assert.equal(sched({ freq: 'monthly', date: '2020-01-25' }), 'Ежемесячно, 25-го числа');
+    assert.equal(cn('Groceries'), 'Продукты');
+    assert.equal(cn('My own'), 'My own', 'categories people add stay as typed');
+    assert.equal(catKey('продукты'), 'Groceries', 'a translated name maps back to the saved one');
+    assert.equal(T('Not in the dictionary'), 'Not in the dictionary');
+  } finally { setLang('en'); }
+  assert.equal(dl('2026-11-05'), 'Nov 5');
+  assert.equal(sched({ freq: 'monthly', date: '2020-01-25' }), 'Monthly on the 25th');
+});
+
+test('Swedish bank holidays', () => {
+  const se = y => [...holidays(y, 'se')].sort();
+  // Good Friday and Easter Monday move with Easter: 2025-04-20, 2026-04-05, 2027-03-28, 2038-04-25
+  for (const [y, gf, em] of [[2025, '04-18', '04-21'], [2026, '04-03', '04-06'], [2027, '03-26', '03-29'], [2038, '04-23', '04-26']])
+    assert.ok(se(y).includes(`${y}-${gf}`) && se(y).includes(`${y}-${em}`), `Easter ${y}`);
+  assert.deepEqual(se(2026), ['2026-01-01', '2026-01-06', '2026-04-03', '2026-04-06', '2026-05-01', '2026-05-14', '2026-06-06', '2026-06-19',
+    '2026-12-24', '2026-12-25', '2026-12-26', '2026-12-31']);
+  setData({ ...blank(), currency: 'SEK' });
+  assert.equal(bizBefore('2026-04-07', 1), '2026-04-02', 'Easter weekend');
+  assert.equal(bizBefore('2026-06-22', 1), '2026-06-18', 'Midsummer Eve');
+  assert.equal(bizBefore('2026-12-28', 1), '2026-12-23', 'Christmas');
+  assert.equal(bizBefore('2027-01-04', 1), '2026-12-30', 'New Year');
+  assert.equal(bizBefore('2026-07-06', 1), '2026-07-03', 'no July 4 in Sweden');
+  assert.equal(bizBefore('2026-01-07', 1), '2026-01-05', 'Epiphany');
+  setData({ ...blank(), currency: 'SEK', holidays: 'us' });
+  assert.equal(bizBefore('2026-01-07', 1), '2026-01-06', 'an explicit US calendar wins over the currency (Epiphany is Swedish only)');
+  setData(blank());
 });

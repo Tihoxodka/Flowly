@@ -9,6 +9,8 @@ A monthly budget planner that keeps your data on your own computer. No account, 
 - **Debt payoff planner** (avalanche or snowball), **trends** by category, and **net worth** over time.
 - **Optional local AI** on the Mac app: read PDF statements and screenshots, and ask questions about your spending. It runs on your Mac through [Ollama](https://ollama.com), so nothing leaves your computer.
 
+The app is in English or Russian, and amounts can be shown in US dollars, euros, Swedish, Norwegian or Danish kronor and a few other currencies (**Language and currency** at the bottom of the page).
+
 ## Two ways to use it
 
 ### 1. In your browser (any computer)
