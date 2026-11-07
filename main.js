@@ -53,6 +53,19 @@ async function ollama(route, body, timeoutMs = 300000, stop) {
 }
 const fail = err => ({ ok: false, code: err.code || 'ai_error', message: err.message || '' });
 
+// Models that can think before answering (gemma4, qwen3) do so by default, which here means minutes per
+// statement, or no answer at all with a JSON schema. Turn it off for them; older models don't take the option.
+const thinkers = new Map();
+async function noThinking(model) {
+  if (!thinkers.has(model)) {
+    try {
+      const r = await (await ollama('/api/show', { model }, 10000)).json();
+      thinkers.set(model, (r.capabilities || []).includes('thinking'));
+    } catch (err) { return {}; }
+  }
+  return thinkers.get(model) ? { think: false } : {};
+}
+
 ipcMain.handle('ai:status', async e => {
   if (!fromApp(e)) return { running: false, models: [] };
   try {
@@ -66,7 +79,7 @@ ipcMain.handle('ai:json', async (e, req) => {
   if (!fromApp(e)) return { ok: false, code: 'ai_error' };
   try {
     const res = await ollama('/api/chat', {
-      model: req.model, stream: false, format: req.schema,
+      model: req.model, stream: false, format: req.schema, ...await noThinking(req.model),
       options: { temperature: 0, num_ctx: req.ctx || 8192 },
       messages: [{ role: 'user', content: String(req.prompt || ''), images: req.images?.length ? req.images : undefined }]
     });
@@ -84,7 +97,7 @@ ipcMain.handle('ai:ask', async (e, req) => {
   asks.set(req.id, ctl);
   let text = '';
   try {
-    const res = await ollama('/api/chat', { model: req.model, stream: true, options: { temperature: 0.3, num_ctx: req.ctx || 16384 }, messages: req.messages }, 300000, ctl.signal);
+    const res = await ollama('/api/chat', { model: req.model, stream: true, ...await noThinking(req.model), options: { temperature: 0.3, num_ctx: req.ctx || 16384 }, messages: req.messages }, 300000, ctl.signal);
     const dec = new TextDecoder();
     let buf = '';
     for await (const chunk of res.body) {

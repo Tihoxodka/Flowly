@@ -100,6 +100,8 @@ tr.drag .grip{cursor:grabbing;color:var(--accent)}
 body.dragging,body.dragging *{user-select:none;-webkit-user-select:none;cursor:grabbing}
 .pill{display:inline-block;font-size:12px;padding:1px 8px;border-radius:99px;background:var(--soft);color:var(--accent);margin-left:6px;white-space:nowrap}
 .pill.tag{background:var(--warnbg);color:var(--warn)}
+.btn.tcat{font-weight:500;white-space:nowrap}
+.btn.tcat::after{content:"▾";margin-left:6px;color:var(--muted)}
 .bar{height:8px;background:var(--soft);border-radius:4px;overflow:hidden;min-width:70px}
 .bar>i{display:block;height:100%;background:var(--accent)}
 .bar.over>i{background:var(--neg)}
@@ -904,7 +906,9 @@ function parseCSV(t){
    nothing leaves the computer. sampleCaps() hides the difference: s.json() reads transactions, chat() answers questions */
 const DESK=window.budgeterDesktop||null;
 const AI_NAME=DESK?'The local AI':'Claude';
-const LOCAL_MODEL='gemma3:4b';
+/* local models, best first; the first one installed in Ollama is used. gemma3:4b is the one older installs pulled. */
+const LOCAL_MODELS=['gemma4:12b','gemma3:4b'];
+let LOCAL_MODEL=LOCAL_MODELS[0];
 /* the Mac app reads PDFs up to this size (main.js has the same limits) */
 const PDF_MAX_MB=25,PDF_MAX_PAGES=60;
 const API_TYPES=['image/jpeg','image/png','image/webp','image/gif'];
@@ -931,7 +935,9 @@ const deskSample={json:async(prompt,o={})=>{
 async function sampleCaps(){
   if(DESK){
     const st=await DESK.status().catch(()=>({running:false,models:[]}));
-    if(!st.running||!st.models.includes(LOCAL_MODEL))return{desktop:true,s:null,img:null,why:st.running?'model':'off'};
+    const have=LOCAL_MODELS.find(m=>st.models?.includes(m));
+    if(!st.running||!have)return{desktop:true,s:null,img:null,why:st.running?'model':'off'};
+    LOCAL_MODEL=have;
     return{desktop:true,local:true,s:deskSample,img:{maxCount:10,maxInputBytes:50e6,mediaTypes:API_TYPES},pdf:true,chunk:6000,
       chat:(messages,onText)=>{const h=DESK.ask({model:LOCAL_MODEL,messages},onText);return{stop:()=>DESK.stop(h.id),done:h.done.then(r=>{if(!r.ok)throw{code:r.code,message:r.message,text:r.text};return r.text})}}};
   }
@@ -1342,10 +1348,24 @@ function txSum(){
   const l=txFiltered().filter(t=>!NOSPEND.includes(t.cat)),sp=-l.reduce((s,t)=>s+t.amt,0),h=-l.filter(hsaPaid).reduce((s,t)=>s+t.amt,0);
   return`${l.length} purchases, ${f2(sp)} spent${h?`, ${f2(h)} of it from your HSA`:''}`;
 }
+/* Each row shows its category as a button; the dropdown is built only when it's clicked. A dropdown in every row
+   meant thousands of options to lay out, which made a full month slow to show. */
+const catBtn=t=>`<button class="btn sm tcat" type="button" data-act="tcatpick" data-id="${esc(t.id)}" aria-label="Category: ${esc(t.cat)}. Change it">${esc(t.cat)}</button>`;
+function catPick(b,id){
+  const m=mk(view),t=tx[m]?.items.find(x=>x.id===id);if(!t)return;
+  const cl=catList(),cats=cl.includes(t.cat)?cl:[...cl,t.cat];
+  const s=document.createElement('select');
+  s.dataset.act='tcat';s.dataset.id=id;s.setAttribute('aria-label','Category');s.style.width='auto';
+  s.innerHTML=cats.map(c=>`<option${c===t.cat?' selected':''}>${esc(c)}</option>`).join('');
+  b.replaceWith(s);s.focus();
+  try{s.showPicker()}catch(e){}
+  /* leaving it (changed or not) turns it back into a button showing the category */
+  s.addEventListener('blur',()=>{if(s.isConnected){s.insertAdjacentHTML('afterend',catBtn(t));s.remove()}});
+}
 function txRows(){
-  const l=txFiltered(),cl=catList();
+  const l=txFiltered();
   if(!l.length)return`<tr><td colspan="6" class="muted">Nothing logged${fq||fcat||ftag?' matches these filters':' this month yet'}.</td></tr>`;
-  return l.map(t=>{const cats=cl.includes(t.cat)?cl:[...cl,t.cat];return`<tr><td>${dl(t.date)}</td><td>${esc(t.desc)}${t.tag?`<span class="pill tag">${esc(t.tag)}</span>`:''}</td><td><select data-act="tcat" data-id="${esc(t.id)}" aria-label="Category" style="width:auto">${cats.map(c=>`<option${c===t.cat?' selected':''}>${esc(c)}</option>`).join('')}</select></td><td>${esc(acctName(t.acct))}</td><td class="num ${t.amt>0?'pos':''}">${f2(t.amt)}</td><td class="act"><button class="btn sm" data-act="tedit" data-id="${esc(t.id)}">Edit</button> <button class="btn sm ghost danger" data-act="tdel" data-id="${esc(t.id)}" aria-label="Delete">×</button></td></tr>`}).join('');
+  return l.map(t=>{return`<tr><td>${dl(t.date)}</td><td>${esc(t.desc)}${t.tag?`<span class="pill tag">${esc(t.tag)}</span>`:''}</td><td>${catBtn(t)}</td><td>${esc(acctName(t.acct))}</td><td class="num ${t.amt>0?'pos':''}">${f2(t.amt)}</td><td class="act"><button class="btn sm" data-act="tedit" data-id="${esc(t.id)}">Edit</button> <button class="btn sm ghost danger" data-act="tdel" data-id="${esc(t.id)}" aria-label="Delete">×</button></td></tr>`}).join('');
 }
 function vSpend(){
   const tags=tagList(),L=logged(mk(view)),byTag=dict();L.items.forEach(t=>{if(t.tag)byTag[t.tag]=(byTag[t.tag]||0)-t.amt});
@@ -1588,6 +1608,7 @@ document.addEventListener('click',e=>{
     toast(`Deleted ${gone.desc} ${f2(gone.amt)}`,()=>{tx[m].items.splice(Math.min(i,tx[m].items.length),0,gone);saveTx(m);paint()});
   }
   else if(act==='timport')openImport();else if(act==='trules')editRules();
+  else if(act==='tcatpick')catPick(b,id);
   else if(act==='catadd')openForm('Add category',[{k:'name',l:'Category name',req:1},{k:'budget',l:'Monthly budget',t:'number'}],{},o=>{if(!catList().includes(o.name)){plan.cats.push({name:o.name,budget:o.budget});savePlan()}render()});
   else if(act==='catdel'){const c=b.dataset.cat;ask(`Remove category “${c}”?`,'Remove',()=>{plan.cats=plan.cats.filter(x=>x.name!==c);savePlan();render()})}
 });

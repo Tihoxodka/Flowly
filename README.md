@@ -31,13 +31,13 @@ The app is built and signed on your own Mac, so macOS doesn't show the "unidenti
 Reading PDF statements and screenshots, and the **Ask about your spending** panel on the Trends tab, use a small AI model running on your Mac. Everything else works without it.
 
 1. Install [Ollama](https://ollama.com) and open it.
-2. In Terminal, download the model (about 3.4 GB):
+2. In Terminal, download the model (about 8 GB):
    ```
-   ollama pull gemma3:4b
+   ollama pull gemma4:12b
    ```
 3. In Budgeter, open **Spending → Import statement**. It should say the local AI is ready.
 
-A Mac with 16 GB of memory runs it comfortably; with 8 GB it's slower. A one-page statement takes about 20 seconds. Small models make mistakes, so you check every transaction before it's imported (with a **Flip them** link if money in and out come out backwards), and for spending questions the app does all the math while the AI only explains it. Scanned PDFs are pictures with no text in them; take screenshots of their pages instead.
+It needs a Mac with 16 GB of memory or more. On an 8 GB Mac, use the smaller `gemma3:4b` instead (`ollama pull gemma3:4b`, about 3.4 GB): Budgeter uses `gemma4:12b` when it's installed and `gemma3:4b` otherwise. On an M4, a one-page statement or a screenshot takes about 5 seconds, a little longer the first time while the model loads. Small models make mistakes, so you check every transaction before it's imported (with a **Flip them** link if money in and out come out backwards), and for spending questions the app does all the math while the AI only explains it. Scanned PDFs are pictures with no text in them; take screenshots of their pages instead.
 
 ## Your data
 - **Back up regularly:** **Download backup** at the bottom of the page saves everything to a file. **Restore from backup** loads it, including into the other version (browser ↔ Mac app).
