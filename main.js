@@ -1,8 +1,18 @@
-const { app, BrowserWindow, shell, Menu, ipcMain } = require('electron');
+const { app, BrowserWindow, shell, Menu, ipcMain, session, utilityProcess } = require('electron');
 const path = require('path');
+const { fileURLToPath } = require('url');
 
 // One window only, so two copies never write the same data at once.
 if (!app.requestSingleInstanceLock()) app.quit();
+
+// The page is this one file. Only it may navigate, reach the AI, or read PDFs.
+const APP_FILE = path.join(__dirname, 'app', 'index.html');
+const isAppUrl = url => {
+  try { return fileURLToPath(String(url).split('#')[0]) === APP_FILE; } catch (err) { return false; }
+};
+const fromApp = e => isAppUrl(e.senderFrame?.url);
+// Links leave the app only as web pages in the default browser; other kinds of links (file:, smb:, custom apps) are ignored.
+const openOutside = url => { try { if (new URL(url).protocol === 'https:') shell.openExternal(url); } catch (err) {} };
 
 let win;
 function createWindow() {
@@ -14,10 +24,9 @@ function createWindow() {
     backgroundColor: '#eef1f6',
     webPreferences: { contextIsolation: true, nodeIntegration: false, sandbox: true, preload: path.join(__dirname, 'preload.js') }
   });
-  win.loadFile(path.join(__dirname, 'app', 'index.html'));
-  // Links open in the default browser, never inside the app.
-  win.webContents.setWindowOpenHandler(({ url }) => { shell.openExternal(url); return { action: 'deny' }; });
-  win.webContents.on('will-navigate', (e, url) => { if (!url.startsWith('file://')) { e.preventDefault(); shell.openExternal(url); } });
+  win.loadFile(APP_FILE);
+  win.webContents.setWindowOpenHandler(({ url }) => { openOutside(url); return { action: 'deny' }; });
+  win.webContents.on('will-navigate', (e, url) => { if (!isAppUrl(url)) { e.preventDefault(); openOutside(url); } });
   // Backups and calendar reminders: ask where to save, starting in Downloads.
   win.webContents.session.on('will-download', (e, item) => {
     item.setSaveDialogOptions({ defaultPath: path.join(app.getPath('downloads'), item.getFilename()) });
@@ -27,14 +36,14 @@ function createWindow() {
 /* ---------- local AI through Ollama, for reading statements and talking about spending ---------- */
 // Everything stays on this Mac: Ollama runs the model locally on its default port.
 const OLLAMA = process.env.OLLAMA_HOST ? `http://${process.env.OLLAMA_HOST.replace(/^https?:\/\//, '')}` : 'http://127.0.0.1:11434';
-const fromApp = e => (e.senderFrame?.url || '').startsWith('file://');
 
-async function ollama(route, body, timeoutMs = 300000) {
+async function ollama(route, body, timeoutMs = 300000, stop) {
+  const signal = stop ? AbortSignal.any([AbortSignal.timeout(timeoutMs), stop]) : AbortSignal.timeout(timeoutMs);
   let res;
   try {
-    res = await fetch(OLLAMA + route, { method: body ? 'POST' : 'GET', headers: { 'content-type': 'application/json' }, body: body && JSON.stringify(body), signal: AbortSignal.timeout(timeoutMs) });
+    res = await fetch(OLLAMA + route, { method: body ? 'POST' : 'GET', headers: { 'content-type': 'application/json' }, body: body && JSON.stringify(body), signal });
   } catch (err) {
-    throw { code: err.name === 'TimeoutError' ? 'timeout' : 'offline' };
+    throw { code: stop?.aborted ? 'cancelled' : err.name === 'TimeoutError' ? 'timeout' : 'offline' };
   }
   if (!res.ok) {
     const msg = (await res.json().catch(() => ({}))).error || res.statusText;
@@ -66,18 +75,19 @@ ipcMain.handle('ai:json', async (e, req) => {
   } catch (err) { return fail(err); }
 });
 
-// A chat answer, streamed back to the page as it's written.
+// A chat answer, streamed back to the page as it's written. Stop cancels the request itself,
+// so it works even while the model is still reading the question.
 const asks = new Map();
 ipcMain.handle('ai:ask', async (e, req) => {
   if (!fromApp(e)) return { ok: false, code: 'ai_error' };
   const ctl = new AbortController();
   asks.set(req.id, ctl);
+  let text = '';
   try {
-    const res = await ollama('/api/chat', { model: req.model, stream: true, options: { temperature: 0.3, num_ctx: req.ctx || 16384 }, messages: req.messages });
+    const res = await ollama('/api/chat', { model: req.model, stream: true, options: { temperature: 0.3, num_ctx: req.ctx || 16384 }, messages: req.messages }, 300000, ctl.signal);
     const dec = new TextDecoder();
-    let buf = '', text = '';
+    let buf = '';
     for await (const chunk of res.body) {
-      if (ctl.signal.aborted) break;
       buf += dec.decode(chunk, { stream: true });
       let nl;
       while ((nl = buf.indexOf('\n')) >= 0) {
@@ -88,42 +98,40 @@ ipcMain.handle('ai:ask', async (e, req) => {
         if (m.message?.content) { text += m.message.content; e.sender.send('ai:chunk', { id: req.id, text }); }
       }
     }
-    return ctl.signal.aborted ? { ok: false, code: 'cancelled', text } : { ok: true, text };
-  } catch (err) { return fail(err); }
+    return { ok: true, text };
+  } catch (err) {
+    if (ctl.signal.aborted) return { ok: false, code: 'cancelled', text };
+    return { ...fail(err), text };
+  }
   finally { asks.delete(req.id); }
 });
-ipcMain.handle('ai:stop', (e, id) => { asks.get(id)?.abort(); return true; });
+ipcMain.handle('ai:stop', (e, id) => { if (fromApp(e)) asks.get(id)?.abort(); return true; });
 
-// Text of a PDF, one string per page, with each line's pieces in reading order.
-let pdfjs;
+/* ---------- PDF text ---------- */
+// Each PDF is read in its own short-lived process (pdf-worker.js), so a broken or hostile file can't reach
+// the main process, and one that takes too long is simply stopped. The page has the same limits (PDF_MAX_MB).
+const PDF_MAX_BYTES = 25e6, PDF_MAX_PAGES = 60, PDF_TIMEOUT_MS = 60000;
 ipcMain.handle('pdf:text', async (e, bytes) => {
   if (!fromApp(e)) return { ok: false, code: 'pdf_error' };
-  try {
-    pdfjs = pdfjs || await import('pdfjs-dist/legacy/build/pdf.mjs');
-    const task = pdfjs.getDocument({ data: new Uint8Array(bytes), isEvalSupported: false, useSystemFonts: true });
-    const doc = await task.promise;
-    const pages = [];
-    for (let n = 1; n <= doc.numPages; n++) {
-      const items = (await (await doc.getPage(n)).getTextContent()).items.filter(i => i.str && i.str.trim());
-      const lines = [];
-      for (const i of items) {
-        const x = i.transform[4], y = i.transform[5];
-        let line = lines.find(l => Math.abs(l.y - y) < Math.max(2, (i.height || 8) * 0.4));
-        if (!line) lines.push(line = { y, parts: [] });
-        line.parts.push({ x, s: i.str });
-      }
-      lines.sort((a, b) => b.y - a.y);
-      pages.push(lines.map(l => l.parts.sort((a, b) => a.x - b.x).map(p => p.s.trim()).join('  ')).join('\n'));
-    }
-    await task.destroy();
-    return { ok: true, pages };
-  } catch (err) {
-    return { ok: false, code: err.name === 'PasswordException' ? 'pdf_locked' : 'pdf_error', message: String(err.message || err) };
-  }
+  const data = ArrayBuffer.isView(bytes) ? new Uint8Array(bytes.buffer, bytes.byteOffset, bytes.byteLength) : bytes instanceof ArrayBuffer ? new Uint8Array(bytes) : null;
+  if (!data?.byteLength) return { ok: false, code: 'pdf_error' };
+  if (data.byteLength > PDF_MAX_BYTES) return { ok: false, code: 'pdf_big' };
+  return new Promise(resolve => {
+    const child = utilityProcess.fork(path.join(__dirname, 'pdf-worker.js'), [], { serviceName: 'Budgeter PDF reader' });
+    let settled = false;
+    const finish = r => { if (settled) return; settled = true; clearTimeout(timer); child.kill(); resolve(r); };
+    const timer = setTimeout(() => finish({ ok: false, code: 'pdf_error', message: 'Reading the PDF took too long.' }), PDF_TIMEOUT_MS);
+    child.once('message', finish);
+    child.once('exit', () => finish({ ok: false, code: 'pdf_error' }));
+    child.once('spawn', () => child.postMessage({ data, maxPages: PDF_MAX_PAGES }));
+  });
 });
 
 app.on('second-instance', () => { if (win) { if (win.isMinimized()) win.restore(); win.focus(); } });
 app.whenReady().then(() => {
+  // The page makes no network requests: fonts ship with it, and Ollama is reached from this process.
+  // Blocking them means nothing in the page, even injected content, can send data off this Mac.
+  session.defaultSession.webRequest.onBeforeRequest({ urls: ['http://*/*', 'https://*/*', 'ws://*/*', 'wss://*/*'] }, (d, cb) => cb({ cancel: true }));
   Menu.setApplicationMenu(Menu.buildFromTemplate([
     { role: 'appMenu' }, { role: 'editMenu' }, { role: 'viewMenu' }, { role: 'windowMenu' }
   ]));

@@ -7,6 +7,9 @@ SRC="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 APP="/Applications/Budgeter.app"
 step(){ printf '\n\033[1;34m==> %s\033[0m\n' "$1"; }
 fail(){ printf '\n\033[1;31mError: %s\033[0m\n' "$1"; exit 1; }
+# Downloads go in a private folder only this user can write to, removed when the script ends.
+TMP="$(mktemp -d)"
+trap 'rm -rf "$TMP"' EXIT
 
 [ "$(uname)" = "Darwin" ] || fail "This installer is for macOS. On other systems, open app/index.html in your browser instead."
 case "$(uname -m)" in arm64) ARCH=arm64 ;; x86_64) ARCH=x64 ;; *) fail "Unsupported Mac processor: $(uname -m)" ;; esac
@@ -18,11 +21,16 @@ if command -v node >/dev/null 2>&1; then
 fi
 if [ $NODE_OK -eq 0 ]; then
   step "Installing Node.js (you'll be asked for your Mac password)"
-  PKG=$(curl -fsSL https://nodejs.org/dist/latest-v22.x/ | grep -o 'node-v22[0-9.]*\.pkg' | head -1)
+  DIST=https://nodejs.org/dist/latest-v22.x
+  curl -fsSL "$DIST/SHASUMS256.txt" -o "$TMP/SHASUMS256.txt" || fail "Couldn't reach nodejs.org. Check your connection and run this again."
+  PKG=$(grep -o 'node-v22[0-9.]*\.pkg$' "$TMP/SHASUMS256.txt" | head -1)
   [ -n "$PKG" ] || fail "Couldn't find the Node.js installer. Install it from https://nodejs.org and run this again."
-  curl -fL "https://nodejs.org/dist/latest-v22.x/$PKG" -o "/tmp/$PKG"
-  sudo installer -pkg "/tmp/$PKG" -target /
-  rm -f "/tmp/$PKG"
+  curl -fL "$DIST/$PKG" -o "$TMP/$PKG"
+  # Install only what nodejs.org says it published
+  WANT=$(awk -v f="$PKG" '$2==f{print $1}' "$TMP/SHASUMS256.txt")
+  GOT=$(shasum -a 256 "$TMP/$PKG" | awk '{print $1}')
+  [ -n "$WANT" ] && [ "$WANT" = "$GOT" ] || fail "The Node.js download didn't match its checksum. Run this again, or install Node.js from https://nodejs.org."
+  sudo installer -pkg "$TMP/$PKG" -target /
   export PATH="/usr/local/bin:$PATH"
   command -v node >/dev/null 2>&1 || fail "Node.js didn't install. Install it from https://nodejs.org and run this again."
 fi
@@ -31,10 +39,12 @@ echo "Node $(node -v)"
 # 2. Build in this folder
 cd "$SRC"
 step "Installing build tools (first run takes a few minutes)"
-npm install --no-audit --no-fund --loglevel=error
+# npm ci installs exactly the versions in package-lock.json
+npm ci --no-audit --no-fund --loglevel=error
 step "Building Budgeter for $ARCH"
 rm -rf dist
-CSC_IDENTITY_AUTO_DISCOVERY=false npx electron-builder --mac --"$ARCH" --dir >/tmp/budgeter-build.log 2>&1 || { tail -20 /tmp/budgeter-build.log; fail "Build failed. Full log: /tmp/budgeter-build.log"; }
+LOG="$SRC/build.log"
+CSC_IDENTITY_AUTO_DISCOVERY=false npx electron-builder --mac --"$ARCH" --dir >"$LOG" 2>&1 || { tail -20 "$LOG"; fail "Build failed. Full log: $LOG"; }
 BUILT=$(find dist -maxdepth 2 -name 'Budgeter.app' -type d | head -1)
 [ -n "$BUILT" ] || fail "Build finished but Budgeter.app wasn't found in dist."
 

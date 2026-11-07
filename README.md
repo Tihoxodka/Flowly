@@ -42,13 +42,15 @@ A Mac with 16 GB of memory runs it comfortably; with 8 GB it's slower. A one-pag
 ## Your data
 - **Back up regularly:** **Download backup** at the bottom of the page saves everything to a file. **Restore from backup** loads it, including into the other version (browser ↔ Mac app).
 - The Mac app keeps its data in `~/Library/Application Support/Budgeter`.
-- Nothing is sent anywhere. The only network requests are for fonts (it falls back to system fonts offline) and, if you set it up, to Ollama on your own Mac.
+- Nothing is sent anywhere. Fonts ship with the app, and the Mac app blocks the page from making any network requests at all. The only connection it makes is to Ollama on your own Mac, if you set it up.
+- Your data and backups are stored as plain files, not encrypted. Turn on FileVault (System Settings → Privacy & Security) so they're encrypted on disk, and keep backup files somewhere private.
+- Only restore backups you made yourself. A backup is checked and cleaned before it's loaded, but it replaces your plan.
 
 ## Other systems
 The installer is Mac-only. On Windows or Linux, use the browser version. If you're comfortable with Node.js, `npm install` and `npm start` should also run the desktop app there, but that isn't tested.
 
 ## Development
-The whole app is one file, `app/index.html` (HTML, CSS and plain JavaScript, no build step). `main.js` and `preload.js` are the Electron wrapper and the local AI and PDF bridge. See `CLAUDE.md` for how the pieces fit together.
+The whole app is one file, `app/index.html` (HTML, CSS and plain JavaScript, no build step), plus its fonts in `app/fonts`. `main.js` and `preload.js` are the Electron wrapper and the local AI bridge; `pdf-worker.js` reads PDF text in a separate process. Run the tests with `npm test`. See `CLAUDE.md` for how the pieces fit together.
 
 ## License
 [MIT](LICENSE)

@@ -3,3 +3,4 @@ dist/
 .DS_Store
 budgeter-backup-*.json
 monthly-planner-backup-*.json
+build.log
