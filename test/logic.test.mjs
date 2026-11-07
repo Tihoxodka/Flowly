@@ -19,7 +19,7 @@ const stub = new Proxy(function () {}, {
 let A;
 const ctx = { window: { __budgeterTest: fns => { A = fns; } }, document: stub, localStorage: stub, addEventListener() {}, setInterval() {}, CSS: { escape: s => s } };
 vm.runInNewContext(code, ctx);
-const { holidays, T, TN, dl, sched, cn, catKey, setLang, f0, f2, kfmt, pn, pd, dateOrder, parseCSV, freshRows, aiRows, occ, bizBefore, sim, cleanPlan, cleanTx, blank, chunkText, esc, setData } = A;
+const { holidays, T, TN, dl, sched, cn, catKey, setLang, f0, f2, kfmt, pn, pd, dateOrder, parseCSV, freshRows, aiRows, occ, bizBefore, sim, cleanPlan, cleanTx, blank, chunkText, esc, setData, moveMoney, acct } = A;
 // values made in the script's own realm compare by content, not by prototype
 const eq = (got, want, msg) => assert.deepEqual(JSON.parse(JSON.stringify(got)), want, msg);
 
@@ -185,5 +185,31 @@ test('Swedish bank holidays', () => {
   assert.equal(bizBefore('2026-01-07', 1), '2026-01-05', 'Epiphany');
   setData({ ...blank(), currency: 'SEK', holidays: 'us' });
   assert.equal(bizBefore('2026-01-07', 1), '2026-01-06', 'an explicit US calendar wins over the currency (Epiphany is Swedish only)');
+  setData(blank());
+});
+
+test('transfers between accounts', () => {
+  setData({ ...blank(), accounts: [
+    { id: 'chk', name: 'Checking', type: 'checking', bal: 500, upd: '2026-11-01' },
+    { id: 'sav', name: 'Savings', type: 'savings', bal: 4000 },
+    { id: 'inv', name: 'Broker', type: 'investment', bal: 9000, cash: 100 },
+    { id: 'cc', name: 'Card', type: 'credit', bal: 600, stmt: 400 },
+    { id: 'loan', name: 'Loan', type: 'loan', bal: 50 },
+    { id: 'car', name: 'Car', type: 'property', bal: 20000 }] });
+  const bal = id => acct(id).bal;
+  const undo = moveMoney('sav', 'chk', 1234.567);
+  assert.equal(bal('sav'), 2765.43); assert.equal(bal('chk'), 1734.57);
+  assert.equal(acct('chk').upd, '2026-11-01', 'the as-of date stays');
+  undo(); assert.equal(bal('sav'), 4000); assert.equal(bal('chk'), 500);
+  moveMoney('chk', 'inv', 200);
+  eq([bal('chk'), acct('inv').cash, bal('inv')], [300, 300, 9000], 'into an investment goes to buying power');
+  moveMoney('chk', 'cc', 250);
+  eq([bal('cc'), acct('cc').stmt], [350, 150], 'paying a card lowers what is owed and the statement');
+  moveMoney('sav', 'loan', 80);
+  eq([bal('sav'), bal('loan')], [3920, 0], 'a loan does not go below zero');
+  const undoCard = moveMoney('chk', 'cc', 400);
+  eq([bal('cc'), acct('cc').stmt], [0, 0]); undoCard(); eq([bal('cc'), acct('cc').stmt], [350, 150]);
+  for (const [f, t, a] of [['chk', 'chk', 10], ['chk', 'sav', 0], ['chk', 'sav', -5], ['cc', 'chk', 10], ['chk', 'car', 10], ['chk', 'nope', 10]])
+    assert.equal(moveMoney(f, t, a), null, `${f} → ${t} ${a} is refused`);
   setData(blank());
 });

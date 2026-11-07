@@ -15,6 +15,7 @@ This folder is the source of truth. Edit `app/index.html` here, then ship it to 
 - Show money only through `f0`/`f2`/`kfmt`: they use the plan's currency and number format (`plan.currency`, `plan.numfmt`, set with the Currency button). Amounts are never converted.
 - Business days (transfer reminders) use `holidays(y)`: the US Federal Reserve calendar or Swedish bank holidays (Easter-based ones computed, plus Midsummer, Christmas and New Year's Eves). `plan.holidays` is `''` (follow the currency: SEK means Sweden), `'us'` or `'se'`.
 - Maps keyed by names people type (merchants, categories, tags) are `dict()` (no prototype).
+- Account balances are what's there now, and the projection starts from them. A transfer (`moveMoney`) changes both balances (an investment's buying power, a debt's amount owed and a card's statement) and keeps each account's `upd` date. It returns an undo.
 - Load months with `ensureTx(m)` (shared promise per month, so concurrent loads can't overwrite each other). `TODAY`/`now` are `let` and move forward via `newDay()`.
 - After a field's `change`, call `paintSoon()`, not `paint()`, so focus and clicks survive the repaint.
 - Keep the light/dark tokens on `:root` and the phone layout (≤640px) working.

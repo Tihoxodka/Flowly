@@ -2,10 +2,10 @@
 
 A monthly budget planner that keeps your data on your own computer. No account, no sync, no ads.
 
-- **Overview:** income − bills − goals = spending money for the month, what's left to spend per day, a calendar of money in and out, and projected account balances. It warns you when a bill would overdraw an account and when to move money.
+- **Overview:** income − bills − goals = spending money for the month, what's left to spend per day, a calendar of money in and out, and projected account balances. It warns you when a bill would overdraw an account and when to move money, and records the transfer in one step.
 - **Bills and income** on any schedule (weekly, every 2 weeks, twice a month, monthly, yearly…), including variable bills like energy and water: enter each month's amount when the bill arrives.
 - **Spending:** quick logging, CSV import from your bank, category rules, tags, and budgets per category (drag to reorder).
-- **Accounts:** checking, savings, credit cards (statement and due-date tracking), loans, investments, retirement and HSA (contributions, employer match, debit card spending, yearly IRS limit).
+- **Accounts:** checking, savings, credit cards (statement and due-date tracking), loans, investments, retirement and HSA (contributions, employer match, debit card spending, yearly IRS limit). **Transfer between accounts** moves money in one step: both balances change, and a payment to a card or loan lowers what's owed.
 - **Debt payoff planner** (avalanche or snowball), **trends** by category, and **net worth** over time.
 - **Optional local AI** on the Mac app: read PDF statements and screenshots, and ask questions about your spending. It runs on your Mac through [Ollama](https://ollama.com), so nothing leaves your computer.
 

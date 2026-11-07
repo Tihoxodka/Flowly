@@ -520,7 +520,7 @@ window.BUDGETER_LANGS={ru:{
 "Move {amt} into {acct} by {by}, 3 business days before {item} on {date}.":"Переведите {amt} на {acct} до {by} — за 3 рабочих дня до «{item}» {date}.",
 "You could take it from {acct}.":"Можно взять с «{acct}».",
 "Add reminder to calendar":"Напоминание в календарь",
-"Business days skip weekends and Federal Reserve holidays. After you move the money, update the account balance and this note clears.":"Рабочие дни считаются без выходных и праздников ФРС США. Когда переведёте деньги, обновите остаток счёта, и это предупреждение исчезнет.",
+"Business days skip weekends and Federal Reserve holidays. After you move the money, record it with Record transfer and this note clears.":"Рабочие дни считаются без выходных и праздников ФРС США. Когда переведёте деньги, отметьте это кнопкой «Записать перевод», и предупреждение исчезнет.",
 "Transfer {amt} into {acct}":"Перевести {amt} на {acct}",
 "{item} on {date} would overdraw {acct} by {amt}.":"«{item}» {date} уведёт {acct} в минус на {amt}.",
 "Suggested source: {acct}.":"Можно взять с: {acct}.",
@@ -806,7 +806,17 @@ window.BUDGETER_LANGS={ru:{
 "Sweden":"Швеция",
 "Bank holidays":"Банковские праздники",
 "Used to count business days when the app tells you to move money before a payment.":"По ним считаются рабочие дни, когда приложение напоминает перевести деньги до платежа.",
-"Business days skip weekends and Swedish bank holidays. After you move the money, update the account balance and this note clears.":"Рабочие дни считаются без выходных и шведских банковских праздников. Когда переведёте деньги, обновите остаток счёта, и это предупреждение исчезнет.",
+"Business days skip weekends and Swedish bank holidays. After you move the money, record it with Record transfer and this note clears.":"Рабочие дни считаются без выходных и шведских банковских праздников. Когда переведёте деньги, отметьте это кнопкой «Записать перевод», и предупреждение исчезнет.",
+"Transfer between accounts":"Перевод между счетами",
+"Record transfer":"Записать перевод",
+"From":"Откуда",
+"To":"Куда",
+"owed {amt}":"долг {amt}",
+"Both balances change now. A payment to a card or loan lowers what you owe.":"Остатки обоих счетов изменятся сразу. Перевод на карту или кредит уменьшает долг.",
+"Add at least two accounts to move money between them.":"Добавьте хотя бы два счёта, чтобы переводить между ними.",
+"Moved {amt} from {from} to {to}":"Переведено {amt}: {from} → {to}",
+"Pick two different accounts.":"Выберите два разных счёта.",
+"Enter an amount above zero.":"Введите сумму больше нуля.",
 }};
 </script>
 <script>
@@ -1288,7 +1298,8 @@ function assetsDebts(){
 function snapNW(key,dt){const {a,d}=assetsDebts();(plan.nw=plan.nw||{})[key||TODAY.slice(0,7)]={a,d,dt:dt||TODAY}}
 
 /* ---------- dialogs ---------- */
-function openForm(title,fields,vals,onSave){
+/* check(o), if given, returns an error to show instead of saving */
+function openForm(title,fields,vals,onSave,check){
   const d=$('#dlg');
   d.innerHTML=`<h3>${esc(T(title))}</h3>`+fields.map(f=>{
     const val=vals[f.k]??'';let inp;
@@ -1310,6 +1321,7 @@ function openForm(title,fields,vals,onSave){
       if((typeof f.req==='function'?f.req(o):f.req)&&(f.t==='number'?isNaN(o[f.k]):!o[f.k])){$('#ferr').textContent=T('{field} is required.',{field:T(f.l)});return}
       if(f.t==='number'&&isNaN(o[f.k]))o[f.k]=0;
     }
+    const bad=check?.(o);if(bad){$('#ferr').textContent=bad;return}
     d.close();onSave(o);
   };
   d.showModal();
@@ -1418,6 +1430,44 @@ function nextStmt(id){
   openForm(T('New statement for {name}',{name:a.name}),[{k:'stmt',l:T('Statement balance, due {date}',{date:wdl(nd)}),t:'number',req:1},{k:'bal',l:'Owed now (optional)',t:'number',ph:String(+a.bal||0)}],{},o=>{
     a.stmt=Math.max(0,r2(o.stmt));a.duedate=nd;if(o.bal)a.bal=r2(o.bal);a.upd=TODAY;snapNW();savePlan();render();toast(T('{name}: {amt} due {date}',{name:a.name,amt:f2(a.stmt),date:dl(nd)}));
   });
+}
+/* ---------- transfers between accounts ----------
+   Money leaves a cash account, an investment's buying power or an HSA, and goes into one of those,
+   a retirement account, or pays down a card or loan. Balances are what's there now, so a transfer
+   changes both at once; each account's "as of" date stays, since nothing was re-read from the bank. */
+const XFROM=['checking','savings','cash','investment','hsa'],XTO=[...XFROM,'retirement','credit','loan'];
+const xField=a=>a.type==='investment'?'cash':'bal';
+const xAvail=a=>a.type==='investment'?+a.cash||0:isHSA(a)?hsaNow(a):+a.bal||0;
+/* moves amt between two accounts by id; returns a function that undoes it, or null */
+function moveMoney(fromId,toId,amt){
+  const from=acct(fromId),to=acct(toId);amt=r2(+amt);
+  if(!from||!to||from===to||!(amt>0)||!XFROM.includes(from.type)||!XTO.includes(to.type))return null;
+  const was=[];
+  const set=(a,k,v)=>{was.push([a.id,k,a[k]]);a[k]=r2(v)};
+  set(from,xField(from),(+from[xField(from)]||0)-amt);
+  if(isDebt(to)){
+    set(to,'bal',Math.max(0,(+to.bal||0)-amt));
+    /* paying a card early also pays its statement, so the scheduled payment shrinks */
+    if(to.type==='credit'&&+to.stmt>0)set(to,'stmt',Math.max(0,+to.stmt-amt));
+  }else set(to,xField(to),(+to[xField(to)]||0)+amt);
+  return()=>was.reverse().forEach(([id,k,v])=>{const a=acct(id);if(!a)return;if(v===undefined)delete a[k];else a[k]=v});
+}
+function transfer(pre={}){
+  const src=plan.accounts.filter(a=>XFROM.includes(a.type)),dst=plan.accounts.filter(a=>XTO.includes(a.type));
+  if(!src.length||dst.length<2){toast(T('Add at least two accounts to move money between them.'));return}
+  const to=acct(pre.to)&&XTO.includes(acct(pre.to).type)?pre.to:'';
+  const from=acct(pre.from)&&XFROM.includes(acct(pre.from).type)?pre.from:(src.find(a=>a.id!==to)||src[0]).id;
+  openForm('Transfer between accounts',[
+    {k:'from',l:'From',t:'select',opts:src.map(a=>[a.id,`${a.name} · ${f0(xAvail(a))}`])},
+    {k:'to',l:'To',t:'select',opts:dst.map(a=>[a.id,isDebt(a)?`${a.name} · ${T('owed {amt}',{amt:f0(+a.bal||0)})}`:`${a.name} · ${f0(xAvail(a))}`])},
+    {k:'amt',l:'Amount',t:'number',req:1,help:'Both balances change now. A payment to a card or loan lowers what you owe.'}],
+    {from,to:to||(dst.find(a=>a.id!==from)||dst[0]).id,amt:pre.amt||''},
+    o=>{
+      const undo=moveMoney(o.from,o.to,o.amt);if(!undo)return;
+      snapNW();savePlan();render();
+      toast(T('Moved {amt} from {from} to {to}',{amt:f2(o.amt),from:acctName(o.from),to:acctName(o.to)}),()=>{undo();snapNW();savePlan();render()});
+    },
+    o=>o.from===o.to?T('Pick two different accounts.'):!(o.amt>0)?T('Enter an amount above zero.'):'');
 }
 function setPay(key,v){
   (plan.payOn=plan.payOn||{});
@@ -1856,7 +1906,7 @@ function tipsHtml(tips){
   return`<div class="alert${tips.some(t=>t.late)?' late':''}"><b>${tips.length===1?T('Transfer needed'):T('Transfers needed')}</b>${tips.map((t,i)=>{
     const s=srcFor(t),v={amt:`<b>${f0(t.amount)}</b>`,acct:`<b>${esc(acctName(t.acct))}</b>`,item:esc(t.name),date:dl(t.date),by:`<b>${wdl(t.deadline)}</b>`};
     const say=t.late?T('Move {amt} into {acct} <b>now</b>, since {item} on {date} is less than 3 business days away.',v):T('Move {amt} into {acct} by {by}, 3 business days before {item} on {date}.',v);
-    return`<div class="tip"><span>${say}${s?' '+T('You could take it from {acct}.',{acct:esc(s.name)}):''}</span><button class="btn sm" data-act="ics" data-i="${i}">${T('Add reminder to calendar')}</button></div>`}).join('')}<p class="muted" style="font-size:13px;margin:8px 0 0">${T(holCal()==='se'?'Business days skip weekends and Swedish bank holidays. After you move the money, update the account balance and this note clears.':'Business days skip weekends and Federal Reserve holidays. After you move the money, update the account balance and this note clears.')}</p></div>`;
+    return`<div class="tip"><span>${say}${s?' '+T('You could take it from {acct}.',{acct:esc(s.name)}):''}</span><div class="row" style="gap:6px;margin:0"><button class="btn sm" data-act="xfer" data-i="${i}">${T('Record transfer')}</button><button class="btn sm" data-act="ics" data-i="${i}">${T('Add reminder to calendar')}</button></div></div>`}).join('')}<p class="muted" style="font-size:13px;margin:8px 0 0">${T(holCal()==='se'?'Business days skip weekends and Swedish bank holidays. After you move the money, record it with Record transfer and this note clears.':'Business days skip weekends and Federal Reserve holidays. After you move the money, record it with Record transfer and this note clears.')}</p></div>`;
 }
 async function tipIcs(sel){
   const e2=t=>String(t).replace(/\\/g,'\\\\').replace(/;/g,'\\;').replace(/,/g,'\\,').replace(/\n/g,'\\n');
@@ -1975,7 +2025,7 @@ function vAccounts(){
   const tbl=(rows,head)=>rows.length?`<div class="scroll"><table><thead><tr>${head}</tr></thead><tbody>${rows}</tbody></table></div>`:'';
   const intTot=as.filter(hasInt).reduce((s,a)=>s+mInt(a),0);
   const limCells=a=>{const L=+a.limit||0,B=+a.bal||0;return`<td class="num">${L?f0(L):'—'}</td><td class="num">${L?Math.round(B/L*100)+'%':'—'}</td>`};
-  return`<div class="row" style="margin-top:16px"><button class="btn pri" data-act="add" data-kind="accounts">${T('Add account')}</button><span class="muted small">${T('Editing a balance records a net worth snapshot for the month.')}</span></div>
+  return`<div class="row" style="margin-top:16px"><button class="btn pri" data-act="add" data-kind="accounts">${T('Add account')}</button><button class="btn" data-act="xfer">${T('Transfer between accounts')}</button><span class="muted small">${T('Editing a balance records a net worth snapshot for the month.')}</span></div>
   <div class="eq"><div class="t"><small>${T('Assets')}</small><b>${f0(AS)}</b></div><span class="op">−</span><div class="t"><small>${T('Debts')}</small><b>${f0(DB)}</b></div><span class="op">=</span><div class="t free"><small>${T('Net worth')}</small><b class="${AS-DB<0?'neg':''}">${f0(AS-DB)}</b></div></div>
   ${as.length?`<div class="sec"><h2>${T('Cash accounts')}</h2>${tbl(as.map(a=>`<tr><td>${esc(a.name)}</td><td>${esc(T(TYPES.find(t=>t[0]===a.type)?.[1]||''))}</td>${balCell(a)}<td class="num"><input class="mini" style="width:76px" type="number" step="any" min="0" value="${+a.apy||''}" placeholder="0" data-act="apy" data-id="${esc(a.id)}" aria-label="${esc(T('APY of {name}',{name:a.name}))}"></td><td class="num">${hasInt(a)?f2(mInt(a)):'—'}</td>${endCell(a)}${btns(a)}</tr>`).join(''),`<th>${T('Name')}</th><th>${T('Type')}</th><th class="num">${T('Balance')}</th><th class="num">${T('APY %')}</th><th class="num">${T('Interest a month')}</th>${endTh}<th></th>`)}${intTot?`<p class="muted small">${T('Estimated interest: {amt} a month, about {year} a year.',{amt:f2(intTot),year:f0(intTot*12)})}</p>`:''}</div>`:''}
   ${inv.length?`<div class="sec"><h2>${T('Investments')}</h2>${tbl(inv.map(a=>`<tr><td>${esc(a.name)}</td>${balCell(a)}<td class="num"><input class="mini" type="number" step="any" value="${+a.cash||0}" data-act="cash" data-id="${esc(a.id)}" aria-label="${esc(T('Buying power of {name}',{name:a.name}))}"></td><td class="num">${f0((+a.bal||0)+(+a.cash||0))}</td><td>${+a.divAmt>0?`${f2(+a.divAmt)}, ${esc(T(FREQS.find(f=>f[0]===(a.divFreq||'quarterly'))?.[1]||'').toLowerCase())}, ${T(a.divMode==='reinvest'?'reinvested':'to buying power')}`:'—'}</td>${end?`<td class="num">${T('{amt} invested',{amt:f0(endH[a.id])})}<br>${T('{amt} cash',{amt:f0(end[a.id])})}</td>`:''}${btns(a)}</tr>`).join(''),`<th>${T('Name')}</th><th class="num">${T('Invested')}</th><th class="num">${T('Buying power')}</th><th class="num">${T('Total')}</th><th>${T('Dividends')}</th>${endTh}<th></th>`)}</div>`:''}
@@ -2304,6 +2354,7 @@ document.addEventListener('click',e=>{
   else if(act==='add')edit(kind);else if(act==='edit')edit(kind,id);else if(act==='del')del(kind,id);
   else if(act==='fund')fundGoal(id);
   else if(act==='nextstmt')nextStmt(id);
+  else if(act==='xfer'){const t=b.dataset.i!=null?project().tips[+b.dataset.i]:null;transfer(t?{to:t.acct,from:srcFor(t)?.id,amt:t.amount}:{})}
   else if(act==='ics'){const {tips}=project();const sel=b.dataset.i==='all'?tips:[tips[+b.dataset.i]].filter(Boolean);if(sel.length)tipIcs(sel)}
   else if(act==='backup')backup();else if(act==='restore')$('#rf').click();
   else if(act==='tadd')editTx();else if(act==='tedit')editTx(id);
@@ -2385,7 +2436,7 @@ document.addEventListener('change',e=>{
 });
 
 /* tests (test/logic.test.mjs) load this script into a stub page and take the pure functions from here */
-if(window.__budgeterTest){window.__budgeterTest({holidays,T,TN,dl,sched,cn,catKey,setLang:l=>{LANG=l},f0,f2,kfmt,pn,pd,dateOrder,parseCSV,freshRows,aiRows,occ,bizBefore,sim,cleanPlan,cleanTx,upgrade,blank,chunkText,esc,
+if(window.__budgeterTest){window.__budgeterTest({moveMoney,acct,holidays,T,TN,dl,sched,cn,catKey,setLang:l=>{LANG=l},f0,f2,kfmt,pn,pd,dateOrder,parseCSV,freshRows,aiRows,occ,bizBefore,sim,cleanPlan,cleanTx,upgrade,blank,chunkText,esc,
   setData:(p,t)=>{plan=p;tx=t||{}}});return}
 
 /* ---------- start ---------- */
