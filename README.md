@@ -97,7 +97,7 @@ npm run i18n:check    # interface text missing from the Russian dictionary
 npm run typecheck     # JSDoc type check
 ```
 
-See [CLAUDE.md](CLAUDE.md) for how the pieces fit together. The installer is Mac-only; `npm start` may also work on Windows and Linux, but that isn't tested.
+The installer is Mac-only; `npm start` may also work on Windows and Linux, but that isn't tested.
 
 ## Credits
 

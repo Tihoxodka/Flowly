@@ -8,3 +8,4 @@ monthly-planner-backup-*.json
 build.log
 docs/
 .claude/
+CLAUDE.md
