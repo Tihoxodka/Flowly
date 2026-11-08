@@ -5,3 +5,4 @@ release/
 budgeter-backup-*.json
 monthly-planner-backup-*.json
 build.log
+docs/
