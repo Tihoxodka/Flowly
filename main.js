@@ -5,8 +5,8 @@ const { fileURLToPath } = require('url');
 // One window only, so two copies never write the same data at once.
 if (!app.requestSingleInstanceLock()) app.quit();
 
-// The page is this one file. Only it may navigate, reach the AI, or read PDFs.
-const APP_FILE = path.join(__dirname, 'app', 'index.html');
+// The page is this one file, built from src/ by build.mjs. Only it may navigate, reach the AI, or read PDFs.
+const APP_FILE = path.join(__dirname, 'dist', 'index.html');
 const isAppUrl = url => {
   try { return fileURLToPath(String(url).split('#')[0]) === APP_FILE; } catch (err) { return false; }
 };

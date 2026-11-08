@@ -1,48 +1,44 @@
 // Tests for the app's pure logic. Run with: npm test
-// app/index.html is one file with no exports, so this loads its script into a stub page; the script sees
-// window.__budgeterTest and hands over its functions instead of starting up.
+// They import the modules from src/ directly; state (plan, logged transactions, language) is set on the shared state object.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
-import vm from 'node:vm';
+import { state } from '../src/state.js';
+import { esc } from '../src/core/util.js';
+import { f0, f2, kfmt } from '../src/core/format.js';
+import { T, TN, dl, cn, catKey } from '../src/core/i18n.js';
+import { blank, cleanPlan, cleanTx } from '../src/data/clean.js';
+import { holidays, bizBefore } from '../src/model/holidays.js';
+import { occ, sched } from '../src/model/schedule.js';
+import { sim } from '../src/model/debt.js';
+import { acct } from '../src/model/accounts.js';
+import { moveMoney } from '../src/model/transfers.js';
+import { parseAmount, parseDate, dateOrder, parseCSV, freshRows, aiRows, chunkText, guessColumns, csvRows } from '../src/import/parse.js';
 
-const html = readFileSync(new URL('../app/index.html', import.meta.url), 'utf8');
-// every inline script, in page order (the translations come before the app)
-const code = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(m => m[1]).join('\n;\n');
-
-// Any element the script asks for: every property is another stub, calls return stubs, nothing is iterable.
-const stub = new Proxy(function () {}, {
-  get: (t, k) => k === Symbol.toPrimitive ? () => '' : k === Symbol.iterator ? function* () {} : k === 'then' ? undefined : stub,
-  set: () => true,
-  apply: () => stub
-});
-let A;
-const ctx = { window: { __budgeterTest: fns => { A = fns; } }, document: stub, localStorage: stub, addEventListener() {}, setInterval() {}, CSS: { escape: s => s } };
-vm.runInNewContext(code, ctx);
-const { holidays, T, TN, dl, sched, cn, catKey, setLang, f0, f2, kfmt, pn, pd, dateOrder, parseCSV, freshRows, aiRows, occ, bizBefore, sim, cleanPlan, cleanTx, blank, chunkText, esc, setData, moveMoney, acct } = A;
-// values made in the script's own realm compare by content, not by prototype
+const setData = (p, t) => { state.plan = p; state.tx = t || {}; };
+const setLang = l => { state.LANG = l; };
+// dictionaries have no prototype, so compare by content
 const eq = (got, want, msg) => assert.deepEqual(JSON.parse(JSON.stringify(got)), want, msg);
 
 test('amounts in US, European and accounting formats', () => {
   const cases = { '1,234.56': 1234.56, '1 234,56': 1234.56, '1.234,56': 1234.56, "1'234.50": 1234.5, '12,50': 12.5, '1,234': 1234,
     '1.234.567': 1234567, '(12.50)': -12.5, '12.50-': -12.5, '−12,50': -12.5, '-$12.00': -12, '$-12.00': -12, '$1,000,000.00': 1e6, '': NaN, 'abc': NaN };
-  for (const [s, want] of Object.entries(cases)) assert.ok(Object.is(pn(s), want) || pn(s) === want, `${s} → ${pn(s)}, want ${want}`);
-  assert.equal(pn(' 1 234,56 ₽'), 1234.56);
+  for (const [s, want] of Object.entries(cases)) assert.ok(Object.is(parseAmount(s), want) || parseAmount(s) === want, `${s} → ${parseAmount(s)}, want ${want}`);
+  assert.equal(parseAmount(' 1 234,56 ₽'), 1234.56);
 });
 
 test('dates in ISO, US and European order', () => {
-  assert.equal(pd('2026-03-25'), '2026-03-25');
-  assert.equal(pd('03/25/2026'), '2026-03-25');
-  assert.equal(pd('25.03.2026'), '2026-03-25');
-  assert.equal(pd('25/03/2026'), '2026-03-25', 'a day over 12 settles the order');
-  assert.equal(pd('05.03.2026'), '2026-03-05', 'dots default to day first');
-  assert.equal(pd('05/03/2026'), '2026-05-03', 'slashes default to month first');
-  assert.equal(pd('05/03/2026', 'dmy'), '2026-03-05');
-  assert.equal(pd('05.03.26', 'mdy'), '2026-05-03');
-  assert.equal(pd('Mar 5, 2026'), '2026-03-05');
-  assert.equal(pd('2026-02-30'), null, 'no such day');
-  assert.equal(pd('13/13/2026'), null);
-  assert.equal(pd('hello'), null);
+  assert.equal(parseDate('2026-03-25'), '2026-03-25');
+  assert.equal(parseDate('03/25/2026'), '2026-03-25');
+  assert.equal(parseDate('25.03.2026'), '2026-03-25');
+  assert.equal(parseDate('25/03/2026'), '2026-03-25', 'a day over 12 settles the order');
+  assert.equal(parseDate('05.03.2026'), '2026-03-05', 'dots default to day first');
+  assert.equal(parseDate('05/03/2026'), '2026-05-03', 'slashes default to month first');
+  assert.equal(parseDate('05/03/2026', 'dmy'), '2026-03-05');
+  assert.equal(parseDate('05.03.26', 'mdy'), '2026-05-03');
+  assert.equal(parseDate('Mar 5, 2026'), '2026-03-05');
+  assert.equal(parseDate('2026-02-30'), null, 'no such day');
+  assert.equal(parseDate('13/13/2026'), null);
+  assert.equal(parseDate('hello'), null);
 });
 
 test('date order of a column', () => {
@@ -55,6 +51,21 @@ test('date order of a column', () => {
 test('CSV with quotes, semicolons and a BOM', () => {
   eq(parseCSV('﻿Date;Desc;Amount\r\n25.03.2026;"Cafe; ""Central""";-4,50\r\n'),
     [['Date', 'Desc', 'Amount'], ['25.03.2026', 'Cafe; "Central"', '-4,50']]);
+});
+
+test('CSV layouts: header names, a posted date, separate debit and credit, no header', () => {
+  const read = text => { const raw = parseCSV(text), g = guessColumns(raw); return { g, rows: csvRows(raw.slice(g.hasH ? 1 : 0), g.map, g.sign, dateOrder(raw.slice(g.hasH ? 1 : 0).map(r => r[g.map.date]))) }; };
+  let { g, rows } = read('Date,Description,Amount\n03/01/2026,Coffee,-4.50\n03/02/2026,Refund,10.00\n');
+  eq([g.hasH, g.map, g.sign], [true, { date: 0, desc: 1, amt: 2, out: -1, inn: -1 }, 'neg']);
+  eq(rows, [{ date: '2026-03-01', desc: 'Coffee', amt: -4.5 }, { date: '2026-03-02', desc: 'Refund', amt: 10 }]);
+  ({ g, rows } = read('Transaction Date,Posted Date,Payee,Debit,Credit\n03/01/2026,03/03/2026,Shop,20.00,\n03/02/2026,03/04/2026,Payment,,100\n'));
+  eq([g.map.date, g.map.desc, g.map.amt, g.map.out, g.map.inn, g.sign], [1, 2, -1, 3, 4, null], 'the posted date wins; no amount column, so no sign');
+  eq(rows.map(r => [r.date, r.amt]), [['2026-03-03', -20], ['2026-03-04', 100]]);
+  ({ g, rows } = read('25.03.2026;Cafe Central;-4,50\n26.03.2026;Bakery;-2,10\n'));
+  eq([g.hasH, g.map.date, g.map.desc, g.map.amt, g.sign], [false, 0, 1, 2, 'neg']);
+  eq(rows[0], { date: '2026-03-25', desc: 'Cafe Central', amt: -4.5 });
+  ({ g, rows } = read('Date,Merchant,Amount\n2026-03-01,Shop,12.00\n2026-03-02,Shop 2,8.00\n2026-03-03,Payment,-50\n'));
+  eq([g.sign, rows.map(r => r.amt)], ['pos', [-12, -8, 50]], 'mostly plus amounts: plus is money out, as on card statements');
 });
 
 test('import keeps identical purchases that are not logged yet', () => {

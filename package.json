@@ -11,13 +11,22 @@
   },
   "main": "main.js",
   "scripts": {
+    "build": "node build.mjs",
+    "prestart": "npm run build",
     "start": "electron .",
+    "pretest": "npm run build",
     "test": "node --test test/",
-    "dist": "electron-builder --mac --arm64"
+    "pree2e": "npm run build",
+    "e2e": "node test/e2e/run.mjs",
+    "dist": "npm run build && electron-builder --mac --arm64",
+    "typecheck": "tsc -p jsconfig.json",
+    "i18n:check": "node i18n-check.mjs"
   },
   "devDependencies": {
     "electron": "45.2.3",
-    "electron-builder": "26.18.0"
+    "electron-builder": "26.18.0",
+    "esbuild": "0.28.2",
+    "typescript": "6.0.3"
   },
   "build": {
     "appId": "com.suckuhpunch.budgeter",
@@ -26,7 +35,7 @@
       "main.js",
       "preload.js",
       "pdf-worker.js",
-      "app/**/*"
+      "dist/**/*"
     ],
     "mac": {
       "category": "public.app-category.finance",
@@ -37,6 +46,9 @@
     },
     "dmg": {
       "title": "Budgeter"
+    },
+    "directories": {
+      "output": "release"
     }
   },
   "dependencies": {

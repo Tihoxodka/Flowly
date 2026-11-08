@@ -11,7 +11,7 @@ fail(){ printf '\n\033[1;31mError: %s\033[0m\n' "$1"; exit 1; }
 TMP="$(mktemp -d)"
 trap 'rm -rf "$TMP"' EXIT
 
-[ "$(uname)" = "Darwin" ] || fail "This installer is for macOS. On other systems, open app/index.html in your browser instead."
+[ "$(uname)" = "Darwin" ] || fail "This installer is for macOS. On other systems, run npm install and npm run build, then open dist/index.html in your browser."
 case "$(uname -m)" in arm64) ARCH=arm64 ;; x86_64) ARCH=x64 ;; *) fail "Unsupported Mac processor: $(uname -m)" ;; esac
 
 # 1. Node.js 22 or newer, only needed to build the app
@@ -42,11 +42,12 @@ step "Installing build tools (first run takes a few minutes)"
 # npm ci installs exactly the versions in package-lock.json
 npm ci --no-audit --no-fund --loglevel=error
 step "Building Budgeter for $ARCH"
-rm -rf dist
+rm -rf release
+npm run build >"$SRC/build.log" 2>&1 || { tail -20 "$SRC/build.log"; fail "Build failed. Full log: $SRC/build.log"; }
 LOG="$SRC/build.log"
 CSC_IDENTITY_AUTO_DISCOVERY=false npx electron-builder --mac --"$ARCH" --dir >"$LOG" 2>&1 || { tail -20 "$LOG"; fail "Build failed. Full log: $LOG"; }
-BUILT=$(find dist -maxdepth 2 -name 'Budgeter.app' -type d | head -1)
-[ -n "$BUILT" ] || fail "Build finished but Budgeter.app wasn't found in dist."
+BUILT=$(find release -maxdepth 2 -name 'Budgeter.app' -type d | head -1)
+[ -n "$BUILT" ] || fail "Build finished but Budgeter.app wasn't found in release."
 
 # 3. Install. The app isn't signed by a registered developer, so it's signed locally to open without warnings.
 step "Installing to /Applications"

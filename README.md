@@ -14,7 +14,12 @@ The app is in English or Russian, and amounts can be shown in US dollars, euros,
 ## Two ways to use it
 
 ### 1. In your browser (any computer)
-Download this repo (**Code → Download ZIP**), unzip it, and open `app/index.html` in Chrome, Safari, Firefox or Edge. That's it.
+The page is built from the source in `src/`, so you need [Node.js](https://nodejs.org) 22 or newer once. Download this repo (**Code → Download ZIP**) and unzip it, then in a terminal in that folder:
+```
+npm install
+npm run build
+```
+Open `dist/index.html` in Chrome, Safari, Firefox or Edge. You can copy the `dist` folder anywhere; it doesn't need Node to run.
 
 Your data is saved in that browser on that computer. Use the same browser each time, and don't clear its site data. The AI features aren't available in the browser version.
 
@@ -52,7 +57,13 @@ It needs a Mac with 16 GB of memory or more. On an 8 GB Mac, use the smaller `ge
 The installer is Mac-only. On Windows or Linux, use the browser version. If you're comfortable with Node.js, `npm install` and `npm start` should also run the desktop app there, but that isn't tested.
 
 ## Development
-The whole app is one file, `app/index.html` (HTML, CSS and plain JavaScript, no build step), plus its fonts in `app/fonts`. `main.js` and `preload.js` are the Electron wrapper and the local AI bridge; `pdf-worker.js` reads PDF text in a separate process. Run the tests with `npm test`. See `CLAUDE.md` for how the pieces fit together.
+The app is plain JavaScript (no framework) in ES modules under `src/`, with its fonts in `app/fonts`. `npm run build` bundles it with esbuild into one page, `dist/index.html` (not minified). `main.js` and `preload.js` are the Electron wrapper and the local AI bridge; `pdf-worker.js` reads PDF text in a separate process.
+
+- `npm start`: build and run the desktop app.
+- `npm test`: unit tests. `npm run e2e`: end-to-end tests in the desktop app, compared with saved snapshots of every screen.
+- `npm run i18n:check`: interface text missing from the Russian dictionary. `npm run typecheck`: JSDoc type check.
+
+See `CLAUDE.md` for how the pieces fit together.
 
 ## License
 [MIT](LICENSE)

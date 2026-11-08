@@ -1,0 +1,97 @@
+{
+  "app": "budgeter",
+  "version": 2,
+  "exported": "2026-11-18T15:00:00.000Z",
+  "plan": {
+    "v": 2, "currency": "USD", "numfmt": "", "holidays": "",
+    "income": [
+      { "id": "pay", "name": "Paycheck", "amt": 2100, "freq": "biweekly", "date": "2026-11-06", "acct": "chk" },
+      { "id": "comm", "name": "Commission", "variable": true, "amt": 600, "conf": "avg", "basis": "Average of my last 4 quarters", "freq": "monthly", "date": "2026-11-28", "acct": "chk" }
+    ],
+    "bills": [
+      { "id": "rent", "name": "Rent", "amt": 1650, "freq": "monthly", "date": "2026-01-19", "acct": "chk", "cat": "Housing", "auto": true },
+      { "id": "elec", "name": "Electricity", "variable": true, "amt": 90, "basis": "Average of the last 6 bills", "issue": 21, "freq": "monthly", "date": "2026-01-28", "acct": "chk", "cat": "Utilities" },
+      { "id": "stream", "name": "Streaming", "amt": 15.99, "freq": "monthly", "date": "2026-01-10", "acct": "cc", "cat": "Subscriptions", "auto": true },
+      { "id": "carpay", "name": "Car loan payment", "amt": 320, "freq": "monthly", "date": "2026-01-05", "end": "2029-06-05", "acct": "chk", "to": "loan", "cat": "Transport" },
+      { "id": "gym", "name": "Gym", "amt": 45, "freq": "monthly", "date": "2026-12-01", "acct": "chk", "cat": "Health", "planned": true },
+      { "id": "ins", "name": "Car insurance", "amt": 600, "freq": "semiannual", "date": "2026-06-01", "acct": "sav", "cat": "Insurance" }
+    ],
+    "accounts": [
+      { "id": "chk", "name": "Checking", "type": "checking", "bal": 1200, "apy": 0.5, "intday": 28, "upd": "2026-11-15", "updAt": 1763200000000 },
+      { "id": "sav", "name": "Savings", "type": "savings", "bal": 8000, "apy": 4, "upd": "2026-11-01" },
+      { "id": "wal", "name": "Wallet", "type": "cash", "bal": 80, "upd": "2026-11-01" },
+      { "id": "inv", "name": "Brokerage", "type": "investment", "bal": 15000, "cash": 300, "divAmt": 45, "divFreq": "quarterly", "divDate": "2026-12-15", "divMode": "cash", "upd": "2026-11-01" },
+      { "id": "ret", "name": "401k", "type": "retirement", "bal": 42000, "contrib": 250, "match": 125, "cfreq": "biweekly", "cdate": "2026-11-06", "ret": 6, "upd": "2026-11-01" },
+      { "id": "hsa", "name": "Health savings", "type": "hsa", "bal": 2100, "contrib": 100, "match": 50, "cfreq": "biweekly", "cdate": "2026-11-06", "cover": "self", "ytd": 3000, "ytdOn": "2026-11-01", "upd": "2026-11-01", "updAt": 1761955200000 },
+      { "id": "car", "name": "Car", "type": "property", "bal": 18000, "upd": "2026-11-01" },
+      { "id": "cc", "name": "Visa", "type": "credit", "bal": 950, "stmt": 620, "dueDay": 25, "duedate": "2026-11-25", "payfrom": "chk", "limit": 5000, "apr": 22, "min": 35, "lead": 2, "upd": "2026-11-01" },
+      { "id": "loan", "name": "Auto loan", "type": "loan", "bal": 12000, "apr": 6.5, "min": 320, "note": "Ends in 2029", "upd": "2026-11-01" }
+    ],
+    "goals": [
+      { "id": "emer", "name": "Emergency fund", "kind": "long", "target": 10000, "saved": 4000, "date": "2027-12-01", "acct": "sav" },
+      { "id": "trip", "name": "Vacation", "kind": "short", "target": 1500, "saved": 300, "date": "2027-06-01" }
+    ],
+    "cats": [
+      { "name": "Housing", "budget": 0 }, { "name": "Utilities", "budget": 150 }, { "name": "Groceries", "budget": 500 },
+      { "name": "Take Out", "budget": 120 }, { "name": "Dining & Bars", "budget": 0 }, { "name": "Transport", "budget": 450 },
+      { "name": "Insurance", "budget": 0 }, { "name": "Subscriptions", "budget": 30 }, { "name": "Health", "budget": 0 },
+      { "name": "Shopping", "budget": 100 }, { "name": "Entertainment", "budget": 80 }, { "name": "Travel", "budget": 0 },
+      { "name": "Savings", "budget": 0 }, { "name": "Other", "budget": 0 }, { "name": "Pets", "budget": 60 }
+    ],
+    "rules": "trader joe = Groceries\nuber = Transport\nnetflix = Bill payment",
+    "done": { "out:rent:2026-10-19": 1, "out:carpay:2026-11-05": 1, "in:pay:2026-11-06": 1 },
+    "actual": { "out:elec:2026-10-28": 84.12, "in:comm:2026-10-28": 710 },
+    "applied": {},
+    "payOn": { "out:c-cc:2026-12-25": "2026-12-21" },
+    "showPlanned": false, "interestIn": false,
+    "kickoff": "2026-10-01", "kickDone": true,
+    "nw": {
+      "2026-08": { "a": 80100, "d": 14200, "dt": "2026-08-31" },
+      "2026-09": { "a": 81500, "d": 13800, "dt": "2026-09-30" },
+      "2026-10": { "a": 84000, "d": 13400, "dt": "2026-10-31" }
+    },
+    "merch": {
+      "blue bottle": { "desc": "Blue Bottle", "cat": "Take Out", "tag": "coffee", "acct": "cc" },
+      "trader joe's": { "desc": "Trader Joe's", "cat": "Groceries", "tag": "", "acct": "chk" }
+    },
+    "extra": 100, "strategy": "avalanche"
+  },
+  "tx": {
+    "2026-06": { "items": [
+      { "id": "t601", "date": "2026-06-03", "desc": "Trader Joe's", "amt": -92.4, "cat": "Groceries", "acct": "chk", "tag": "", "at": 1780000000000 },
+      { "id": "t602", "date": "2026-06-12", "desc": "Blue Bottle", "amt": -6.5, "cat": "Take Out", "acct": "cc", "tag": "coffee", "at": 1780000000001 },
+      { "id": "t603", "date": "2026-06-20", "desc": "Netflix", "amt": -15.99, "cat": "Subscriptions", "acct": "cc", "tag": "", "at": 1780000000002 }
+    ] },
+    "2026-07": { "items": [
+      { "id": "t701", "date": "2026-07-02", "desc": "Trader Joe's", "amt": -110.15, "cat": "Groceries", "acct": "chk", "tag": "", "at": 1782000000000 },
+      { "id": "t702", "date": "2026-07-15", "desc": "Uber", "amt": -24, "cat": "Transport", "acct": "cc", "tag": "work", "at": 1782000000001 },
+      { "id": "t703", "date": "2026-07-20", "desc": "Netflix", "amt": -15.99, "cat": "Subscriptions", "acct": "cc", "tag": "", "at": 1782000000002 }
+    ] },
+    "2026-08": { "items": [
+      { "id": "t801", "date": "2026-08-05", "desc": "Trader Joe's", "amt": -88, "cat": "Groceries", "acct": "chk", "tag": "", "at": 1785000000000 },
+      { "id": "t802", "date": "2026-08-20", "desc": "Netflix", "amt": -15.99, "cat": "Subscriptions", "acct": "cc", "tag": "", "at": 1785000000001 },
+      { "id": "t803", "date": "2026-08-22", "desc": "Pet store", "amt": -45.3, "cat": "Pets", "acct": "cc", "tag": "", "at": 1785000000002 }
+    ] },
+    "2026-09": { "items": [
+      { "id": "t901", "date": "2026-09-04", "desc": "Trader Joe's", "amt": -101.2, "cat": "Groceries", "acct": "chk", "tag": "", "at": 1788000000000 },
+      { "id": "t902", "date": "2026-09-09", "desc": "Blue Bottle", "amt": -5.75, "cat": "Take Out", "acct": "cc", "tag": "coffee", "at": 1788000000001 },
+      { "id": "t903", "date": "2026-09-20", "desc": "Netflix", "amt": -15.99, "cat": "Subscriptions", "acct": "cc", "tag": "", "at": 1788000000002 }
+    ] },
+    "2026-10": { "items": [
+      { "id": "ta01", "date": "2026-10-03", "desc": "Trader Joe's", "amt": -97.6, "cat": "Groceries", "acct": "chk", "tag": "", "at": 1790000000000 },
+      { "id": "ta02", "date": "2026-10-11", "desc": "Cinema", "amt": -28, "cat": "Entertainment", "acct": "cc", "tag": "date night", "at": 1790000000001 },
+      { "id": "ta03", "date": "2026-10-20", "desc": "Netflix", "amt": -15.99, "cat": "Subscriptions", "acct": "cc", "tag": "", "at": 1790000000002 },
+      { "id": "ta04", "date": "2026-10-25", "desc": "Transfer to savings", "amt": -200, "cat": "Transfer", "acct": "chk", "tag": "", "at": 1790000000003 }
+    ] },
+    "2026-11": { "items": [
+      { "id": "tb01", "date": "2026-11-02", "desc": "Trader Joe's", "amt": -84.3, "cat": "Groceries", "acct": "chk", "tag": "", "at": 1792000000000 },
+      { "id": "tb02", "date": "2026-11-04", "desc": "Blue Bottle", "amt": -6.25, "cat": "Take Out", "acct": "cc", "tag": "coffee", "at": 1792000000001 },
+      { "id": "tb03", "date": "2026-11-07", "desc": "Pharmacy", "amt": -32.1, "cat": "Health", "acct": "hsa", "tag": "", "at": 1792000000002 },
+      { "id": "tb04", "date": "2026-11-09", "desc": "Uber", "amt": -18.5, "cat": "Transport", "acct": "cc", "tag": "work", "at": 1792000000003 },
+      { "id": "tb05", "date": "2026-11-12", "desc": "Hardware store", "amt": -64.99, "cat": "Shopping", "acct": "cc", "tag": "", "at": 1792000000004 },
+      { "id": "tb06", "date": "2026-11-13", "desc": "Hardware store refund", "amt": 12, "cat": "Shopping", "acct": "cc", "tag": "", "at": 1792000000005 },
+      { "id": "tb07", "date": "2026-11-14", "desc": "Mystery charge", "amt": -9.99, "cat": "Uncategorized", "acct": "cc", "tag": "", "at": 1792000000006 },
+      { "id": "tb08", "date": "2026-11-16", "desc": "Vet", "amt": -55, "cat": "Pets", "acct": "cc", "tag": "", "at": 1792000000007 }
+    ] }
+  }
+}

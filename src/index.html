@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Budgeter</title>
+<style>
+/* @inline styles.css */
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <h1>Budgeter</h1>
+    <div class="mn" id="mnav">
+      <button class="btn sm" data-act="prev" aria-label="Previous month" data-ta="Previous month">&lsaquo;</button>
+      <span id="mlabel"></span>
+      <button class="btn sm" data-act="next" aria-label="Next month" data-ta="Next month">&rsaquo;</button>
+      <button class="btn sm ghost" data-act="today" data-t="Today">Today</button>
+    </div>
+    <span id="st" class="st"></span>
+  </div>
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" data-tab="overview" data-t="Overview">Overview</button>
+    <button class="tab" role="tab" data-tab="spend" data-t="Spending">Spending</button>
+    <button class="tab" role="tab" data-tab="bills" data-t="Bills">Bills</button>
+    <button class="tab" role="tab" data-tab="income" data-t="Income">Income</button>
+    <button class="tab" role="tab" data-tab="accounts" data-t="Accounts">Accounts</button>
+    <button class="tab" role="tab" data-tab="debt" data-t="Debt">Debt</button>
+    <button class="tab" role="tab" data-tab="trends" data-t="Trends">Trends</button>
+    <button class="tab" role="tab" data-tab="goals" data-t="Goals">Goals</button>
+  </div>
+  <main id="main"><div class="empty" style="margin-top:24px">Loading your budget…</div></main>
+  <div class="foot"><button class="btn sm" data-act="settings" data-t="Language and currency">Language and currency</button><button class="btn sm" data-act="kickoff" data-t="Redo kickoff">Redo kickoff</button><button class="btn sm" data-act="backup" data-t="Download backup">Download backup</button><button class="btn sm" data-act="restore" data-t="Restore from backup">Restore from backup</button><input type="file" id="rf" accept=".json,application/json" hidden><span class="muted" id="savenote" data-t="Changes save automatically to this device.">Changes save automatically to this device.</span></div>
+</div>
+<dialog id="dlg"></dialog>
+<script>
+/* @inline bundle */
+</script>
+</body>
+</html>
