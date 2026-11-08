@@ -7,8 +7,12 @@ const os = require('os');
 const path = require('path');
 
 const [suite, lang, outFile] = process.argv.slice(-3);
-const userData = fs.mkdtempSync(path.join(os.tmpdir(), 'budgeter-e2e-'));
-app.setPath('userData', userData);
+const userData = fs.mkdtempSync(path.join(os.tmpdir(), 'flowly-e2e-'));
+// appData too: main.js looks there for data from the old Budgeter name, and must never find the real one
+app.setPath('appData', userData);
+const newName = path.join(userData, 'Flowly'), oldMark = path.join(userData, 'Budgeter', 'Local Storage', 'mark');
+if (suite === 'migrate') { fs.mkdirSync(path.dirname(oldMark), { recursive: true }); fs.writeFileSync(oldMark, 'saved'); }
+app.setPath('userData', suite === 'migrate' ? newName : userData);
 process.env.OLLAMA_HOST = '127.0.0.1:9';
 const FIXTURE = fs.readFileSync(path.join(__dirname, 'fixture.json'), 'utf8');
 // 18 November 2026, 10:00 in New York
@@ -56,7 +60,7 @@ const ALLOWED = new Set(['Paycheck', 'Commission', 'Average of my last 4 quarter
   'Streaming', 'Car loan payment', 'Gym', 'Car insurance', 'Checking', 'Savings', 'Wallet', 'Brokerage', '401k', 'Health savings', 'Car',
   'Visa', 'Auto loan', 'Ends in 2029', 'Emergency fund', 'Vacation', 'Pets', "Trader Joe's", 'Blue Bottle', 'Netflix', 'Uber',
   'Pet store', 'Cinema', 'Transfer to savings', 'Pharmacy', 'Hardware store', 'Hardware store refund', 'Mystery charge', 'Vet',
-  'coffee', 'work', 'date night', 'English', 'Budgeter', 'HSA', 'APR', 'APY', 'Ollama', 'Claude', 'ollama pull gemma4:12b', 'gemma4:12b', 'CSV', 'PDF',
+  'coffee', 'work', 'date night', 'English', 'Flowly', 'HSA', 'APR', 'APY', 'Ollama', 'Claude', 'ollama pull gemma4:12b', 'gemma4:12b', 'CSV', 'PDF',
   'IRS', 'USD', 'EUR', 'SEK', 'NOK', 'DKK', 'GBP', 'CHF', 'PLN', 'CAD', 'AUD', 'JPY', 'trader joe = Groceries\nuber = Transport\nnetflix = Bill payment']);
 const SCAN = `(() => {
   const out = [], root = document.body;
@@ -196,8 +200,13 @@ app.on('browser-window-created', (e, w) => {
   (async () => {
     let failed = null;
     try {
-      await start();
-      if (suite === 'walk') await walk(); else await transfer();
+      if (suite === 'migrate') {
+        if (!fs.existsSync(path.join(newName, 'Local Storage', 'mark'))) problems.push('migrate: the Budgeter data was not copied');
+        if (!fs.existsSync(oldMark)) problems.push('migrate: the old Budgeter data is gone');
+      } else {
+        await start();
+        if (suite === 'walk') await walk(); else await transfer();
+      }
     } catch (err) { failed = err.stack || String(err); }
     fs.writeFileSync(outFile, JSON.stringify({ problems, failed, snaps, english: [...english].map(([s, step]) => ({ s, step })) }, null, 1));
     win.destroy();

@@ -2,7 +2,9 @@ node_modules/
 dist/
 release/
 .DS_Store
+flowly-backup-*.json
 budgeter-backup-*.json
 monthly-planner-backup-*.json
 build.log
 docs/
+.claude/

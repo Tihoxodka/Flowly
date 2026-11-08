@@ -62,7 +62,7 @@ const page = readFileSync(join(SRC, 'index.html'), 'utf8');
 for (const m of page.matchAll(/data-ta?="([^"]+)"/g)) { add(m[1], 'index.html'); literals.add(m[1]); }
 
 /* text that is the same in Russian, or isn't words: codes, numbers, the app's name */
-const SAME = new Set(['HSA', 'APR', 'Claude', 'Budgeter', '1,234.56', '1 234,56', '1.234,56', "1'234.56"]);
+const SAME = new Set(['HSA', 'APR', 'Claude', 'Flowly', '1,234.56', '1 234,56', '1.234,56', "1'234.56"]);
 const missing = [...shown].filter(([s]) => !(s in ru) && !SAME.has(s));
 const unused = Object.keys(ru).filter(k => !literals.has(k));
 

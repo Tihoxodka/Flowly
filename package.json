@@ -1,13 +1,13 @@
 {
-  "name": "budgeter",
-  "productName": "Budgeter",
+  "name": "flowly",
+  "productName": "Flowly",
   "version": "2.0.0",
   "description": "Monthly budget planner for income, bills, spending, accounts, debt, trends and goals. Your data stays on your computer.",
-  "author": "Sean Keehan",
+  "author": "Tihoxodka",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ReckingBallResearch/Budgeter.git"
+    "url": "https://github.com/Tihoxodka/Flowly.git"
   },
   "main": "main.js",
   "scripts": {
@@ -29,8 +29,8 @@
     "typescript": "6.0.3"
   },
   "build": {
-    "appId": "com.suckuhpunch.budgeter",
-    "productName": "Budgeter",
+    "appId": "com.tihoxodka.flowly",
+    "productName": "Flowly",
     "files": [
       "main.js",
       "preload.js",
@@ -45,7 +45,7 @@
       "identity": null
     },
     "dmg": {
-      "title": "Budgeter"
+      "title": "Flowly"
     },
     "directories": {
       "output": "release"

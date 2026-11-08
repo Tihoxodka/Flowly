@@ -2,6 +2,7 @@
 //  - walk en: every tab and the main dialogs in English, compared with golden/en.txt and golden/en.html
 //  - walk ru: the same in Russian, compared with golden/ru.*, and a scan for interface text left in English
 //  - transfer: a transfer tip, Record transfer, Save, a card payment and its statement, Undo
+//  - migrate: the first launch copies the data saved under the old Budgeter name and leaves the original
 // Every run also fails on console errors and warnings, uncaught exceptions and any network request from the page.
 import { spawnSync } from 'node:child_process';
 import { mkdtempSync, readFileSync, writeFileSync, existsSync, mkdirSync, rmSync } from 'node:fs';
@@ -14,7 +15,7 @@ const root = join(here, '..', '..');
 const electron = join(root, 'node_modules', '.bin', 'electron');
 const goldenDir = join(here, 'golden');
 const update = !!process.env.UPDATE_GOLDEN;
-const tmp = mkdtempSync(join(tmpdir(), 'budgeter-e2e-out-'));
+const tmp = mkdtempSync(join(tmpdir(), 'flowly-e2e-out-'));
 const env = { ...process.env };
 delete env.ELECTRON_RUN_AS_NODE;
 
@@ -49,7 +50,7 @@ function golden(lang, snaps) {
   }
 }
 
-for (const [suite, lang] of [['walk', 'en'], ['walk', 'ru'], ['transfer', 'en']]) {
+for (const [suite, lang] of [['walk', 'en'], ['walk', 'ru'], ['transfer', 'en'], ['migrate', 'en']]) {
   console.log(`${suite} ${lang}`);
   const r = run(suite, lang);
   if (r.failed) fail(r.failed);

@@ -3,7 +3,7 @@ import {T} from '../core/i18n.js';
 /* AI for reading statements and talking about spending.
    On claude.ai it's Claude (the sample capability). In the Mac app it's a small model running locally in Ollama:
    nothing leaves the computer. sampleCaps() hides the difference: s.json() reads transactions, chat() answers questions */
-export const DESK=window.budgeterDesktop||null;
+export const DESK=window.flowlyDesktop||null;
 /** Who reads statements and answers here, for messages: the local AI or Claude */
 export const aiName=()=>DESK?T('The local AI'):'Claude';
 /* local models, best first; the first one installed in Ollama is used. gemma3:4b is the one older installs pulled. */

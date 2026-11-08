@@ -1,10 +1,10 @@
 #!/bin/bash
-# Budgeter installer: builds the Mac app from this folder and puts it in /Applications.
+# Flowly installer: builds the Mac app from this folder and puts it in /Applications.
 # Safe to run again; it updates the app and keeps your data.
 set -euo pipefail
 
 SRC="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-APP="/Applications/Budgeter.app"
+APP="/Applications/Flowly.app"
 step(){ printf '\n\033[1;34m==> %s\033[0m\n' "$1"; }
 fail(){ printf '\n\033[1;31mError: %s\033[0m\n' "$1"; exit 1; }
 # Downloads go in a private folder only this user can write to, removed when the script ends.
@@ -41,16 +41,20 @@ cd "$SRC"
 step "Installing build tools (first run takes a few minutes)"
 # npm ci installs exactly the versions in package-lock.json
 npm ci --no-audit --no-fund --loglevel=error
-step "Building Budgeter for $ARCH"
+step "Building Flowly for $ARCH"
 rm -rf release
 npm run build >"$SRC/build.log" 2>&1 || { tail -20 "$SRC/build.log"; fail "Build failed. Full log: $SRC/build.log"; }
 LOG="$SRC/build.log"
-CSC_IDENTITY_AUTO_DISCOVERY=false npx electron-builder --mac --"$ARCH" --dir >"$LOG" 2>&1 || { tail -20 "$LOG"; fail "Build failed. Full log: $LOG"; }
-BUILT=$(find release -maxdepth 2 -name 'Budgeter.app' -type d | head -1)
-[ -n "$BUILT" ] || fail "Build finished but Budgeter.app wasn't found in release."
+# electron-builder's own download failed with a 504 from GitHub release files even with Electron cached; this one reuses the cache and verifies it against checksums shipped in the npm package
+node node_modules/electron/install.js || fail "Couldn't get Electron. Check your connection and run this again."
+CSC_IDENTITY_AUTO_DISCOVERY=false npx electron-builder --mac --"$ARCH" --dir -c.electronDist=node_modules/electron/dist >"$LOG" 2>&1 || { tail -20 "$LOG"; fail "Build failed. Full log: $LOG"; }
+BUILT=$(find release -maxdepth 2 -name 'Flowly.app' -type d | head -1)
+[ -n "$BUILT" ] || fail "Build finished but Flowly.app wasn't found in release."
 
 # 3. Install. The app isn't signed by a registered developer, so it's signed locally to open without warnings.
 step "Installing to /Applications"
+osascript -e 'tell application "Flowly" to quit' >/dev/null 2>&1 || true
+# the app under its old name holds the data the first launch copies, so it shouldn't be writing to it
 osascript -e 'tell application "Budgeter" to quit' >/dev/null 2>&1 || true
 sleep 1
 rm -rf "$APP" 2>/dev/null || sudo rm -rf "$APP"
@@ -58,6 +62,6 @@ cp -R "$BUILT" "$APP" 2>/dev/null || sudo cp -R "$BUILT" "$APP"
 xattr -cr "$APP" 2>/dev/null || true
 codesign --force --deep --sign - "$APP" >/dev/null 2>&1 || true
 
-step "Done. Opening Budgeter."
+step "Done. Opening Flowly."
 open "$APP"
 echo "To update later: get the latest version of this folder (git pull) and run: bash install.sh"

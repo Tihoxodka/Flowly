@@ -111,7 +111,7 @@ export async function tipIcs(sel){
       `DESCRIPTION:${e2(what+(s?' '+T('Suggested source: {acct}.',{acct:s.name}):''))}`,
       'BEGIN:VALARM','ACTION:DISPLAY',`DESCRIPTION:${e2(T('Transfer reminder'))}`,'TRIGGER:PT0S','END:VALARM','END:VEVENT'].join('\r\n');
   });
-  const text=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Budgeter//EN','CALSCALE:GREGORIAN',...ev,'END:VCALENDAR'].join('\r\n')+'\r\n';
+  const text=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Flowly//EN','CALSCALE:GREGORIAN',...ev,'END:VCALENDAR'].join('\r\n')+'\r\n';
   try{
     await saveFile(sel.length===1?'transfer-reminder.ics':'transfer-reminders.ics',text,'text/calendar');
     toast(T('Reminder file ready. Open it to add it to your calendar.'));

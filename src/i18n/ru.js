@@ -47,7 +47,7 @@ export const ru={
 "Backup ready: plan and {months} of spending":"Бэкап готов: план и расходы за {months}",
 "Backup was not saved":"Бэкап не сохранён",
 "That file is not a valid backup":"Этот файл не является бэкапом",
-"That file is not a Budgeter or Monthly planner backup":"Это не бэкап Budgeter или Monthly planner",
+"That file is not a Flowly backup":"Это не бэкап Flowly",
 "Your data didn’t load. Reload the page, then restore.":"Данные не загрузились. Перезагрузите страницу, потом восстанавливайте.",
 "Restore your plan and {months} of spending from this backup{when}?":"Восстановить план и расходы за {months} из этого бэкапа{when}?",
 "Restore":"Восстановить",

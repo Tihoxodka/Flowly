@@ -95,7 +95,7 @@ export function spendingFacts(){
   return out.join('\n');
 }
 /* the rules for answering; the facts follow them */
-const ASK_RULES='You help someone understand their own spending inside a budgeting app called Budgeter. Answer from the facts below only. '
+const ASK_RULES='You help someone understand their own spending inside a budgeting app called Flowly. Answer from the facts below only. '
   +'The app has already done the math, so quote its numbers rather than calculating new totals, and if the facts don\'t answer the question, say what\'s missing. '
   +'Keep it short: a sentence or two, then up to 5 bullet points when they help. '
   +'Practical budgeting suggestions are fine; don\'t recommend investments or financial products.\n\nFACTS\n';

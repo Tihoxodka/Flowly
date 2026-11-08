@@ -1,7 +1,7 @@
 // The page's only way to reach the main process: local AI through Ollama and PDF text.
 const { contextBridge, ipcRenderer } = require('electron');
 
-contextBridge.exposeInMainWorld('budgeterDesktop', {
+contextBridge.exposeInMainWorld('flowlyDesktop', {
   status: () => ipcRenderer.invoke('ai:status'),
   json: req => ipcRenderer.invoke('ai:json', req),
   // onText gets the whole answer so far each time more arrives

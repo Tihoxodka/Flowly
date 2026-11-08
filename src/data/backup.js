@@ -11,7 +11,7 @@ export async function backup(){
   for(const m of months){await ensureTx(m);t[m]={items:state.tx[m].items}}
   const data=JSON.stringify({app:'budgeter',version:2,exported:new Date().toISOString(),plan:state.plan,tx:t},null,1);
   try{
-    await saveFile(`budgeter-backup-${state.TODAY}.json`,data,'application/json');
+    await saveFile(`flowly-backup-${state.TODAY}.json`,data,'application/json');
     toast(T('Backup ready: plan and {months} of spending',{months:`${months.length} ${TN(months.length,'month','months')}`}));
   }catch(e){toast(T('Backup was not saved'))}
 }
@@ -21,7 +21,7 @@ export function restore(file){
   r.onload=()=>{
     let b;try{b=JSON.parse(String(r.result))}catch(e){toast(T('That file is not a valid backup'));return}
     const ok=b&&(b.app==='budgeter'||b.app==='monthly-planner')&&b.plan&&['income','bills','accounts'].every(k=>Array.isArray(b.plan[k]));
-    if(!ok){toast(T('That file is not a Budgeter or Monthly planner backup'));return}
+    if(!ok){toast(T('That file is not a Flowly backup'));return}
     if(S.locked){toast(T('Your data didn’t load. Reload the page, then restore.'));return}
     const bt=b.tx&&typeof b.tx==='object'?b.tx:{};
     const ms=Object.keys(bt).filter(m=>ISO_M.test(m)&&bt[m]&&Array.isArray(bt[m].items));

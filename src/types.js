@@ -159,4 +159,4 @@
 /** claude.ai's artifact runtime: claude.use('db'|'user'|'downloads'|'sample') resolves a capability or null @type {any} */
 var claude;
 /** the Mac app's bridge to the local AI and the PDF reader (preload.js) @type {any} */
-var budgeterDesktop;
+var flowlyDesktop;

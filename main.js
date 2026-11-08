@@ -1,6 +1,15 @@
 const { app, BrowserWindow, shell, Menu, ipcMain, session, utilityProcess } = require('electron');
+const fs = require('fs');
 const path = require('path');
 const { fileURLToPath } = require('url');
+
+// This app used to be called Budgeter: bring its saved data over on the first launch and leave the old folder alone.
+const oldData = path.join(app.getPath('appData'), 'Budgeter', 'Local Storage');
+const newData = path.join(app.getPath('userData'), 'Local Storage');
+if (fs.existsSync(oldData) && !fs.existsSync(newData)) {
+  try { fs.cpSync(oldData, newData, { recursive: true }); }
+  catch (err) { console.error('Could not copy the Budgeter data', err); fs.rmSync(newData, { recursive: true, force: true }); }
+}
 
 // One window only, so two copies never write the same data at once.
 if (!app.requestSingleInstanceLock()) app.quit();
@@ -20,7 +29,7 @@ function createWindow() {
     width: 1200,
     height: 860,
     minWidth: 380,
-    title: 'Budgeter',
+    title: 'Flowly',
     backgroundColor: '#eef1f6',
     webPreferences: { contextIsolation: true, nodeIntegration: false, sandbox: true, preload: path.join(__dirname, 'preload.js') }
   });
@@ -130,7 +139,7 @@ ipcMain.handle('pdf:text', async (e, bytes) => {
   if (!data?.byteLength) return { ok: false, code: 'pdf_error' };
   if (data.byteLength > PDF_MAX_BYTES) return { ok: false, code: 'pdf_big' };
   return new Promise(resolve => {
-    const child = utilityProcess.fork(path.join(__dirname, 'pdf-worker.js'), [], { serviceName: 'Budgeter PDF reader' });
+    const child = utilityProcess.fork(path.join(__dirname, 'pdf-worker.js'), [], { serviceName: 'Flowly PDF reader' });
     let settled = false;
     const finish = r => { if (settled) return; settled = true; clearTimeout(timer); child.kill(); resolve(r); };
     const timer = setTimeout(() => finish({ ok: false, code: 'pdf_error', message: 'Reading the PDF took too long.' }), PDF_TIMEOUT_MS);
