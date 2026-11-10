@@ -3,7 +3,7 @@ import {monl} from '../core/i18n.js';
 import {$,$$} from '../core/util.js';
 import {allMonths,ensureTx} from '../data/storage.js';
 import {isHSA} from '../model/hsa.js';
-import {projectNow} from '../model/project.js';
+import {isCash,projectNow} from '../model/project.js';
 import {state} from '../state.js';
 import {chrome} from './chrome.js';
 import {vAccounts} from '../views/accounts.js';
@@ -66,8 +66,8 @@ let allLoaded=false;
 export async function render(){
   if(!state.plan)return;
   const i=state.view.y*12+state.view.m,ci=state.now.getFullYear()*12+state.now.getMonth(),need=[monthKeyOf(state.view),monthKeyAt(i-1)];
-  /* HSA balances subtract card purchases since the balance date, so load those months (up to two years) */
-  for(const a of state.plan.accounts.filter(isHSA))for(let j=Math.max(a.upd?monthIndex(a.upd):ci,ci-24);j<=ci;j++)need.push(monthKeyAt(j));
+  /* HSA and cash balances count what was logged since the balance date, so load those months (up to two years) */
+  for(const a of state.plan.accounts.filter(a=>isHSA(a)||isCash(a)))for(let j=Math.max(a.upd?monthIndex(a.upd):ci,ci-24);j<=ci;j++)need.push(monthKeyAt(j));
   if(state.tab==='trends'){if(!allLoaded){need.push(...await allMonths());allLoaded=true}for(let j=i-5;j<=i;j++)need.push(monthKeyAt(j))}
   await Promise.all([...new Set(need)].map(ensureTx));
   paint();

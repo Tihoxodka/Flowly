@@ -1,8 +1,9 @@
+import {NOSPEND} from '../core/constants.js';
 import {monthIndex,monthKeyOf} from '../core/dates.js';
 import {r2} from '../core/format.js';
 import {acct,isDebt,rate} from './accounts.js';
 import {bizBefore} from './holidays.js';
-import {hsaNow,isHSA} from './hsa.js';
+import {afterBal,hsaNow,isHSA} from './hsa.js';
 import {kickoffDay,startDay,evs} from './schedule.js';
 import {state} from '../state.js';
 /* how an event moves one account's balance */
@@ -19,7 +20,7 @@ export function projectNow(){
   const vi=state.view.y*12+state.view.m,s0=startDay(),ti=monthIndex(s0),cur=evs(state.view.y,state.view.m);
   if(vi<ti)return{list:cur,end:null,tips:[]};
   const bal={},hold={},inj={},tips=[];let end=null,endH=null;
-  state.plan.accounts.forEach(a=>{const inv=a.type==='investment';bal[a.id]=inv?(+a.cash||0):isHSA(a)?hsaNow(a):(+a.bal||0);if(inv)hold[a.id]=+a.bal||0});
+  state.plan.accounts.forEach(a=>{const inv=a.type==='investment';bal[a.id]=inv?(+a.cash||0):isHSA(a)?hsaNow(a):isCash(a)?cashNow(a):(+a.bal||0);if(inv)hold[a.id]=+a.bal||0});
   for(let i=ti;i<=vi+1;i++){
     const list=i===vi?cur:evs(Math.floor(i/12),i%12);
     list.forEach(e=>{
@@ -40,12 +41,11 @@ export function projectNow(){
   const m=monthKeyOf(state.view);
   return{list:cur,end,endH,tips:tips.filter(t=>t.date.slice(0,7)===m||t.deadline.slice(0,7)===m)};
 }
-/* balance change for one account from scheduled items after its last update and before kickoff */
-export function sinceKick(a){
-  const k=kickoffDay(),from=a.upd||'';if(!k||!from||from>=k)return{items:[],d:0,dc:0};
+/* balance change for one account from the scheduled items in the months from..to that pass keep(e) */
+function schedDelta(a,from,to,keep){
   const items=[];let d=0,dc=0;
-  for(let i=monthIndex(from);i<=monthIndex(k);i++)evs(Math.floor(i/12),i%12,true).forEach(e=>{
-    if(e.date<=from||e.date>=k||state.plan.done[e.key])return;
+  for(let i=monthIndex(from);i<=monthIndex(to);i++)evs(Math.floor(i/12),i%12,true).forEach(e=>{
+    if(!keep(e))return;
     let x=0,c=0;
     if(e.acct===a.id){if(e.dividend){if(e.mode==='reinvest')x=e.amt;else c=e.amt}else x=(e.t==='out'?-1:1)*e.amt*(isDebt(a)?-1:1)}
     if(e.card===a.id)x-=e.amt;
@@ -53,4 +53,19 @@ export function sinceKick(a){
     if(x||c){items.push({e,x:x||c});d+=x;dc+=c}
   });
   return{items,d:r2(d),dc:r2(dc)};
+}
+/* balance change for one account from scheduled items after its last update and before kickoff */
+export function sinceKick(a){
+  const k=kickoffDay(),from=a.upd||'';if(!k||!from||from>=k)return{items:[],d:0,dc:0};
+  return schedDelta(a,from,k,e=>e.date>from&&e.date<k&&!state.plan.done[e.key]);
+}
+/** Checking, savings or cash @param {Account} a */
+export const isCash=a=>['checking','savings','cash'].includes(a?.type);
+/** What a cash account holds now: its recorded balance, plus the scheduled items checked off and the spending logged since.
+ * Logged income, bill payments and transfers are left out: scheduled items and transfers already move the balance. @param {Account} a */
+export function cashNow(a){
+  const from=a.upd||'';if(!from)return +a.bal||0;
+  let s=schedDelta(a,from,state.TODAY,e=>e.date>from&&!!state.plan.done[e.key]).d;
+  Object.values(state.tx).forEach(m=>m.items.forEach(t=>{if(afterBal(a,t)&&!NOSPEND.includes(t.cat))s+=t.amt}));
+  return r2((+a.bal||0)+s);
 }

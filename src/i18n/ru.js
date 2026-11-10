@@ -613,4 +613,7 @@ export const ru={
 "Moved {amt} from {from} to {to}":"Переведено {amt}: {from} → {to}",
 "Pick two different accounts.":"Выберите два разных счёта.",
 "Enter an amount above zero.":"Введите сумму больше нуля.",
+"In your accounts now":"На счетах сейчас",
+"{amt} on {date}":"{amt} на {date}",
+"The balance you entered, plus the items you checked off below and the spending you logged since then.":"Остаток, который вы ввели, плюс отмеченные ниже платежи и записанные с тех пор траты.",
 };

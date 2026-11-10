@@ -1,18 +1,17 @@
 import {r2} from '../core/format.js';
 import {acct} from './accounts.js';
-import {occ} from './schedule.js';
+import {kickoffDay,occ} from './schedule.js';
 import {state} from '../state.js';
 /* HSA: money set aside for health costs. Its debit card purchases come out of the HSA, not your spending money */
 export const isHSA=a=>!!a&&a.type==='hsa';
 /** A transaction paid with the HSA card @param {Tx} t */
 export const hsaPaid=t=>isHSA(acct(t.acct));
+/** A transaction on this account logged after its balance was recorded (a kickoff balance is at the start of that day) @param {Account} a @param {Tx} t */
+export const afterBal=(a,t)=>{const on=a.upd||'';return t.acct===a.id&&(a.updAt&&t.at?t.date>=on&&t.at>a.updAt:t.date>on||(!a.updAt&&!!on&&t.date===on&&on===kickoffDay()))};
 /* logged purchases (and refunds) on the HSA card after its balance was last recorded */
 export function hsaSpent(a){
-  let s=0;const on=a.upd||'';
-  Object.values(state.tx).forEach(m=>m.items.forEach(t=>{
-    if(t.acct!==a.id)return;
-    if(a.updAt&&t.at?t.date>=on&&t.at>a.updAt:t.date>on)s-=t.amt;
-  }));
+  let s=0;
+  Object.values(state.tx).forEach(m=>m.items.forEach(t=>{if(afterBal(a,t))s-=t.amt}));
   return r2(s);
 }
 /** What an HSA holds now: its balance less card purchases since @param {Account} a */

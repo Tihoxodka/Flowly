@@ -224,3 +224,23 @@ test('transfers between accounts', () => {
     assert.equal(moveMoney(f, t, a), null, `${f} → ${t} ${a} is refused`);
   setData(blank());
 });
+
+test('a cash account now: its balance, plus checked-off items and logged spending since', async () => {
+  const { cashNow } = await import('../src/model/project.js');
+  state.TODAY = '2026-11-18'; state.now = new Date(2026, 10, 18);
+  setData({ ...blank(), accounts: [{ id: 'chk', name: 'Checking', type: 'checking', bal: 1000, upd: '2026-11-05', updAt: 100 }],
+    income: [{ id: 'pay', name: 'Pay', amt: 500, freq: 'monthly', date: '2026-11-10', acct: 'chk' }],
+    bills: [{ id: 'rent', name: 'Rent', amt: 300, freq: 'monthly', date: '2026-11-15', acct: 'chk', cat: 'Housing' }] },
+  { '2026-11': { items: [
+    { id: 'a', date: '2026-11-06', desc: 'Shop', amt: -40, cat: 'Groceries', acct: 'chk', tag: '' },
+    { id: 'b', date: '2026-11-05', desc: 'Early', amt: -7, cat: 'Groceries', acct: 'chk', tag: '', at: 50 },
+    { id: 'c', date: '2026-11-05', desc: 'Late', amt: -3, cat: 'Groceries', acct: 'chk', tag: '', at: 200 },
+    { id: 'd', date: '2026-11-10', desc: 'Salary', amt: 500, cat: 'Income', acct: 'chk', tag: '' },
+    { id: 'e', date: '2026-11-07', desc: 'Other card', amt: -99, cat: 'Groceries', acct: 'cc', tag: '' }] } });
+  const a = acct('chk');
+  assert.equal(cashNow(a), 957, 'logged spending after the balance; logged income is left to the schedule');
+  state.plan.done['in:pay:2026-11-10'] = 1;
+  assert.equal(cashNow(a), 1457, 'checked-off pay counts');
+  a.upd = '2026-11-12';
+  assert.equal(cashNow(a), 1000, 'nothing before the balance date counts');
+});

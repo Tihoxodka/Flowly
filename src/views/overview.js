@@ -7,6 +7,7 @@ import {sum} from '../core/util.js';
 import {acct,acctName,isDebt} from '../model/accounts.js';
 import {hsaPaid,isHSA} from '../model/hsa.js';
 import {kickoffDay,startDay,billsToEnter,goalNeed,nextDue,occ} from '../model/schedule.js';
+import {cashNow,isCash} from '../model/project.js';
 import {isBudgetOut,logged} from '../model/spending.js';
 import {state} from '../state.js';
 import {project} from '../ui/render.js';
@@ -58,6 +59,17 @@ function notes(list){
     say(sum(list.filter(e=>e.contrib&&!e.hsa)),'{amt} goes into retirement this month, including employer money.')}${
     say(sum(list.filter(e=>e.contrib&&e.hsa)),'{amt} goes into your HSA this month, including employer money.')}${
     say(hsaOut+hsaBills,'{amt} paid from your HSA this month isn’t counted above, since it comes out of the HSA.',hsaOut||hsaBills)}</div>`;
+}
+/** What each checking, savings and cash account holds now, and their total */
+function cashCards(){
+  const A=state.plan.accounts.filter(isCash);if(!A.length)return'';
+  const now=A.map(cashNow),total=now.reduce((s,v)=>s+v,0);
+  const amt=n=>html`<span class="${n<0?'neg':''}">${f2(n)}</span>`;
+  const since=(a,n)=>a.upd?html`<span class="since">${n===(+a.bal||0)?T('as of {date}',{date:dl(a.upd)}):
+    T('{amt} on {date}',{amt:f2(+a.bal||0),date:dl(a.upd)})}</span>`:'';
+  return html`<div class="sec"><h2>${T('In your accounts now')}</h2><div class="cards" style="margin:0">${A.map((a,i)=>card(a.name,amt(now[i]),since(a,now[i])))}${
+    A.length>1?card(T('Total'),amt(total)):''}</div><p class="muted small">${
+    T('The balance you entered, plus the items you checked off below and the spending you logged since then.')}</p></div>`;
 }
 /** Cards whose due date passed: time to enter the new statement */
 function staleCards(){
@@ -118,6 +130,7 @@ export function vOverview(){
   const daysLeft=mk===today.slice(0,7)?dim-state.now.getDate()+1:(mk>today.slice(0,7)?dim-firstDay+1:0);
   return html`${kickBanner()}${equation({inc,out,goals,free,left,logged:L.total,daysLeft})}
   ${notes(list)}
+  ${cashCards()}
   ${staleCards()}
   ${billsDue()}
   ${tipsHtml(tips)}

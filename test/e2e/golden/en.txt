@@ -29,6 +29,21 @@ $600 of income is an estimate. Enter the real amount below once it lands.
 $750 goes into retirement this month, including employer money.
 $300 goes into your HSA this month, including employer money.
 $32 paid from your HSA this month isn’t counted above, since it comes out of the HSA.
+In your accounts now
+Checking
+$1,200.00
+as of Nov 15
+Savings
+$8,000.00
+as of Nov 1
+Wallet
+$80.00
+as of Nov 1
+Total
+$9,280.00
+
+The balance you entered, plus the items you checked off below and the spending you logged since then.
+
 A bill to enter
 Electricity should be out by now, due Sat, Nov 28. Enter the amount due.
 Save
@@ -567,6 +582,21 @@ $142
 Left to spend
 −$2,845
 Include planned bills
+In your accounts now
+Checking
+$1,200.00
+as of Nov 15
+Savings
+$8,000.00
+as of Nov 1
+Wallet
+$80.00
+as of Nov 1
+Total
+$9,280.00
+
+The balance you entered, plus the items you checked off below and the spending you logged since then.
+
 A bill to enter
 Electricity should be out by now, due Sat, Nov 28. Enter the amount due.
 Save
@@ -836,6 +866,21 @@ $71 of interest and dividends expected, not counted.
 $600 of income is an estimate. Enter the real amount below once it lands.
 $750 goes into retirement this month, including employer money.
 $300 goes into your HSA this month, including employer money.
+In your accounts now
+Checking
+$1,200.00
+as of Nov 15
+Savings
+$8,000.00
+as of Nov 1
+Wallet
+$80.00
+as of Nov 1
+Total
+$9,280.00
+
+The balance you entered, plus the items you checked off below and the spending you logged since then.
+
 A bill to enter
 Electricity should be out by now, due Sat, Nov 28. Enter the amount due.
 Save
