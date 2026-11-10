@@ -6,8 +6,9 @@ import {restore} from './data/backup.js';
 import {blank,upgrade} from './data/clean.js';
 import {S,flushAll,lget,moveOldKeys,okMsg,sRead,savePlan,status} from './data/storage.js';
 import {state} from './state.js';
-import {chrome} from './ui/chrome.js';
+import {chrome,loadTheme} from './ui/chrome.js';
 import {VIEWS,render} from './ui/render.js';
+loadTheme();
 $('#rf').onchange=e=>{const f=e.target.files[0];e.target.value='';if(f)restore(f)};
 addEventListener('visibilitychange',()=>{if(document.hidden)flushAll();else if(newDay())render()});
 /* a new day while the app is open: due dates, warnings and "today" move on */

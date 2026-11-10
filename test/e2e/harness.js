@@ -1,7 +1,7 @@
 // Electron main process for the e2e tests. Started by test/e2e/run.mjs as: electron harness.js <suite> <lang> <out.json>
 // It loads the real main.js (same window, same security setup) with a temporary userData, the local AI pointed at a
 // closed port (so "AI off" every time), a fixed date and time zone, and the test plan loaded through Restore from backup.
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, nativeTheme } = require('electron');
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
@@ -14,6 +14,8 @@ const newName = path.join(userData, 'Flowly'), oldMark = path.join(userData, 'Bu
 if (suite === 'migrate') { fs.mkdirSync(path.dirname(oldMark), { recursive: true }); fs.writeFileSync(oldMark, 'saved'); }
 app.setPath('userData', suite === 'migrate' ? newName : userData);
 process.env.OLLAMA_HOST = '127.0.0.1:9';
+// the same screens whatever the machine's appearance (the theme button shows ☾ in light mode)
+app.whenReady().then(() => { nativeTheme.themeSource = 'light'; });
 const FIXTURE = fs.readFileSync(path.join(__dirname, 'fixture.json'), 'utf8');
 // 18 November 2026, 10:00 in New York
 const STUB = `(() => {

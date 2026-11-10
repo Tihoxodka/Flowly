@@ -36,6 +36,7 @@ h3{font:700 18px/1.2 var(--head);margin:0 0 14px}
 #mlabel{font:700 17px var(--head);min-width:130px;text-align:center}
 .st{font-size:12.5px;color:var(--muted);min-width:80px;text-align:right}
 .st.bad{color:var(--neg)}
+.tr{display:flex;align-items:center;gap:10px;margin-left:auto}
 .tabs{display:flex;gap:2px;overflow-x:auto;border-bottom:1px solid var(--line);position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);z-index:5;scrollbar-width:none}
 .tab{padding:10px 13px;border:0;border-bottom:2px solid transparent;background:none;color:var(--muted);font:600 14px var(--body);cursor:pointer;white-space:nowrap}
 .tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}

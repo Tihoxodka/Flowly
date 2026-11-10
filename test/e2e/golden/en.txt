@@ -5,6 +5,7 @@ November 2026
 ›
 Today
 Saved on this device
+☾︎
 Income
 $4,800
 −
@@ -239,6 +240,7 @@ November 2026
 ›
 Today
 Saved on this device
+☾︎
 Date
 Amount
 Merchant
@@ -318,6 +320,7 @@ November 2026
 ›
 Today
 Saved on this device
+☾︎
 Add bill
 Due in November: $2,695.99 across 5 payments
 Bill	Amount	Schedule	Pays from	Category
@@ -347,6 +350,7 @@ November 2026
 ›
 Today
 Saved on this device
+☾︎
 Add income source
 Arriving in November: $4,800.00 across 3 deposits
 Source	Amount	Schedule	Deposits into
@@ -365,6 +369,7 @@ November 2026
 ›
 Today
 Saved on this device
+☾︎
 Add account
 Transfer between accounts
 Editing a balance records a net worth snapshot for the month.
@@ -445,6 +450,7 @@ Nov 1
 === debt
 Flowly
 Saved on this device
+☾︎
 Total owed
 $12,950
 Loans
@@ -483,6 +489,7 @@ Keeping each card under 30% of its limit helps your credit score.
 === goals
 Flowly
 Saved on this device
+☾︎
 Add goal
 Together your goals need $633 a month.
 Short term
@@ -501,6 +508,7 @@ November 2026
 ›
 Today
 Saved on this device
+☾︎
 Ask about your spending
 
 Optional: reading PDFs and screenshots, and asking about your spending, use a free AI that runs on this Mac. To turn it on, install Ollama, run ollama pull gemma4:12b in Terminal, and keep the Ollama app open. Everything else works without it. If you already have Ollama, open it and check again.
@@ -566,6 +574,7 @@ October 2026
 ›
 Today
 Saved on this device
+☾︎
 Income
 $0
 −
@@ -746,6 +755,7 @@ September 2026
 ›
 Today
 Saved on this device
+☾︎
 September is before your kickoff
 
 Only logged spending shows for months before Oct 1. Budgets and projections start at the kickoff.
@@ -842,6 +852,7 @@ December 2026
 ›
 Today
 Saved on this device
+☾︎
 Income
 $4,800
 −
@@ -1075,6 +1086,7 @@ December 2026
 ›
 Today
 Saved on this device
+☾︎
 Date
 Amount
 Merchant
@@ -1140,6 +1152,7 @@ Nothing logged this month yet.
 === kickoff
 Flowly
 Saved on this device
+☾︎
 Kickoff: set your starting point
 
 Starting mid-month mixed old and new money together. The kickoff draws a line: enter each balance as it stands at the start of the kickoff day, before anything dated that day posts. Everything earlier becomes history. Budgets, projections and overdue checks start from here.
@@ -1729,6 +1742,7 @@ November 2026
 ›
 Today
 Saved on this device
+☾︎
 Date
 Amount
 Merchant

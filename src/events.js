@@ -10,6 +10,7 @@ import {startDay,dueToast,setDue,setPay} from './model/schedule.js';
 import {catList,learn} from './model/spending.js';
 import {srcFor} from './model/transfers.js';
 import {state} from './state.js';
+import {toggleTheme} from './ui/chrome.js';
 import {ask,openForm} from './ui/dialog.js';
 import {del,edit,editRules,editSettings,editTx,fundGoal,nextStmt,transfer} from './ui/forms.js';
 import {paint,paintSoon,project,render} from './ui/render.js';
@@ -53,6 +54,7 @@ const CLICK={
   kest(b){setKickEstimate(b.dataset.id,b.dataset.v)},
   kuse(){$$('[data-act="kest"]').forEach(x=>setKickEstimate(x.dataset.id,x.dataset.v))},
   settings(){editSettings()},
+  theme(){toggleTheme()},
   askchk(){wireAsk()},
   duesave(b){
     const el=/** @type {HTMLInputElement} */(b.closest('.tip')?.querySelector('[data-act="due"]'));
