@@ -1969,10 +1969,36 @@
 <button class="btn sm" data-act="askchk">Check again</button>
 </div>
 </div>
-<div class="cards">
+<fieldset class="lg" style="border:0;padding:0;gap:8px 18px">
+<legend class="muted small" style="padding:0 0 6px">Spending from accounts</legend>
+<label class="chk">
+<input type="checkbox" data-act="tacct" data-id="chk" checked=""> Checking</label>
+<label class="chk">
+<input type="checkbox" data-act="tacct" data-id="sav" checked=""> Savings</label>
+<label class="chk">
+<input type="checkbox" data-act="tacct" data-id="wal" checked=""> Wallet</label>
+<label class="chk">
+<input type="checkbox" data-act="tacct" data-id="inv" checked=""> Brokerage</label>
+<label class="chk">
+<input type="checkbox" data-act="tacct" data-id="ret" checked=""> 401k</label>
+<label class="chk">
+<input type="checkbox" data-act="tacct" data-id="hsa" checked=""> Health savings</label>
+<label class="chk">
+<input type="checkbox" data-act="tacct" data-id="car" checked=""> Car</label>
+<label class="chk">
+<input type="checkbox" data-act="tacct" data-id="cc" checked=""> Visa</label>
+<label class="chk">
+<input type="checkbox" data-act="tacct" data-id="loan" checked=""> Auto loan</label>
+<label class="chk">
+<input type="checkbox" data-act="tacct" data-id="" checked=""> No account</label>
+</fieldset> <div class="cards">
 <div class="card">
 <small>November: logged</small>
 <b>$259</b>
+</div>
+<div class="card">
+<small>November: all spending</small>
+<b>$579</b>
 </div>
 <div class="card">
 <small>Average, last 3 months with spending</small>
@@ -2026,53 +2052,53 @@
 <line class="gl" x1="64" x2="672" y1="10" y2="10">
 </line>
 <text x="56" y="14" text-anchor="end">$500</text>
-<rect x="86.66666666666666" y="182.8224" width="56" height="39.17760000000001" fill="var(--s1)" data-tip="Groceries · Jun: $92.40">
+<rect x="86.66666666666666" y="182.8224" width="56" height="39.17760000000001" fill="var(--s1)" data-tip="Groceries · Jun: $92.40" data-act="tseg" data-m="2026-06" data-cat="Groceries" data-all="" tabindex="0" role="button" aria-label="Groceries · Jun: $92.40">
 </rect>
-<rect x="86.66666666666666" y="176.04264" width="56" height="4.779759999999982" fill="var(--s3)" data-tip="Subscriptions · Jun: $15.99">
+<rect x="86.66666666666666" y="176.04264" width="56" height="4.779759999999982" fill="var(--s3)" data-tip="Subscriptions · Jun: $15.99" data-act="tseg" data-m="2026-06" data-cat="Subscriptions" data-all="" tabindex="0" role="button" aria-label="Subscriptions · Jun: $15.99">
 </rect>
-<path d="M86.66666666666666,174.28664V174.28664Q86.66666666666666,173.28664 87.66666666666666,173.28664H141.66666666666666Q142.66666666666666,173.28664 142.66666666666666,174.28664V174.28664Z" fill="var(--s0)" data-tip="Other · Jun: $6.50">
+<path d="M86.66666666666666,174.28664V174.28664Q86.66666666666666,173.28664 87.66666666666666,173.28664H141.66666666666666Q142.66666666666666,173.28664 142.66666666666666,174.28664V174.28664Z" fill="var(--s0)" data-tip="Other · Jun: $6.50" data-act="tseg" data-m="2026-06" data-cat="Other" data-all="" tabindex="0" role="button" aria-label="Other · Jun: $6.50">
 </path>
 <text x="114.66666666666666" y="167.28664" text-anchor="middle" style="fill:var(--ink)">$115</text>
 <text x="114.66666666666666" y="242" text-anchor="middle">Jun</text>
-<rect x="187.99999999999997" y="175.2964" width="56" height="46.703599999999994" fill="var(--s1)" data-tip="Groceries · Jul: $110.15">
+<rect x="187.99999999999997" y="175.2964" width="56" height="46.703599999999994" fill="var(--s1)" data-tip="Groceries · Jul: $110.15" data-act="tseg" data-m="2026-07" data-cat="Groceries" data-all="" tabindex="0" role="button" aria-label="Groceries · Jul: $110.15">
 </rect>
-<rect x="187.99999999999997" y="168.51664" width="56" height="4.77976000000001" fill="var(--s3)" data-tip="Subscriptions · Jul: $15.99">
+<rect x="187.99999999999997" y="168.51664" width="56" height="4.77976000000001" fill="var(--s3)" data-tip="Subscriptions · Jul: $15.99" data-act="tseg" data-m="2026-07" data-cat="Subscriptions" data-all="" tabindex="0" role="button" aria-label="Subscriptions · Jul: $15.99">
 </rect>
-<path d="M187.99999999999997,166.51664V162.34064Q187.99999999999997,158.34064 191.99999999999997,158.34064H239.99999999999997Q243.99999999999997,158.34064 243.99999999999997,162.34064V166.51664Z" fill="var(--s0)" data-tip="Other · Jul: $24.00">
+<path d="M187.99999999999997,166.51664V162.34064Q187.99999999999997,158.34064 191.99999999999997,158.34064H239.99999999999997Q243.99999999999997,158.34064 243.99999999999997,162.34064V166.51664Z" fill="var(--s0)" data-tip="Other · Jul: $24.00" data-act="tseg" data-m="2026-07" data-cat="Other" data-all="" tabindex="0" role="button" aria-label="Other · Jul: $24.00">
 </path>
 <text x="215.99999999999997" y="152.34064" text-anchor="middle" style="fill:var(--ink)">$150</text>
 <text x="215.99999999999997" y="242" text-anchor="middle">Jul</text>
-<rect x="289.3333333333333" y="184.688" width="56" height="37.31200000000001" fill="var(--s1)" data-tip="Groceries · Aug: $88.00">
+<rect x="289.3333333333333" y="184.688" width="56" height="37.31200000000001" fill="var(--s1)" data-tip="Groceries · Aug: $88.00" data-act="tseg" data-m="2026-08" data-cat="Groceries" data-all="" tabindex="0" role="button" aria-label="Groceries · Aug: $88.00">
 </rect>
-<rect x="289.3333333333333" y="165.4808" width="56" height="17.2072" fill="var(--s2)" data-tip="Pets · Aug: $45.30">
+<rect x="289.3333333333333" y="165.4808" width="56" height="17.2072" fill="var(--s2)" data-tip="Pets · Aug: $45.30" data-act="tseg" data-m="2026-08" data-cat="Pets" data-all="" tabindex="0" role="button" aria-label="Pets · Aug: $45.30">
 </rect>
-<path d="M289.3333333333333,163.4808V162.70103999999998Q289.3333333333333,158.70103999999998 293.3333333333333,158.70103999999998H341.3333333333333Q345.3333333333333,158.70103999999998 345.3333333333333,162.70103999999998V163.4808Z" fill="var(--s3)" data-tip="Subscriptions · Aug: $15.99">
+<path d="M289.3333333333333,163.4808V162.70103999999998Q289.3333333333333,158.70103999999998 293.3333333333333,158.70103999999998H341.3333333333333Q345.3333333333333,158.70103999999998 345.3333333333333,162.70103999999998V163.4808Z" fill="var(--s3)" data-tip="Subscriptions · Aug: $15.99" data-act="tseg" data-m="2026-08" data-cat="Subscriptions" data-all="" tabindex="0" role="button" aria-label="Subscriptions · Aug: $15.99">
 </path>
-<text x="317.3333333333333" y="152.70104" text-anchor="middle" style="fill:var(--ink)">$149</text>
+<text x="317.3333333333333" y="152.70103999999998" text-anchor="middle" style="fill:var(--ink)">$149</text>
 <text x="317.3333333333333" y="242" text-anchor="middle">Aug</text>
-<rect x="390.6666666666667" y="179.09120000000001" width="56" height="42.908799999999985" fill="var(--s1)" data-tip="Groceries · Sep: $101.20">
+<rect x="390.6666666666667" y="179.09120000000001" width="56" height="42.908799999999985" fill="var(--s1)" data-tip="Groceries · Sep: $101.20" data-act="tseg" data-m="2026-09" data-cat="Groceries" data-all="" tabindex="0" role="button" aria-label="Groceries · Sep: $101.20">
 </rect>
-<rect x="390.6666666666667" y="172.31144" width="56" height="4.77976000000001" fill="var(--s3)" data-tip="Subscriptions · Sep: $15.99">
+<rect x="390.6666666666667" y="172.31144" width="56" height="4.77976000000001" fill="var(--s3)" data-tip="Subscriptions · Sep: $15.99" data-act="tseg" data-m="2026-09" data-cat="Subscriptions" data-all="" tabindex="0" role="button" aria-label="Subscriptions · Sep: $15.99">
 </rect>
-<path d="M390.6666666666667,170.87344000000002V170.87344000000002Q390.6666666666667,169.87344000000002 391.6666666666667,169.87344000000002H445.6666666666667Q446.6666666666667,169.87344000000002 446.6666666666667,170.87344000000002V170.87344000000002Z" fill="var(--s0)" data-tip="Other · Sep: $5.75">
+<path d="M390.6666666666667,170.87344000000002V170.87344000000002Q390.6666666666667,169.87344000000002 391.6666666666667,169.87344000000002H445.6666666666667Q446.6666666666667,169.87344000000002 446.6666666666667,170.87344000000002V170.87344000000002Z" fill="var(--s0)" data-tip="Other · Sep: $5.75" data-act="tseg" data-m="2026-09" data-cat="Other" data-all="" tabindex="0" role="button" aria-label="Other · Sep: $5.75">
 </path>
 <text x="418.6666666666667" y="163.87344000000002" text-anchor="middle" style="fill:var(--ink)">$123</text>
 <text x="418.6666666666667" y="242" text-anchor="middle">Sep</text>
-<rect x="492" y="180.6176" width="56" height="41.38239999999999" fill="var(--s1)" data-tip="Groceries · Oct: $97.60">
+<rect x="492" y="180.6176" width="56" height="41.38239999999999" fill="var(--s1)" data-tip="Groceries · Oct: $97.60" data-act="tseg" data-m="2026-10" data-cat="Groceries" data-all="" tabindex="0" role="button" aria-label="Groceries · Oct: $97.60">
 </rect>
-<rect x="492" y="173.83784" width="56" height="4.77976000000001" fill="var(--s3)" data-tip="Subscriptions · Oct: $15.99">
+<rect x="492" y="173.83784" width="56" height="4.77976000000001" fill="var(--s3)" data-tip="Subscriptions · Oct: $15.99" data-act="tseg" data-m="2026-10" data-cat="Subscriptions" data-all="" tabindex="0" role="button" aria-label="Subscriptions · Oct: $15.99">
 </rect>
-<path d="M492,171.83784V165.96584000000001Q492,161.96584000000001 496,161.96584000000001H544Q548,161.96584000000001 548,165.96584000000001V171.83784Z" fill="var(--s0)" data-tip="Other · Oct: $28.00">
+<path d="M492,171.83784V165.96584000000001Q492,161.96584000000001 496,161.96584000000001H544Q548,161.96584000000001 548,165.96584000000001V171.83784Z" fill="var(--s0)" data-tip="Other · Oct: $28.00" data-act="tseg" data-m="2026-10" data-cat="Other" data-all="" tabindex="0" role="button" aria-label="Other · Oct: $28.00">
 </path>
 <text x="520" y="155.96584000000001" text-anchor="middle" style="fill:var(--ink)">$142</text>
 <text x="520" y="242" text-anchor="middle">Oct</text>
-<rect x="593.3333333333333" y="186.2568" width="56" height="35.7432" fill="var(--s1)" data-tip="Groceries · Nov: $84.30">
+<rect x="593.3333333333333" y="186.2568" width="56" height="35.7432" fill="var(--s1)" data-tip="Groceries · Nov: $84.30" data-act="tseg" data-m="2026-11" data-cat="Groceries" data-all="" tabindex="0" role="button" aria-label="Groceries · Nov: $84.30">
 </rect>
-<rect x="593.3333333333333" y="162.9368" width="56" height="21.319999999999993" fill="var(--s2)" data-tip="Pets · Nov: $55.00">
+<rect x="593.3333333333333" y="162.9368" width="56" height="21.319999999999993" fill="var(--s2)" data-tip="Pets · Nov: $55.00" data-act="tseg" data-m="2026-11" data-cat="Pets" data-all="" tabindex="0" role="button" aria-label="Pets · Nov: $55.00">
 </rect>
-<rect x="593.3333333333333" y="140.46904" width="56" height="20.46776" fill="var(--s4)" data-tip="Shopping · Nov: $52.99">
+<rect x="593.3333333333333" y="140.46904" width="56" height="20.46776" fill="var(--s4)" data-tip="Shopping · Nov: $52.99" data-act="tseg" data-m="2026-11" data-cat="Shopping" data-all="" tabindex="0" role="button" aria-label="Shopping · Nov: $52.99">
 </rect>
-<path d="M593.3333333333333,138.46904V116.12888000000001Q593.3333333333333,112.12888000000001 597.3333333333333,112.12888000000001H645.3333333333333Q649.3333333333333,112.12888000000001 649.3333333333333,116.12888000000001V138.46904Z" fill="var(--s0)" data-tip="Other · Nov: $66.84">
+<path d="M593.3333333333333,138.46904V116.12888000000001Q593.3333333333333,112.12888000000001 597.3333333333333,112.12888000000001H645.3333333333333Q649.3333333333333,112.12888000000001 649.3333333333333,116.12888000000001V138.46904Z" fill="var(--s0)" data-tip="Other · Nov: $66.84" data-act="tseg" data-m="2026-11" data-cat="Other" data-all="" tabindex="0" role="button" aria-label="Other · Nov: $66.84">
 </path>
 <text x="621.3333333333333" y="106.12888000000001" text-anchor="middle" style="fill:var(--ink)">$259</text>
 <text x="621.3333333333333" y="242" text-anchor="middle">Nov</text>
@@ -2210,7 +2236,505 @@
 </tr>
 </tbody>
 </table>
-</div> <p class="muted small">Logged spending only. Bills and card payments aren’t included, and partial months show as partial.</p>
+</div> <p class="muted small">Logged spending only. Bills and card payments aren’t included, and partial months show as partial. Press a bar to see its biggest expenses.</p>
+</div> <div class="sec">
+<h2>All spending by month, bills included</h2>
+<div class="viz">
+<div class="lg">
+<span>
+<i style="background:var(--s1)">
+</i>Housing</span>
+<span>
+<i style="background:var(--s2)">
+</i>Groceries</span>
+<span>
+<i style="background:var(--s3)">
+</i>Transport</span>
+<span>
+<i style="background:var(--s4)">
+</i>Pets</span>
+<span>
+<i style="background:var(--s0)">
+</i>Other</span>
+</div>
+<svg viewBox="0 0 680 250" role="img" aria-label="All spending by month and category">
+<line class="base" x1="64" x2="672" y1="222" y2="222">
+</line>
+<text x="56" y="226" text-anchor="end">$0</text>
+<line class="gl" x1="64" x2="672" y1="169" y2="169">
+</line>
+<text x="56" y="173" text-anchor="end">$500</text>
+<line class="gl" x1="64" x2="672" y1="116" y2="116">
+</line>
+<text x="56" y="120" text-anchor="end">$1k</text>
+<line class="gl" x1="64" x2="672" y1="63" y2="63">
+</line>
+<text x="56" y="67" text-anchor="end">$1.5k</text>
+<line class="gl" x1="64" x2="672" y1="10" y2="10">
+</line>
+<text x="56" y="14" text-anchor="end">$2k</text>
+<rect x="86.66666666666666" y="212.2056" width="56" height="9.794399999999996" fill="var(--s2)" data-tip="Groceries · Jun: $92.40" data-act="tseg" data-m="2026-06" data-cat="Groceries" data-all="1" tabindex="0" role="button" aria-label="Groceries · Jun: $92.40">
+</rect>
+<path d="M86.66666666666666,210.82166V210.82166Q86.66666666666666,209.82166 87.66666666666666,209.82166H141.66666666666666Q142.66666666666666,209.82166 142.66666666666666,210.82166V210.82166Z" fill="var(--s0)" data-tip="Other · Jun: $22.49" data-act="tseg" data-m="2026-06" data-cat="Other" data-all="1" tabindex="0" role="button" aria-label="Other · Jun: $22.49">
+</path>
+<text x="114.66666666666666" y="203.82166" text-anchor="middle" style="fill:var(--ink)">$115</text>
+<text x="114.66666666666666" y="242" text-anchor="middle">Jun</text>
+<rect x="187.99999999999997" y="210.3241" width="56" height="11.675900000000013" fill="var(--s2)" data-tip="Groceries · Jul: $110.15" data-act="tseg" data-m="2026-07" data-cat="Groceries" data-all="1" tabindex="0" role="button" aria-label="Groceries · Jul: $110.15">
+</rect>
+<rect x="187.99999999999997" y="207.7801" width="56" height="1" fill="var(--s3)" data-tip="Transport · Jul: $24.00" data-act="tseg" data-m="2026-07" data-cat="Transport" data-all="1" tabindex="0" role="button" aria-label="Transport · Jul: $24.00">
+</rect>
+<path d="M187.99999999999997,207.08516V207.08516Q187.99999999999997,206.08516 188.99999999999997,206.08516H242.99999999999997Q243.99999999999997,206.08516 243.99999999999997,207.08516V207.08516Z" fill="var(--s0)" data-tip="Other · Jul: $15.99" data-act="tseg" data-m="2026-07" data-cat="Other" data-all="1" tabindex="0" role="button" aria-label="Other · Jul: $15.99">
+</path>
+<text x="215.99999999999997" y="200.08516" text-anchor="middle" style="fill:var(--ink)">$150</text>
+<text x="215.99999999999997" y="242" text-anchor="middle">Jul</text>
+<rect x="289.3333333333333" y="212.672" width="56" height="9.328000000000003" fill="var(--s2)" data-tip="Groceries · Aug: $88.00" data-act="tseg" data-m="2026-08" data-cat="Groceries" data-all="1" tabindex="0" role="button" aria-label="Groceries · Aug: $88.00">
+</rect>
+<rect x="289.3333333333333" y="207.8702" width="56" height="2.801799999999986" fill="var(--s4)" data-tip="Pets · Aug: $45.30" data-act="tseg" data-m="2026-08" data-cat="Pets" data-all="1" tabindex="0" role="button" aria-label="Pets · Aug: $45.30">
+</rect>
+<path d="M289.3333333333333,207.17526V207.17526Q289.3333333333333,206.17526 290.3333333333333,206.17526H344.3333333333333Q345.3333333333333,206.17526 345.3333333333333,207.17526V207.17526Z" fill="var(--s0)" data-tip="Other · Aug: $15.99" data-act="tseg" data-m="2026-08" data-cat="Other" data-all="1" tabindex="0" role="button" aria-label="Other · Aug: $15.99">
+</path>
+<text x="317.3333333333333" y="200.17526" text-anchor="middle" style="fill:var(--ink)">$149</text>
+<text x="317.3333333333333" y="242" text-anchor="middle">Aug</text>
+<rect x="390.6666666666667" y="211.2728" width="56" height="10.72720000000001" fill="var(--s2)" data-tip="Groceries · Sep: $101.20" data-act="tseg" data-m="2026-09" data-cat="Groceries" data-all="1" tabindex="0" role="button" aria-label="Groceries · Sep: $101.20">
+</rect>
+<path d="M390.6666666666667,209.96836V209.96836Q390.6666666666667,208.96836 391.6666666666667,208.96836H445.6666666666667Q446.6666666666667,208.96836 446.6666666666667,209.96836V209.96836Z" fill="var(--s0)" data-tip="Other · Sep: $21.74" data-act="tseg" data-m="2026-09" data-cat="Other" data-all="1" tabindex="0" role="button" aria-label="Other · Sep: $21.74">
+</path>
+<text x="418.6666666666667" y="202.96836" text-anchor="middle" style="fill:var(--ink)">$123</text>
+<text x="418.6666666666667" y="242" text-anchor="middle">Sep</text>
+<rect x="492" y="47.10000000000002" width="56" height="174.89999999999998" fill="var(--s1)" data-tip="Housing · Oct: $1,650.00" data-act="tseg" data-m="2026-10" data-cat="Housing" data-all="1" tabindex="0" role="button" aria-label="Housing · Oct: $1,650.00">
+</rect>
+<rect x="492" y="36.75440000000003" width="56" height="8.34559999999999" fill="var(--s2)" data-tip="Groceries · Oct: $97.60" data-act="tseg" data-m="2026-10" data-cat="Groceries" data-all="1" tabindex="0" role="button" aria-label="Groceries · Oct: $97.60">
+</rect>
+<path d="M492,34.75440000000003V34.75440000000003Q492,32.09146000000001 494.66294000000005,32.09146000000001H545.33706Q548,32.09146000000001 548,34.75440000000003V34.75440000000003Z" fill="var(--s0)" data-tip="Other · Oct: $43.99" data-act="tseg" data-m="2026-10" data-cat="Other" data-all="1" tabindex="0" role="button" aria-label="Other · Oct: $43.99">
+</path>
+<text x="520" y="26.091460000000012" text-anchor="middle" style="fill:var(--ink)">$1,792</text>
+<text x="520" y="242" text-anchor="middle">Oct</text>
+<rect x="593.3333333333333" y="213.0642" width="56" height="8.9358" fill="var(--s2)" data-tip="Groceries · Nov: $84.30" data-act="tseg" data-m="2026-11" data-cat="Groceries" data-all="1" tabindex="0" role="button" aria-label="Groceries · Nov: $84.30">
+</rect>
+<rect x="593.3333333333333" y="177.1832" width="56" height="33.881" fill="var(--s3)" data-tip="Transport · Nov: $338.50" data-act="tseg" data-m="2026-11" data-cat="Transport" data-all="1" tabindex="0" role="button" aria-label="Transport · Nov: $338.50">
+</rect>
+<rect x="593.3333333333333" y="171.35320000000002" width="56" height="3.829999999999984" fill="var(--s4)" data-tip="Pets · Nov: $55.00" data-act="tseg" data-m="2026-11" data-cat="Pets" data-all="1" tabindex="0" role="button" aria-label="Pets · Nov: $55.00">
+</rect>
+<path d="M593.3333333333333,169.35320000000002V164.61221999999998Q593.3333333333333,160.61221999999998 597.3333333333333,160.61221999999998H645.3333333333333Q649.3333333333333,160.61221999999998 649.3333333333333,164.61221999999998V169.35320000000002Z" fill="var(--s0)" data-tip="Other · Nov: $101.33" data-act="tseg" data-m="2026-11" data-cat="Other" data-all="1" tabindex="0" role="button" aria-label="Other · Nov: $101.33">
+</path>
+<text x="621.3333333333333" y="154.61221999999998" text-anchor="middle" style="fill:var(--ink)">$579</text>
+<text x="621.3333333333333" y="242" text-anchor="middle">Nov</text>
+</svg>
+</div> <p class="muted small">Logged spending plus the bills checked off as paid. Card payments and transfers aren’t included: what they pay for is already counted.</p>
+</div> <div class="sec">
+<h2>Net worth</h2>
+<div class="viz">
+<svg viewBox="0 0 680 200" role="img" aria-label="Net worth over time">
+<line class="gl" x1="64" x2="640" y1="172" y2="172">
+</line>
+<text x="56" y="176" text-anchor="end">$65.2k</text>
+<line class="gl" x1="64" x2="640" y1="119.99999999999987" y2="119.99999999999987">
+</line>
+<text x="56" y="123.99999999999987" text-anchor="end">$67.2k</text>
+<line class="gl" x1="64" x2="640" y1="68.00000000000013" y2="68.00000000000013">
+</line>
+<text x="56" y="72.00000000000013" text-anchor="end">$69.3k</text>
+<line class="gl" x1="64" x2="640" y1="16" y2="16">
+</line>
+<text x="56" y="20" text-anchor="end">$71.3k</text>
+<polyline fill="none" stroke="var(--s1)" stroke-width="2" points="64,154 352,108.04255319148936 640,34.00000000000001">
+</polyline>
+<circle cx="64" cy="154" r="4" fill="var(--s1)" stroke="var(--surface)" stroke-width="2">
+</circle>
+<circle cx="64" cy="154" r="14" fill="transparent" data-tip="Aug 2026: $65,900">
+</circle>
+<text x="64" y="192" text-anchor="middle">Aug</text>
+<circle cx="352" cy="108.04255319148936" r="4" fill="var(--s1)" stroke="var(--surface)" stroke-width="2">
+</circle>
+<circle cx="352" cy="108.04255319148936" r="14" fill="transparent" data-tip="Sep 2026: $67,700">
+</circle>
+<text x="352" y="192" text-anchor="middle">Sep</text>
+<circle cx="640" cy="34.00000000000001" r="5" fill="var(--s1)" stroke="var(--surface)" stroke-width="2">
+</circle>
+<circle cx="640" cy="34.00000000000001" r="14" fill="transparent" data-tip="Oct 2026: $70,600">
+</circle>
+<text x="640" y="192" text-anchor="middle">Oct</text>
+<text x="640" y="22.000000000000007" text-anchor="middle" style="fill:var(--ink);font-weight:600">$70,600</text>
+</svg>
+</div>
+</div>
+
+=== trends-bar-pressed
+<div class="sec" id="ask">
+<h2>Ask about your spending</h2>
+<div id="askbody">
+<p class="muted small">Optional: reading PDFs and screenshots, and asking about your spending, use a free AI that runs on this Mac. To turn it on, install <a href="https://ollama.com" target="_blank" rel="noopener">Ollama</a>, run <code>ollama pull gemma4:12b</code> in Terminal, and keep the Ollama app open. Everything else works without it. If you already have Ollama, open it and check again.</p>
+<button class="btn sm" data-act="askchk">Check again</button>
+</div>
+</div>
+<fieldset class="lg" style="border:0;padding:0;gap:8px 18px">
+<legend class="muted small" style="padding:0 0 6px">Spending from accounts</legend>
+<label class="chk">
+<input type="checkbox" data-act="tacct" data-id="chk" checked=""> Checking</label>
+<label class="chk">
+<input type="checkbox" data-act="tacct" data-id="sav" checked=""> Savings</label>
+<label class="chk">
+<input type="checkbox" data-act="tacct" data-id="wal" checked=""> Wallet</label>
+<label class="chk">
+<input type="checkbox" data-act="tacct" data-id="inv" checked=""> Brokerage</label>
+<label class="chk">
+<input type="checkbox" data-act="tacct" data-id="ret" checked=""> 401k</label>
+<label class="chk">
+<input type="checkbox" data-act="tacct" data-id="hsa" checked=""> Health savings</label>
+<label class="chk">
+<input type="checkbox" data-act="tacct" data-id="car" checked=""> Car</label>
+<label class="chk">
+<input type="checkbox" data-act="tacct" data-id="cc" checked=""> Visa</label>
+<label class="chk">
+<input type="checkbox" data-act="tacct" data-id="loan" checked=""> Auto loan</label>
+<label class="chk">
+<input type="checkbox" data-act="tacct" data-id="" checked=""> No account</label>
+</fieldset> <div class="cards">
+<div class="card">
+<small>November: logged</small>
+<b>$259</b>
+</div>
+<div class="card">
+<small>November: all spending</small>
+<b>$579</b>
+</div>
+<div class="card">
+<small>Average, last 3 months with spending</small>
+<b>$175</b>
+</div>
+<div class="card">
+<small>Tagged coffee, 6 months</small>
+<b>$19</b>
+</div>
+<div class="card">
+<small>Tagged work, 6 months</small>
+<b>$43</b>
+</div>
+<div class="card">
+<small>Tagged date night, 6 months</small>
+<b>$28</b>
+</div>
+</div> <div class="sec">
+<h2>Logged spending by month</h2>
+<div class="viz">
+<div class="lg">
+<span>
+<i style="background:var(--s1)">
+</i>Groceries</span>
+<span>
+<i style="background:var(--s2)">
+</i>Pets</span>
+<span>
+<i style="background:var(--s3)">
+</i>Subscriptions</span>
+<span>
+<i style="background:var(--s4)">
+</i>Shopping</span>
+<span>
+<i style="background:var(--s0)">
+</i>Other</span>
+</div>
+<svg viewBox="0 0 680 250" role="img" aria-label="Logged spending by month and category">
+<line class="base" x1="64" x2="672" y1="222" y2="222">
+</line>
+<text x="56" y="226" text-anchor="end">$0</text>
+<line class="gl" x1="64" x2="672" y1="169" y2="169">
+</line>
+<text x="56" y="173" text-anchor="end">$125</text>
+<line class="gl" x1="64" x2="672" y1="116" y2="116">
+</line>
+<text x="56" y="120" text-anchor="end">$250</text>
+<line class="gl" x1="64" x2="672" y1="63" y2="63">
+</line>
+<text x="56" y="67" text-anchor="end">$375</text>
+<line class="gl" x1="64" x2="672" y1="10" y2="10">
+</line>
+<text x="56" y="14" text-anchor="end">$500</text>
+<rect x="86.66666666666666" y="182.8224" width="56" height="39.17760000000001" fill="var(--s1)" data-tip="Groceries · Jun: $92.40" data-act="tseg" data-m="2026-06" data-cat="Groceries" data-all="" tabindex="0" role="button" aria-label="Groceries · Jun: $92.40">
+</rect>
+<rect x="86.66666666666666" y="176.04264" width="56" height="4.779759999999982" fill="var(--s3)" data-tip="Subscriptions · Jun: $15.99" data-act="tseg" data-m="2026-06" data-cat="Subscriptions" data-all="" tabindex="0" role="button" aria-label="Subscriptions · Jun: $15.99">
+</rect>
+<path d="M86.66666666666666,174.28664V174.28664Q86.66666666666666,173.28664 87.66666666666666,173.28664H141.66666666666666Q142.66666666666666,173.28664 142.66666666666666,174.28664V174.28664Z" fill="var(--s0)" data-tip="Other · Jun: $6.50" data-act="tseg" data-m="2026-06" data-cat="Other" data-all="" tabindex="0" role="button" aria-label="Other · Jun: $6.50">
+</path>
+<text x="114.66666666666666" y="167.28664" text-anchor="middle" style="fill:var(--ink)">$115</text>
+<text x="114.66666666666666" y="242" text-anchor="middle">Jun</text>
+<rect x="187.99999999999997" y="175.2964" width="56" height="46.703599999999994" fill="var(--s1)" data-tip="Groceries · Jul: $110.15" data-act="tseg" data-m="2026-07" data-cat="Groceries" data-all="" tabindex="0" role="button" aria-label="Groceries · Jul: $110.15">
+</rect>
+<rect x="187.99999999999997" y="168.51664" width="56" height="4.77976000000001" fill="var(--s3)" data-tip="Subscriptions · Jul: $15.99" data-act="tseg" data-m="2026-07" data-cat="Subscriptions" data-all="" tabindex="0" role="button" aria-label="Subscriptions · Jul: $15.99">
+</rect>
+<path d="M187.99999999999997,166.51664V162.34064Q187.99999999999997,158.34064 191.99999999999997,158.34064H239.99999999999997Q243.99999999999997,158.34064 243.99999999999997,162.34064V166.51664Z" fill="var(--s0)" data-tip="Other · Jul: $24.00" data-act="tseg" data-m="2026-07" data-cat="Other" data-all="" tabindex="0" role="button" aria-label="Other · Jul: $24.00">
+</path>
+<text x="215.99999999999997" y="152.34064" text-anchor="middle" style="fill:var(--ink)">$150</text>
+<text x="215.99999999999997" y="242" text-anchor="middle">Jul</text>
+<rect x="289.3333333333333" y="184.688" width="56" height="37.31200000000001" fill="var(--s1)" data-tip="Groceries · Aug: $88.00" data-act="tseg" data-m="2026-08" data-cat="Groceries" data-all="" tabindex="0" role="button" aria-label="Groceries · Aug: $88.00">
+</rect>
+<rect x="289.3333333333333" y="165.4808" width="56" height="17.2072" fill="var(--s2)" data-tip="Pets · Aug: $45.30" data-act="tseg" data-m="2026-08" data-cat="Pets" data-all="" tabindex="0" role="button" aria-label="Pets · Aug: $45.30">
+</rect>
+<path d="M289.3333333333333,163.4808V162.70103999999998Q289.3333333333333,158.70103999999998 293.3333333333333,158.70103999999998H341.3333333333333Q345.3333333333333,158.70103999999998 345.3333333333333,162.70103999999998V163.4808Z" fill="var(--s3)" data-tip="Subscriptions · Aug: $15.99" data-act="tseg" data-m="2026-08" data-cat="Subscriptions" data-all="" tabindex="0" role="button" aria-label="Subscriptions · Aug: $15.99">
+</path>
+<text x="317.3333333333333" y="152.70103999999998" text-anchor="middle" style="fill:var(--ink)">$149</text>
+<text x="317.3333333333333" y="242" text-anchor="middle">Aug</text>
+<rect x="390.6666666666667" y="179.09120000000001" width="56" height="42.908799999999985" fill="var(--s1)" data-tip="Groceries · Sep: $101.20" data-act="tseg" data-m="2026-09" data-cat="Groceries" data-all="" tabindex="0" role="button" aria-label="Groceries · Sep: $101.20">
+</rect>
+<rect x="390.6666666666667" y="172.31144" width="56" height="4.77976000000001" fill="var(--s3)" data-tip="Subscriptions · Sep: $15.99" data-act="tseg" data-m="2026-09" data-cat="Subscriptions" data-all="" tabindex="0" role="button" aria-label="Subscriptions · Sep: $15.99">
+</rect>
+<path d="M390.6666666666667,170.87344000000002V170.87344000000002Q390.6666666666667,169.87344000000002 391.6666666666667,169.87344000000002H445.6666666666667Q446.6666666666667,169.87344000000002 446.6666666666667,170.87344000000002V170.87344000000002Z" fill="var(--s0)" data-tip="Other · Sep: $5.75" data-act="tseg" data-m="2026-09" data-cat="Other" data-all="" tabindex="0" role="button" aria-label="Other · Sep: $5.75">
+</path>
+<text x="418.6666666666667" y="163.87344000000002" text-anchor="middle" style="fill:var(--ink)">$123</text>
+<text x="418.6666666666667" y="242" text-anchor="middle">Sep</text>
+<rect x="492" y="180.6176" width="56" height="41.38239999999999" fill="var(--s1)" data-tip="Groceries · Oct: $97.60" data-act="tseg" data-m="2026-10" data-cat="Groceries" data-all="" tabindex="0" role="button" aria-label="Groceries · Oct: $97.60">
+</rect>
+<rect x="492" y="173.83784" width="56" height="4.77976000000001" fill="var(--s3)" data-tip="Subscriptions · Oct: $15.99" data-act="tseg" data-m="2026-10" data-cat="Subscriptions" data-all="" tabindex="0" role="button" aria-label="Subscriptions · Oct: $15.99">
+</rect>
+<path d="M492,171.83784V165.96584000000001Q492,161.96584000000001 496,161.96584000000001H544Q548,161.96584000000001 548,165.96584000000001V171.83784Z" fill="var(--s0)" data-tip="Other · Oct: $28.00" data-act="tseg" data-m="2026-10" data-cat="Other" data-all="" tabindex="0" role="button" aria-label="Other · Oct: $28.00">
+</path>
+<text x="520" y="155.96584000000001" text-anchor="middle" style="fill:var(--ink)">$142</text>
+<text x="520" y="242" text-anchor="middle">Oct</text>
+<rect x="593.3333333333333" y="186.2568" width="56" height="35.7432" fill="var(--s1)" data-tip="Groceries · Nov: $84.30" data-act="tseg" data-m="2026-11" data-cat="Groceries" data-all="" tabindex="0" role="button" aria-label="Groceries · Nov: $84.30">
+</rect>
+<rect x="593.3333333333333" y="162.9368" width="56" height="21.319999999999993" fill="var(--s2)" data-tip="Pets · Nov: $55.00" data-act="tseg" data-m="2026-11" data-cat="Pets" data-all="" tabindex="0" role="button" aria-label="Pets · Nov: $55.00">
+</rect>
+<rect x="593.3333333333333" y="140.46904" width="56" height="20.46776" fill="var(--s4)" data-tip="Shopping · Nov: $52.99" data-act="tseg" data-m="2026-11" data-cat="Shopping" data-all="" tabindex="0" role="button" aria-label="Shopping · Nov: $52.99">
+</rect>
+<path d="M593.3333333333333,138.46904V116.12888000000001Q593.3333333333333,112.12888000000001 597.3333333333333,112.12888000000001H645.3333333333333Q649.3333333333333,112.12888000000001 649.3333333333333,116.12888000000001V138.46904Z" fill="var(--s0)" data-tip="Other · Nov: $66.84" data-act="tseg" data-m="2026-11" data-cat="Other" data-all="" tabindex="0" role="button" aria-label="Other · Nov: $66.84">
+</path>
+<text x="621.3333333333333" y="106.12888000000001" text-anchor="middle" style="fill:var(--ink)">$259</text>
+<text x="621.3333333333333" y="242" text-anchor="middle">Nov</text>
+</svg>
+</div> <div class="scroll" style="margin-top:10px">
+<table>
+<thead>
+<tr>
+<th>Month</th>
+<th class="num">Groceries</th>
+<th class="num">Pets</th>
+<th class="num">Subscriptions</th>
+<th class="num">Shopping</th>
+<th class="num">Other</th>
+<th class="num">Total</th>
+<th class="num">Per day</th>
+<th class="num">Tag: coffee</th>
+<th class="num">Tag: work</th>
+<th class="num">Tag: date night</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Jun 2026</td>
+<td class="num">$92</td>
+<td class="num">
+</td>
+<td class="num">$16</td>
+<td class="num">
+</td>
+<td class="num">$7</td>
+<td class="num">
+<b>$115</b>
+</td>
+<td class="num">$3.83</td>
+<td class="num">$7</td>
+<td class="num">
+</td>
+<td class="num">
+</td>
+</tr>
+<tr>
+<td>Jul 2026</td>
+<td class="num">$110</td>
+<td class="num">
+</td>
+<td class="num">$16</td>
+<td class="num">
+</td>
+<td class="num">$24</td>
+<td class="num">
+<b>$150</b>
+</td>
+<td class="num">$4.84</td>
+<td class="num">
+</td>
+<td class="num">$24</td>
+<td class="num">
+</td>
+</tr>
+<tr>
+<td>Aug 2026</td>
+<td class="num">$88</td>
+<td class="num">$45</td>
+<td class="num">$16</td>
+<td class="num">
+</td>
+<td class="num">
+</td>
+<td class="num">
+<b>$149</b>
+</td>
+<td class="num">$4.82</td>
+<td class="num">
+</td>
+<td class="num">
+</td>
+<td class="num">
+</td>
+</tr>
+<tr>
+<td>Sep 2026</td>
+<td class="num">$101</td>
+<td class="num">
+</td>
+<td class="num">$16</td>
+<td class="num">
+</td>
+<td class="num">$6</td>
+<td class="num">
+<b>$123</b>
+</td>
+<td class="num">$4.10</td>
+<td class="num">$6</td>
+<td class="num">
+</td>
+<td class="num">
+</td>
+</tr>
+<tr>
+<td>Oct 2026</td>
+<td class="num">$98</td>
+<td class="num">
+</td>
+<td class="num">$16</td>
+<td class="num">
+</td>
+<td class="num">$28</td>
+<td class="num">
+<b>$142</b>
+</td>
+<td class="num">$4.57</td>
+<td class="num">
+</td>
+<td class="num">
+</td>
+<td class="num">$28</td>
+</tr>
+<tr>
+<td>Nov 2026</td>
+<td class="num">$84</td>
+<td class="num">$55</td>
+<td class="num">
+</td>
+<td class="num">$53</td>
+<td class="num">$67</td>
+<td class="num">
+<b>$259</b>
+</td>
+<td class="num">$8.64</td>
+<td class="num">$6</td>
+<td class="num">$19</td>
+<td class="num">
+</td>
+</tr>
+</tbody>
+</table>
+</div> <p class="muted small">Logged spending only. Bills and card payments aren’t included, and partial months show as partial. Press a bar to see its biggest expenses.</p>
+</div> <div class="sec">
+<h2>All spending by month, bills included</h2>
+<div class="viz">
+<div class="lg">
+<span>
+<i style="background:var(--s1)">
+</i>Housing</span>
+<span>
+<i style="background:var(--s2)">
+</i>Groceries</span>
+<span>
+<i style="background:var(--s3)">
+</i>Transport</span>
+<span>
+<i style="background:var(--s4)">
+</i>Pets</span>
+<span>
+<i style="background:var(--s0)">
+</i>Other</span>
+</div>
+<svg viewBox="0 0 680 250" role="img" aria-label="All spending by month and category">
+<line class="base" x1="64" x2="672" y1="222" y2="222">
+</line>
+<text x="56" y="226" text-anchor="end">$0</text>
+<line class="gl" x1="64" x2="672" y1="169" y2="169">
+</line>
+<text x="56" y="173" text-anchor="end">$500</text>
+<line class="gl" x1="64" x2="672" y1="116" y2="116">
+</line>
+<text x="56" y="120" text-anchor="end">$1k</text>
+<line class="gl" x1="64" x2="672" y1="63" y2="63">
+</line>
+<text x="56" y="67" text-anchor="end">$1.5k</text>
+<line class="gl" x1="64" x2="672" y1="10" y2="10">
+</line>
+<text x="56" y="14" text-anchor="end">$2k</text>
+<rect x="86.66666666666666" y="212.2056" width="56" height="9.794399999999996" fill="var(--s2)" data-tip="Groceries · Jun: $92.40" data-act="tseg" data-m="2026-06" data-cat="Groceries" data-all="1" tabindex="0" role="button" aria-label="Groceries · Jun: $92.40">
+</rect>
+<path d="M86.66666666666666,210.82166V210.82166Q86.66666666666666,209.82166 87.66666666666666,209.82166H141.66666666666666Q142.66666666666666,209.82166 142.66666666666666,210.82166V210.82166Z" fill="var(--s0)" data-tip="Other · Jun: $22.49" data-act="tseg" data-m="2026-06" data-cat="Other" data-all="1" tabindex="0" role="button" aria-label="Other · Jun: $22.49">
+</path>
+<text x="114.66666666666666" y="203.82166" text-anchor="middle" style="fill:var(--ink)">$115</text>
+<text x="114.66666666666666" y="242" text-anchor="middle">Jun</text>
+<rect x="187.99999999999997" y="210.3241" width="56" height="11.675900000000013" fill="var(--s2)" data-tip="Groceries · Jul: $110.15" data-act="tseg" data-m="2026-07" data-cat="Groceries" data-all="1" tabindex="0" role="button" aria-label="Groceries · Jul: $110.15">
+</rect>
+<rect x="187.99999999999997" y="207.7801" width="56" height="1" fill="var(--s3)" data-tip="Transport · Jul: $24.00" data-act="tseg" data-m="2026-07" data-cat="Transport" data-all="1" tabindex="0" role="button" aria-label="Transport · Jul: $24.00">
+</rect>
+<path d="M187.99999999999997,207.08516V207.08516Q187.99999999999997,206.08516 188.99999999999997,206.08516H242.99999999999997Q243.99999999999997,206.08516 243.99999999999997,207.08516V207.08516Z" fill="var(--s0)" data-tip="Other · Jul: $15.99" data-act="tseg" data-m="2026-07" data-cat="Other" data-all="1" tabindex="0" role="button" aria-label="Other · Jul: $15.99">
+</path>
+<text x="215.99999999999997" y="200.08516" text-anchor="middle" style="fill:var(--ink)">$150</text>
+<text x="215.99999999999997" y="242" text-anchor="middle">Jul</text>
+<rect x="289.3333333333333" y="212.672" width="56" height="9.328000000000003" fill="var(--s2)" data-tip="Groceries · Aug: $88.00" data-act="tseg" data-m="2026-08" data-cat="Groceries" data-all="1" tabindex="0" role="button" aria-label="Groceries · Aug: $88.00">
+</rect>
+<rect x="289.3333333333333" y="207.8702" width="56" height="2.801799999999986" fill="var(--s4)" data-tip="Pets · Aug: $45.30" data-act="tseg" data-m="2026-08" data-cat="Pets" data-all="1" tabindex="0" role="button" aria-label="Pets · Aug: $45.30">
+</rect>
+<path d="M289.3333333333333,207.17526V207.17526Q289.3333333333333,206.17526 290.3333333333333,206.17526H344.3333333333333Q345.3333333333333,206.17526 345.3333333333333,207.17526V207.17526Z" fill="var(--s0)" data-tip="Other · Aug: $15.99" data-act="tseg" data-m="2026-08" data-cat="Other" data-all="1" tabindex="0" role="button" aria-label="Other · Aug: $15.99">
+</path>
+<text x="317.3333333333333" y="200.17526" text-anchor="middle" style="fill:var(--ink)">$149</text>
+<text x="317.3333333333333" y="242" text-anchor="middle">Aug</text>
+<rect x="390.6666666666667" y="211.2728" width="56" height="10.72720000000001" fill="var(--s2)" data-tip="Groceries · Sep: $101.20" data-act="tseg" data-m="2026-09" data-cat="Groceries" data-all="1" tabindex="0" role="button" aria-label="Groceries · Sep: $101.20">
+</rect>
+<path d="M390.6666666666667,209.96836V209.96836Q390.6666666666667,208.96836 391.6666666666667,208.96836H445.6666666666667Q446.6666666666667,208.96836 446.6666666666667,209.96836V209.96836Z" fill="var(--s0)" data-tip="Other · Sep: $21.74" data-act="tseg" data-m="2026-09" data-cat="Other" data-all="1" tabindex="0" role="button" aria-label="Other · Sep: $21.74">
+</path>
+<text x="418.6666666666667" y="202.96836" text-anchor="middle" style="fill:var(--ink)">$123</text>
+<text x="418.6666666666667" y="242" text-anchor="middle">Sep</text>
+<rect x="492" y="47.10000000000002" width="56" height="174.89999999999998" fill="var(--s1)" data-tip="Housing · Oct: $1,650.00" data-act="tseg" data-m="2026-10" data-cat="Housing" data-all="1" tabindex="0" role="button" aria-label="Housing · Oct: $1,650.00">
+</rect>
+<rect x="492" y="36.75440000000003" width="56" height="8.34559999999999" fill="var(--s2)" data-tip="Groceries · Oct: $97.60" data-act="tseg" data-m="2026-10" data-cat="Groceries" data-all="1" tabindex="0" role="button" aria-label="Groceries · Oct: $97.60">
+</rect>
+<path d="M492,34.75440000000003V34.75440000000003Q492,32.09146000000001 494.66294000000005,32.09146000000001H545.33706Q548,32.09146000000001 548,34.75440000000003V34.75440000000003Z" fill="var(--s0)" data-tip="Other · Oct: $43.99" data-act="tseg" data-m="2026-10" data-cat="Other" data-all="1" tabindex="0" role="button" aria-label="Other · Oct: $43.99">
+</path>
+<text x="520" y="26.091460000000012" text-anchor="middle" style="fill:var(--ink)">$1,792</text>
+<text x="520" y="242" text-anchor="middle">Oct</text>
+<rect x="593.3333333333333" y="213.0642" width="56" height="8.9358" fill="var(--s2)" data-tip="Groceries · Nov: $84.30" data-act="tseg" data-m="2026-11" data-cat="Groceries" data-all="1" tabindex="0" role="button" aria-label="Groceries · Nov: $84.30">
+</rect>
+<rect x="593.3333333333333" y="177.1832" width="56" height="33.881" fill="var(--s3)" data-tip="Transport · Nov: $338.50" data-act="tseg" data-m="2026-11" data-cat="Transport" data-all="1" tabindex="0" role="button" aria-label="Transport · Nov: $338.50">
+</rect>
+<rect x="593.3333333333333" y="171.35320000000002" width="56" height="3.829999999999984" fill="var(--s4)" data-tip="Pets · Nov: $55.00" data-act="tseg" data-m="2026-11" data-cat="Pets" data-all="1" tabindex="0" role="button" aria-label="Pets · Nov: $55.00">
+</rect>
+<path d="M593.3333333333333,169.35320000000002V164.61221999999998Q593.3333333333333,160.61221999999998 597.3333333333333,160.61221999999998H645.3333333333333Q649.3333333333333,160.61221999999998 649.3333333333333,164.61221999999998V169.35320000000002Z" fill="var(--s0)" data-tip="Other · Nov: $101.33" data-act="tseg" data-m="2026-11" data-cat="Other" data-all="1" tabindex="0" role="button" aria-label="Other · Nov: $101.33">
+</path>
+<text x="621.3333333333333" y="154.61221999999998" text-anchor="middle" style="fill:var(--ink)">$579</text>
+<text x="621.3333333333333" y="242" text-anchor="middle">Nov</text>
+</svg>
+</div>
+<div class="scroll" style="margin-top:10px">
+<table>
+<thead>
+<tr>
+<th colspan="3">Groceries, November 2026: biggest expenses</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Nov 2</td>
+<td>Trader Joe's</td>
+<td class="num">$84.30</td>
+</tr>
+</tbody>
+</table>
+</div> <p class="muted small">Logged spending plus the bills checked off as paid. Card payments and transfers aren’t included: what they pay for is already counted.</p>
 </div> <div class="sec">
 <h2>Net worth</h2>
 <div class="viz">

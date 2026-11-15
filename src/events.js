@@ -53,6 +53,7 @@ const setKickEstimate=(id,v)=>{const el=$(`[data-kb="${CSS.escape(id)}"]`);if(el
 /** What a click on a [data-act] element does, by its data-act. b is the element; its data-kind, data-id and so on say what it's for.
  * @type {Record<string,(b:HTMLElement)=>void>} */
 const CLICK={
+  tseg(b){const d=b.dataset,s=state.tsel,all=!!d.all;state.tsel=s&&s.m===d.m&&s.cat===d.cat&&s.all===all?null:{m:d.m,cat:d.cat,all};paint()},
   prev(){shift(-1)},
   next(){shift(1)},
   today(){state.view={y:state.now.getFullYear(),m:state.now.getMonth()};render()},
@@ -91,6 +92,8 @@ document.addEventListener('click',e=>{
   if(b.dataset.tab){state.tab=b.dataset.tab;lset('ui',{...(lget('ui')||{}),tab:state.tab});render();return}
   if(Object.hasOwn(CLICK,b.dataset.act))CLICK[b.dataset.act](b);
 });
+/* chart bars aren't buttons: Enter or Space presses the focused one */
+document.addEventListener('keydown',e=>{const b=/** @type {any} */(e.target);if((e.key==='Enter'||e.key===' ')&&b.dataset?.act==='tseg'){e.preventDefault();b.dispatchEvent(new MouseEvent('click',{bubbles:true}))}});
 /* budget categories: drag the grip (mouse or touch) or use arrow keys on it; the order is the plan's category order */
 function catOrder(names){
   const before=state.plan.cats.map(c=>c.name).join('\n');
@@ -161,6 +164,7 @@ const CHANGE={
   done(b){setDone(b);paintSoon()},
   kdone(b){setDone(b)},
   kdate(b){setPlan(()=>{state.plan.kickoff=b.value})},
+  tacct(b){state.toff[b.checked?'delete':'add'](b.dataset.id);paintSoon()},
   planned(b){setPlan(()=>{state.plan.showPlanned=b.checked})},
   intin(b){setPlan(()=>{state.plan.interestIn=b.checked})},
   extra(b){setPlan(()=>{state.plan.extra=Math.max(0,num(b))})},

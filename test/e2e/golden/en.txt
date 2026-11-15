@@ -514,8 +514,21 @@ Ask about your spending
 Optional: reading PDFs and screenshots, and asking about your spending, use a free AI that runs on this Mac. To turn it on, install Ollama, run ollama pull gemma4:12b in Terminal, and keep the Ollama app open. Everything else works without it. If you already have Ollama, open it and check again.
 
 Check again
+Spending from accounts
+Checking
+Savings
+Wallet
+Brokerage
+401k
+Health savings
+Car
+Visa
+Auto loan
+No account
 November: logged
 $259
+November: all spending
+$579
 Average, last 3 months with spending
 $175
 Tagged coffee, 6 months
@@ -555,7 +568,140 @@ Sep 2026	$101		$16		$6	$123	$4.10	$6
 Oct 2026	$98		$16		$28	$142	$4.57			$28
 Nov 2026	$84	$55		$53	$67	$259	$8.64	$6	$19
 
-Logged spending only. Bills and card payments aren’t included, and partial months show as partial.
+Logged spending only. Bills and card payments aren’t included, and partial months show as partial. Press a bar to see its biggest expenses.
+
+All spending by month, bills included
+Housing
+Groceries
+Transport
+Pets
+Other
+$0
+$500
+$1k
+$1.5k
+$2k
+$115
+Jun
+$150
+Jul
+$149
+Aug
+$123
+Sep
+$1,792
+Oct
+$579
+Nov
+
+Logged spending plus the bills checked off as paid. Card payments and transfers aren’t included: what they pay for is already counted.
+
+Net worth
+$65.2k
+$67.2k
+$69.3k
+$71.3k
+Aug
+Sep
+Oct
+$70,600
+
+=== trends-bar-pressed
+Flowly
+‹
+November 2026
+›
+Today
+Saved on this device
+☾︎
+Ask about your spending
+
+Optional: reading PDFs and screenshots, and asking about your spending, use a free AI that runs on this Mac. To turn it on, install Ollama, run ollama pull gemma4:12b in Terminal, and keep the Ollama app open. Everything else works without it. If you already have Ollama, open it and check again.
+
+Check again
+Spending from accounts
+Checking
+Savings
+Wallet
+Brokerage
+401k
+Health savings
+Car
+Visa
+Auto loan
+No account
+November: logged
+$259
+November: all spending
+$579
+Average, last 3 months with spending
+$175
+Tagged coffee, 6 months
+$19
+Tagged work, 6 months
+$43
+Tagged date night, 6 months
+$28
+Logged spending by month
+Groceries
+Pets
+Subscriptions
+Shopping
+Other
+$0
+$125
+$250
+$375
+$500
+$115
+Jun
+$150
+Jul
+$149
+Aug
+$123
+Sep
+$142
+Oct
+$259
+Nov
+Month	Groceries	Pets	Subscriptions	Shopping	Other	Total	Per day	Tag: coffee	Tag: work	Tag: date night
+Jun 2026	$92		$16		$7	$115	$3.83	$7
+Jul 2026	$110		$16		$24	$150	$4.84		$24
+Aug 2026	$88	$45	$16			$149	$4.82
+Sep 2026	$101		$16		$6	$123	$4.10	$6
+Oct 2026	$98		$16		$28	$142	$4.57			$28
+Nov 2026	$84	$55		$53	$67	$259	$8.64	$6	$19
+
+Logged spending only. Bills and card payments aren’t included, and partial months show as partial. Press a bar to see its biggest expenses.
+
+All spending by month, bills included
+Housing
+Groceries
+Transport
+Pets
+Other
+$0
+$500
+$1k
+$1.5k
+$2k
+$115
+Jun
+$150
+Jul
+$149
+Aug
+$123
+Sep
+$1,792
+Oct
+$579
+Nov
+Groceries, November 2026: biggest expenses
+Nov 2	Trader Joe's	$84.30
+
+Logged spending plus the bills checked off as paid. Card payments and transfers aren’t included: what they pay for is already counted.
 
 Net worth
 $65.2k

@@ -12,6 +12,7 @@ import { occ, sched } from '../src/model/schedule.js';
 import { sim } from '../src/model/debt.js';
 import { acct } from '../src/model/accounts.js';
 import { moveMoney } from '../src/model/transfers.js';
+import { monthSpend, spendItems } from '../src/model/spending.js';
 import { parseAmount, parseDate, dateOrder, parseCSV, freshRows, aiRows, chunkText, guessColumns, csvRows } from '../src/import/parse.js';
 
 const setData = (p, t) => { state.plan = p; state.tx = t || {}; };
@@ -290,4 +291,29 @@ test('shared folder: plan fields, maps and category order; unstamped data is nev
   // names like "constructor" are ordinary keys, and junk stamps count as none
   const odd = merge({ merch: { constructor: 1 }, _m: { merch: 'x', constructor: {} } }, { merch: {}, _m: { merch: { constructor: 'soon' } } });
   eq(odd.doc.merch, { constructor: 1 });
+});
+
+test('Trends: a month of spending by account, with and without bills', () => {
+  const today = state.TODAY; state.TODAY = '2026-03-31';
+  state.plan = blank();
+  state.plan.accounts = [{ id: 'a', name: 'Mine', type: 'checking', bal: 0 }, { id: 'b', name: 'Joint', type: 'checking', bal: 0 }];
+  state.plan.bills = [{ id: 'rent', name: 'Rent', amt: 1000, freq: 'monthly', date: '2026-01-05', acct: 'b', cat: 'Housing' }];
+  state.tx = { '2026-03': { items: [
+    { id: '1', date: '2026-03-02', desc: 'Shop', amt: -30, cat: 'Groceries', acct: 'a', tag: '' },
+    { id: '2', date: '2026-03-03', desc: 'Cafe', amt: -20, cat: 'Take Out', acct: 'b', tag: 'trip' },
+    { id: '3', date: '2026-03-04', desc: 'Cash', amt: -5, cat: 'Other', acct: 'gone', tag: '' },
+    { id: '4', date: '2026-03-05', desc: 'Rent', amt: -1000, cat: 'Bill payment', acct: 'b', tag: '' }] } };
+  assert.equal(monthSpend('2026-03').allTotal, 55, 'a bill that is due but not checked off is left out');
+  state.plan.done['out:rent:2026-03-05'] = 1;
+  const every = monthSpend('2026-03');
+  assert.equal(every.total, 55); assert.equal(every.allTotal, 1055); assert.equal(every.all.Housing, 1000);
+  const mine = monthSpend('2026-03', new Set(['b', '']));
+  assert.equal(mine.total, 30); assert.equal(mine.allTotal, 30); assert.deepEqual({ ...mine.tags }, {});
+  assert.equal(monthSpend('2026-03', new Set(['a', 'b'])).total, 5, 'a deleted account counts as no account');
+  assert.deepEqual(spendItems('2026-03', new Set(), true).map(t => t.name), ['Rent', 'Shop', 'Cafe', 'Cash'], 'biggest first, bills included');
+  assert.deepEqual(spendItems('2026-03', new Set(['b'])).map(t => t.amt), [30, 5]);
+  state.TODAY = '2026-03-03';
+  assert.equal(monthSpend('2026-03').total, 50, 'a purchase dated after today waits');
+  assert.equal(monthSpend('2026-03').allTotal, 1050, 'a bill paid early counts');
+  state.TODAY = today;
 });

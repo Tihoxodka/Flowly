@@ -1981,10 +1981,36 @@
 <button class="btn sm" data-act="askchk">Проверить ещё раз</button>
 </div>
 </div>
-<div class="cards">
+<fieldset class="lg" style="border:0;padding:0;gap:8px 18px">
+<legend class="muted small" style="padding:0 0 6px">Расходы со счетов</legend>
+<label class="chk">
+<input type="checkbox" data-act="tacct" data-id="chk" checked=""> Checking</label>
+<label class="chk">
+<input type="checkbox" data-act="tacct" data-id="sav" checked=""> Savings</label>
+<label class="chk">
+<input type="checkbox" data-act="tacct" data-id="wal" checked=""> Wallet</label>
+<label class="chk">
+<input type="checkbox" data-act="tacct" data-id="inv" checked=""> Brokerage</label>
+<label class="chk">
+<input type="checkbox" data-act="tacct" data-id="ret" checked=""> 401k</label>
+<label class="chk">
+<input type="checkbox" data-act="tacct" data-id="hsa" checked=""> Health savings</label>
+<label class="chk">
+<input type="checkbox" data-act="tacct" data-id="car" checked=""> Car</label>
+<label class="chk">
+<input type="checkbox" data-act="tacct" data-id="cc" checked=""> Visa</label>
+<label class="chk">
+<input type="checkbox" data-act="tacct" data-id="loan" checked=""> Auto loan</label>
+<label class="chk">
+<input type="checkbox" data-act="tacct" data-id="" checked=""> Без счёта</label>
+</fieldset> <div class="cards">
 <div class="card">
 <small>Ноябрь: записано</small>
 <b>$259</b>
+</div>
+<div class="card">
+<small>Ноябрь: все расходы</small>
+<b>$579</b>
 </div>
 <div class="card">
 <small>В среднем за последние 3 месяца с расходами</small>
@@ -2038,53 +2064,53 @@
 <line class="gl" x1="64" x2="672" y1="10" y2="10">
 </line>
 <text x="56" y="14" text-anchor="end">$500</text>
-<rect x="86.66666666666666" y="182.8224" width="56" height="39.17760000000001" fill="var(--s1)" data-tip="Продукты · Июнь: $92.40">
+<rect x="86.66666666666666" y="182.8224" width="56" height="39.17760000000001" fill="var(--s1)" data-tip="Продукты · Июнь: $92.40" data-act="tseg" data-m="2026-06" data-cat="Groceries" data-all="" tabindex="0" role="button" aria-label="Продукты · Июнь: $92.40">
 </rect>
-<rect x="86.66666666666666" y="176.04264" width="56" height="4.779759999999982" fill="var(--s3)" data-tip="Подписки · Июнь: $15.99">
+<rect x="86.66666666666666" y="176.04264" width="56" height="4.779759999999982" fill="var(--s3)" data-tip="Подписки · Июнь: $15.99" data-act="tseg" data-m="2026-06" data-cat="Subscriptions" data-all="" tabindex="0" role="button" aria-label="Подписки · Июнь: $15.99">
 </rect>
-<path d="M86.66666666666666,174.28664V174.28664Q86.66666666666666,173.28664 87.66666666666666,173.28664H141.66666666666666Q142.66666666666666,173.28664 142.66666666666666,174.28664V174.28664Z" fill="var(--s0)" data-tip="Прочее · Июнь: $6.50">
+<path d="M86.66666666666666,174.28664V174.28664Q86.66666666666666,173.28664 87.66666666666666,173.28664H141.66666666666666Q142.66666666666666,173.28664 142.66666666666666,174.28664V174.28664Z" fill="var(--s0)" data-tip="Прочее · Июнь: $6.50" data-act="tseg" data-m="2026-06" data-cat="Other" data-all="" tabindex="0" role="button" aria-label="Прочее · Июнь: $6.50">
 </path>
 <text x="114.66666666666666" y="167.28664" text-anchor="middle" style="fill:var(--ink)">$115</text>
 <text x="114.66666666666666" y="242" text-anchor="middle">Июнь</text>
-<rect x="187.99999999999997" y="175.2964" width="56" height="46.703599999999994" fill="var(--s1)" data-tip="Продукты · Июль: $110.15">
+<rect x="187.99999999999997" y="175.2964" width="56" height="46.703599999999994" fill="var(--s1)" data-tip="Продукты · Июль: $110.15" data-act="tseg" data-m="2026-07" data-cat="Groceries" data-all="" tabindex="0" role="button" aria-label="Продукты · Июль: $110.15">
 </rect>
-<rect x="187.99999999999997" y="168.51664" width="56" height="4.77976000000001" fill="var(--s3)" data-tip="Подписки · Июль: $15.99">
+<rect x="187.99999999999997" y="168.51664" width="56" height="4.77976000000001" fill="var(--s3)" data-tip="Подписки · Июль: $15.99" data-act="tseg" data-m="2026-07" data-cat="Subscriptions" data-all="" tabindex="0" role="button" aria-label="Подписки · Июль: $15.99">
 </rect>
-<path d="M187.99999999999997,166.51664V162.34064Q187.99999999999997,158.34064 191.99999999999997,158.34064H239.99999999999997Q243.99999999999997,158.34064 243.99999999999997,162.34064V166.51664Z" fill="var(--s0)" data-tip="Прочее · Июль: $24.00">
+<path d="M187.99999999999997,166.51664V162.34064Q187.99999999999997,158.34064 191.99999999999997,158.34064H239.99999999999997Q243.99999999999997,158.34064 243.99999999999997,162.34064V166.51664Z" fill="var(--s0)" data-tip="Прочее · Июль: $24.00" data-act="tseg" data-m="2026-07" data-cat="Other" data-all="" tabindex="0" role="button" aria-label="Прочее · Июль: $24.00">
 </path>
 <text x="215.99999999999997" y="152.34064" text-anchor="middle" style="fill:var(--ink)">$150</text>
 <text x="215.99999999999997" y="242" text-anchor="middle">Июль</text>
-<rect x="289.3333333333333" y="184.688" width="56" height="37.31200000000001" fill="var(--s1)" data-tip="Продукты · Авг.: $88.00">
+<rect x="289.3333333333333" y="184.688" width="56" height="37.31200000000001" fill="var(--s1)" data-tip="Продукты · Авг.: $88.00" data-act="tseg" data-m="2026-08" data-cat="Groceries" data-all="" tabindex="0" role="button" aria-label="Продукты · Авг.: $88.00">
 </rect>
-<rect x="289.3333333333333" y="165.4808" width="56" height="17.2072" fill="var(--s2)" data-tip="Pets · Авг.: $45.30">
+<rect x="289.3333333333333" y="165.4808" width="56" height="17.2072" fill="var(--s2)" data-tip="Pets · Авг.: $45.30" data-act="tseg" data-m="2026-08" data-cat="Pets" data-all="" tabindex="0" role="button" aria-label="Pets · Авг.: $45.30">
 </rect>
-<path d="M289.3333333333333,163.4808V162.70103999999998Q289.3333333333333,158.70103999999998 293.3333333333333,158.70103999999998H341.3333333333333Q345.3333333333333,158.70103999999998 345.3333333333333,162.70103999999998V163.4808Z" fill="var(--s3)" data-tip="Подписки · Авг.: $15.99">
+<path d="M289.3333333333333,163.4808V162.70103999999998Q289.3333333333333,158.70103999999998 293.3333333333333,158.70103999999998H341.3333333333333Q345.3333333333333,158.70103999999998 345.3333333333333,162.70103999999998V163.4808Z" fill="var(--s3)" data-tip="Подписки · Авг.: $15.99" data-act="tseg" data-m="2026-08" data-cat="Subscriptions" data-all="" tabindex="0" role="button" aria-label="Подписки · Авг.: $15.99">
 </path>
-<text x="317.3333333333333" y="152.70104" text-anchor="middle" style="fill:var(--ink)">$149</text>
+<text x="317.3333333333333" y="152.70103999999998" text-anchor="middle" style="fill:var(--ink)">$149</text>
 <text x="317.3333333333333" y="242" text-anchor="middle">Авг.</text>
-<rect x="390.6666666666667" y="179.09120000000001" width="56" height="42.908799999999985" fill="var(--s1)" data-tip="Продукты · Сент.: $101.20">
+<rect x="390.6666666666667" y="179.09120000000001" width="56" height="42.908799999999985" fill="var(--s1)" data-tip="Продукты · Сент.: $101.20" data-act="tseg" data-m="2026-09" data-cat="Groceries" data-all="" tabindex="0" role="button" aria-label="Продукты · Сент.: $101.20">
 </rect>
-<rect x="390.6666666666667" y="172.31144" width="56" height="4.77976000000001" fill="var(--s3)" data-tip="Подписки · Сент.: $15.99">
+<rect x="390.6666666666667" y="172.31144" width="56" height="4.77976000000001" fill="var(--s3)" data-tip="Подписки · Сент.: $15.99" data-act="tseg" data-m="2026-09" data-cat="Subscriptions" data-all="" tabindex="0" role="button" aria-label="Подписки · Сент.: $15.99">
 </rect>
-<path d="M390.6666666666667,170.87344000000002V170.87344000000002Q390.6666666666667,169.87344000000002 391.6666666666667,169.87344000000002H445.6666666666667Q446.6666666666667,169.87344000000002 446.6666666666667,170.87344000000002V170.87344000000002Z" fill="var(--s0)" data-tip="Прочее · Сент.: $5.75">
+<path d="M390.6666666666667,170.87344000000002V170.87344000000002Q390.6666666666667,169.87344000000002 391.6666666666667,169.87344000000002H445.6666666666667Q446.6666666666667,169.87344000000002 446.6666666666667,170.87344000000002V170.87344000000002Z" fill="var(--s0)" data-tip="Прочее · Сент.: $5.75" data-act="tseg" data-m="2026-09" data-cat="Other" data-all="" tabindex="0" role="button" aria-label="Прочее · Сент.: $5.75">
 </path>
 <text x="418.6666666666667" y="163.87344000000002" text-anchor="middle" style="fill:var(--ink)">$123</text>
 <text x="418.6666666666667" y="242" text-anchor="middle">Сент.</text>
-<rect x="492" y="180.6176" width="56" height="41.38239999999999" fill="var(--s1)" data-tip="Продукты · Окт.: $97.60">
+<rect x="492" y="180.6176" width="56" height="41.38239999999999" fill="var(--s1)" data-tip="Продукты · Окт.: $97.60" data-act="tseg" data-m="2026-10" data-cat="Groceries" data-all="" tabindex="0" role="button" aria-label="Продукты · Окт.: $97.60">
 </rect>
-<rect x="492" y="173.83784" width="56" height="4.77976000000001" fill="var(--s3)" data-tip="Подписки · Окт.: $15.99">
+<rect x="492" y="173.83784" width="56" height="4.77976000000001" fill="var(--s3)" data-tip="Подписки · Окт.: $15.99" data-act="tseg" data-m="2026-10" data-cat="Subscriptions" data-all="" tabindex="0" role="button" aria-label="Подписки · Окт.: $15.99">
 </rect>
-<path d="M492,171.83784V165.96584000000001Q492,161.96584000000001 496,161.96584000000001H544Q548,161.96584000000001 548,165.96584000000001V171.83784Z" fill="var(--s0)" data-tip="Прочее · Окт.: $28.00">
+<path d="M492,171.83784V165.96584000000001Q492,161.96584000000001 496,161.96584000000001H544Q548,161.96584000000001 548,165.96584000000001V171.83784Z" fill="var(--s0)" data-tip="Прочее · Окт.: $28.00" data-act="tseg" data-m="2026-10" data-cat="Other" data-all="" tabindex="0" role="button" aria-label="Прочее · Окт.: $28.00">
 </path>
 <text x="520" y="155.96584000000001" text-anchor="middle" style="fill:var(--ink)">$142</text>
 <text x="520" y="242" text-anchor="middle">Окт.</text>
-<rect x="593.3333333333333" y="186.2568" width="56" height="35.7432" fill="var(--s1)" data-tip="Продукты · Нояб.: $84.30">
+<rect x="593.3333333333333" y="186.2568" width="56" height="35.7432" fill="var(--s1)" data-tip="Продукты · Нояб.: $84.30" data-act="tseg" data-m="2026-11" data-cat="Groceries" data-all="" tabindex="0" role="button" aria-label="Продукты · Нояб.: $84.30">
 </rect>
-<rect x="593.3333333333333" y="162.9368" width="56" height="21.319999999999993" fill="var(--s2)" data-tip="Pets · Нояб.: $55.00">
+<rect x="593.3333333333333" y="162.9368" width="56" height="21.319999999999993" fill="var(--s2)" data-tip="Pets · Нояб.: $55.00" data-act="tseg" data-m="2026-11" data-cat="Pets" data-all="" tabindex="0" role="button" aria-label="Pets · Нояб.: $55.00">
 </rect>
-<rect x="593.3333333333333" y="140.46904" width="56" height="20.46776" fill="var(--s4)" data-tip="Покупки · Нояб.: $52.99">
+<rect x="593.3333333333333" y="140.46904" width="56" height="20.46776" fill="var(--s4)" data-tip="Покупки · Нояб.: $52.99" data-act="tseg" data-m="2026-11" data-cat="Shopping" data-all="" tabindex="0" role="button" aria-label="Покупки · Нояб.: $52.99">
 </rect>
-<path d="M593.3333333333333,138.46904V116.12888000000001Q593.3333333333333,112.12888000000001 597.3333333333333,112.12888000000001H645.3333333333333Q649.3333333333333,112.12888000000001 649.3333333333333,116.12888000000001V138.46904Z" fill="var(--s0)" data-tip="Прочее · Нояб.: $66.84">
+<path d="M593.3333333333333,138.46904V116.12888000000001Q593.3333333333333,112.12888000000001 597.3333333333333,112.12888000000001H645.3333333333333Q649.3333333333333,112.12888000000001 649.3333333333333,116.12888000000001V138.46904Z" fill="var(--s0)" data-tip="Прочее · Нояб.: $66.84" data-act="tseg" data-m="2026-11" data-cat="Other" data-all="" tabindex="0" role="button" aria-label="Прочее · Нояб.: $66.84">
 </path>
 <text x="621.3333333333333" y="106.12888000000001" text-anchor="middle" style="fill:var(--ink)">$259</text>
 <text x="621.3333333333333" y="242" text-anchor="middle">Нояб.</text>
@@ -2222,7 +2248,505 @@
 </tr>
 </tbody>
 </table>
-</div> <p class="muted small">Только записанные расходы. Платежи и оплата карт не входят, неполные месяцы показаны как есть.</p>
+</div> <p class="muted small">Только записанные расходы. Платежи и оплата карт не входят, неполные месяцы показаны как есть. Нажмите на столбец, чтобы увидеть самые крупные расходы.</p>
+</div> <div class="sec">
+<h2>Все расходы по месяцам, включая оплаченные платежи</h2>
+<div class="viz">
+<div class="lg">
+<span>
+<i style="background:var(--s1)">
+</i>Жильё</span>
+<span>
+<i style="background:var(--s2)">
+</i>Продукты</span>
+<span>
+<i style="background:var(--s3)">
+</i>Транспорт</span>
+<span>
+<i style="background:var(--s4)">
+</i>Pets</span>
+<span>
+<i style="background:var(--s0)">
+</i>Прочее</span>
+</div>
+<svg viewBox="0 0 680 250" role="img" aria-label="Все расходы по месяцам и категориям">
+<line class="base" x1="64" x2="672" y1="222" y2="222">
+</line>
+<text x="56" y="226" text-anchor="end">$0</text>
+<line class="gl" x1="64" x2="672" y1="169" y2="169">
+</line>
+<text x="56" y="173" text-anchor="end">$500</text>
+<line class="gl" x1="64" x2="672" y1="116" y2="116">
+</line>
+<text x="56" y="120" text-anchor="end">$1k</text>
+<line class="gl" x1="64" x2="672" y1="63" y2="63">
+</line>
+<text x="56" y="67" text-anchor="end">$1.5k</text>
+<line class="gl" x1="64" x2="672" y1="10" y2="10">
+</line>
+<text x="56" y="14" text-anchor="end">$2k</text>
+<rect x="86.66666666666666" y="212.2056" width="56" height="9.794399999999996" fill="var(--s2)" data-tip="Продукты · Июнь: $92.40" data-act="tseg" data-m="2026-06" data-cat="Groceries" data-all="1" tabindex="0" role="button" aria-label="Продукты · Июнь: $92.40">
+</rect>
+<path d="M86.66666666666666,210.82166V210.82166Q86.66666666666666,209.82166 87.66666666666666,209.82166H141.66666666666666Q142.66666666666666,209.82166 142.66666666666666,210.82166V210.82166Z" fill="var(--s0)" data-tip="Прочее · Июнь: $22.49" data-act="tseg" data-m="2026-06" data-cat="Other" data-all="1" tabindex="0" role="button" aria-label="Прочее · Июнь: $22.49">
+</path>
+<text x="114.66666666666666" y="203.82166" text-anchor="middle" style="fill:var(--ink)">$115</text>
+<text x="114.66666666666666" y="242" text-anchor="middle">Июнь</text>
+<rect x="187.99999999999997" y="210.3241" width="56" height="11.675900000000013" fill="var(--s2)" data-tip="Продукты · Июль: $110.15" data-act="tseg" data-m="2026-07" data-cat="Groceries" data-all="1" tabindex="0" role="button" aria-label="Продукты · Июль: $110.15">
+</rect>
+<rect x="187.99999999999997" y="207.7801" width="56" height="1" fill="var(--s3)" data-tip="Транспорт · Июль: $24.00" data-act="tseg" data-m="2026-07" data-cat="Transport" data-all="1" tabindex="0" role="button" aria-label="Транспорт · Июль: $24.00">
+</rect>
+<path d="M187.99999999999997,207.08516V207.08516Q187.99999999999997,206.08516 188.99999999999997,206.08516H242.99999999999997Q243.99999999999997,206.08516 243.99999999999997,207.08516V207.08516Z" fill="var(--s0)" data-tip="Прочее · Июль: $15.99" data-act="tseg" data-m="2026-07" data-cat="Other" data-all="1" tabindex="0" role="button" aria-label="Прочее · Июль: $15.99">
+</path>
+<text x="215.99999999999997" y="200.08516" text-anchor="middle" style="fill:var(--ink)">$150</text>
+<text x="215.99999999999997" y="242" text-anchor="middle">Июль</text>
+<rect x="289.3333333333333" y="212.672" width="56" height="9.328000000000003" fill="var(--s2)" data-tip="Продукты · Авг.: $88.00" data-act="tseg" data-m="2026-08" data-cat="Groceries" data-all="1" tabindex="0" role="button" aria-label="Продукты · Авг.: $88.00">
+</rect>
+<rect x="289.3333333333333" y="207.8702" width="56" height="2.801799999999986" fill="var(--s4)" data-tip="Pets · Авг.: $45.30" data-act="tseg" data-m="2026-08" data-cat="Pets" data-all="1" tabindex="0" role="button" aria-label="Pets · Авг.: $45.30">
+</rect>
+<path d="M289.3333333333333,207.17526V207.17526Q289.3333333333333,206.17526 290.3333333333333,206.17526H344.3333333333333Q345.3333333333333,206.17526 345.3333333333333,207.17526V207.17526Z" fill="var(--s0)" data-tip="Прочее · Авг.: $15.99" data-act="tseg" data-m="2026-08" data-cat="Other" data-all="1" tabindex="0" role="button" aria-label="Прочее · Авг.: $15.99">
+</path>
+<text x="317.3333333333333" y="200.17526" text-anchor="middle" style="fill:var(--ink)">$149</text>
+<text x="317.3333333333333" y="242" text-anchor="middle">Авг.</text>
+<rect x="390.6666666666667" y="211.2728" width="56" height="10.72720000000001" fill="var(--s2)" data-tip="Продукты · Сент.: $101.20" data-act="tseg" data-m="2026-09" data-cat="Groceries" data-all="1" tabindex="0" role="button" aria-label="Продукты · Сент.: $101.20">
+</rect>
+<path d="M390.6666666666667,209.96836V209.96836Q390.6666666666667,208.96836 391.6666666666667,208.96836H445.6666666666667Q446.6666666666667,208.96836 446.6666666666667,209.96836V209.96836Z" fill="var(--s0)" data-tip="Прочее · Сент.: $21.74" data-act="tseg" data-m="2026-09" data-cat="Other" data-all="1" tabindex="0" role="button" aria-label="Прочее · Сент.: $21.74">
+</path>
+<text x="418.6666666666667" y="202.96836" text-anchor="middle" style="fill:var(--ink)">$123</text>
+<text x="418.6666666666667" y="242" text-anchor="middle">Сент.</text>
+<rect x="492" y="47.10000000000002" width="56" height="174.89999999999998" fill="var(--s1)" data-tip="Жильё · Окт.: $1,650.00" data-act="tseg" data-m="2026-10" data-cat="Housing" data-all="1" tabindex="0" role="button" aria-label="Жильё · Окт.: $1,650.00">
+</rect>
+<rect x="492" y="36.75440000000003" width="56" height="8.34559999999999" fill="var(--s2)" data-tip="Продукты · Окт.: $97.60" data-act="tseg" data-m="2026-10" data-cat="Groceries" data-all="1" tabindex="0" role="button" aria-label="Продукты · Окт.: $97.60">
+</rect>
+<path d="M492,34.75440000000003V34.75440000000003Q492,32.09146000000001 494.66294000000005,32.09146000000001H545.33706Q548,32.09146000000001 548,34.75440000000003V34.75440000000003Z" fill="var(--s0)" data-tip="Прочее · Окт.: $43.99" data-act="tseg" data-m="2026-10" data-cat="Other" data-all="1" tabindex="0" role="button" aria-label="Прочее · Окт.: $43.99">
+</path>
+<text x="520" y="26.091460000000012" text-anchor="middle" style="fill:var(--ink)">$1,792</text>
+<text x="520" y="242" text-anchor="middle">Окт.</text>
+<rect x="593.3333333333333" y="213.0642" width="56" height="8.9358" fill="var(--s2)" data-tip="Продукты · Нояб.: $84.30" data-act="tseg" data-m="2026-11" data-cat="Groceries" data-all="1" tabindex="0" role="button" aria-label="Продукты · Нояб.: $84.30">
+</rect>
+<rect x="593.3333333333333" y="177.1832" width="56" height="33.881" fill="var(--s3)" data-tip="Транспорт · Нояб.: $338.50" data-act="tseg" data-m="2026-11" data-cat="Transport" data-all="1" tabindex="0" role="button" aria-label="Транспорт · Нояб.: $338.50">
+</rect>
+<rect x="593.3333333333333" y="171.35320000000002" width="56" height="3.829999999999984" fill="var(--s4)" data-tip="Pets · Нояб.: $55.00" data-act="tseg" data-m="2026-11" data-cat="Pets" data-all="1" tabindex="0" role="button" aria-label="Pets · Нояб.: $55.00">
+</rect>
+<path d="M593.3333333333333,169.35320000000002V164.61221999999998Q593.3333333333333,160.61221999999998 597.3333333333333,160.61221999999998H645.3333333333333Q649.3333333333333,160.61221999999998 649.3333333333333,164.61221999999998V169.35320000000002Z" fill="var(--s0)" data-tip="Прочее · Нояб.: $101.33" data-act="tseg" data-m="2026-11" data-cat="Other" data-all="1" tabindex="0" role="button" aria-label="Прочее · Нояб.: $101.33">
+</path>
+<text x="621.3333333333333" y="154.61221999999998" text-anchor="middle" style="fill:var(--ink)">$579</text>
+<text x="621.3333333333333" y="242" text-anchor="middle">Нояб.</text>
+</svg>
+</div> <p class="muted small">Записанные расходы и платежи, отмеченные оплаченными. Оплата карт и переводы не входят: то, что ими оплачено, уже учтено.</p>
+</div> <div class="sec">
+<h2>Капитал</h2>
+<div class="viz">
+<svg viewBox="0 0 680 200" role="img" aria-label="Капитал во времени">
+<line class="gl" x1="64" x2="640" y1="172" y2="172">
+</line>
+<text x="56" y="176" text-anchor="end">$65.2k</text>
+<line class="gl" x1="64" x2="640" y1="119.99999999999987" y2="119.99999999999987">
+</line>
+<text x="56" y="123.99999999999987" text-anchor="end">$67.2k</text>
+<line class="gl" x1="64" x2="640" y1="68.00000000000013" y2="68.00000000000013">
+</line>
+<text x="56" y="72.00000000000013" text-anchor="end">$69.3k</text>
+<line class="gl" x1="64" x2="640" y1="16" y2="16">
+</line>
+<text x="56" y="20" text-anchor="end">$71.3k</text>
+<polyline fill="none" stroke="var(--s1)" stroke-width="2" points="64,154 352,108.04255319148936 640,34.00000000000001">
+</polyline>
+<circle cx="64" cy="154" r="4" fill="var(--s1)" stroke="var(--surface)" stroke-width="2">
+</circle>
+<circle cx="64" cy="154" r="14" fill="transparent" data-tip="Авг. 2026: $65,900">
+</circle>
+<text x="64" y="192" text-anchor="middle">Авг.</text>
+<circle cx="352" cy="108.04255319148936" r="4" fill="var(--s1)" stroke="var(--surface)" stroke-width="2">
+</circle>
+<circle cx="352" cy="108.04255319148936" r="14" fill="transparent" data-tip="Сент. 2026: $67,700">
+</circle>
+<text x="352" y="192" text-anchor="middle">Сент.</text>
+<circle cx="640" cy="34.00000000000001" r="5" fill="var(--s1)" stroke="var(--surface)" stroke-width="2">
+</circle>
+<circle cx="640" cy="34.00000000000001" r="14" fill="transparent" data-tip="Окт. 2026: $70,600">
+</circle>
+<text x="640" y="192" text-anchor="middle">Окт.</text>
+<text x="640" y="22.000000000000007" text-anchor="middle" style="fill:var(--ink);font-weight:600">$70,600</text>
+</svg>
+</div>
+</div>
+
+=== trends-bar-pressed
+<div class="sec" id="ask">
+<h2>Спросите о расходах</h2>
+<div id="askbody">
+<p class="muted small">Необязательно: чтение PDF и скриншотов и вопросы о расходах работают через бесплатный ИИ на этом Mac. Чтобы включить, установите <a href="https://ollama.com" target="_blank" rel="noopener">Ollama</a>, выполните <code>ollama pull gemma4:12b</code> в Терминале и держите Ollama открытой. Всё остальное работает и без неё. Если Ollama уже установлена, откройте её и проверьте ещё раз.</p>
+<button class="btn sm" data-act="askchk">Проверить ещё раз</button>
+</div>
+</div>
+<fieldset class="lg" style="border:0;padding:0;gap:8px 18px">
+<legend class="muted small" style="padding:0 0 6px">Расходы со счетов</legend>
+<label class="chk">
+<input type="checkbox" data-act="tacct" data-id="chk" checked=""> Checking</label>
+<label class="chk">
+<input type="checkbox" data-act="tacct" data-id="sav" checked=""> Savings</label>
+<label class="chk">
+<input type="checkbox" data-act="tacct" data-id="wal" checked=""> Wallet</label>
+<label class="chk">
+<input type="checkbox" data-act="tacct" data-id="inv" checked=""> Brokerage</label>
+<label class="chk">
+<input type="checkbox" data-act="tacct" data-id="ret" checked=""> 401k</label>
+<label class="chk">
+<input type="checkbox" data-act="tacct" data-id="hsa" checked=""> Health savings</label>
+<label class="chk">
+<input type="checkbox" data-act="tacct" data-id="car" checked=""> Car</label>
+<label class="chk">
+<input type="checkbox" data-act="tacct" data-id="cc" checked=""> Visa</label>
+<label class="chk">
+<input type="checkbox" data-act="tacct" data-id="loan" checked=""> Auto loan</label>
+<label class="chk">
+<input type="checkbox" data-act="tacct" data-id="" checked=""> Без счёта</label>
+</fieldset> <div class="cards">
+<div class="card">
+<small>Ноябрь: записано</small>
+<b>$259</b>
+</div>
+<div class="card">
+<small>Ноябрь: все расходы</small>
+<b>$579</b>
+</div>
+<div class="card">
+<small>В среднем за последние 3 месяца с расходами</small>
+<b>$175</b>
+</div>
+<div class="card">
+<small>Метка «coffee», 6 месяцев</small>
+<b>$19</b>
+</div>
+<div class="card">
+<small>Метка «work», 6 месяцев</small>
+<b>$43</b>
+</div>
+<div class="card">
+<small>Метка «date night», 6 месяцев</small>
+<b>$28</b>
+</div>
+</div> <div class="sec">
+<h2>Записанные расходы по месяцам</h2>
+<div class="viz">
+<div class="lg">
+<span>
+<i style="background:var(--s1)">
+</i>Продукты</span>
+<span>
+<i style="background:var(--s2)">
+</i>Pets</span>
+<span>
+<i style="background:var(--s3)">
+</i>Подписки</span>
+<span>
+<i style="background:var(--s4)">
+</i>Покупки</span>
+<span>
+<i style="background:var(--s0)">
+</i>Прочее</span>
+</div>
+<svg viewBox="0 0 680 250" role="img" aria-label="Записанные расходы по месяцам и категориям">
+<line class="base" x1="64" x2="672" y1="222" y2="222">
+</line>
+<text x="56" y="226" text-anchor="end">$0</text>
+<line class="gl" x1="64" x2="672" y1="169" y2="169">
+</line>
+<text x="56" y="173" text-anchor="end">$125</text>
+<line class="gl" x1="64" x2="672" y1="116" y2="116">
+</line>
+<text x="56" y="120" text-anchor="end">$250</text>
+<line class="gl" x1="64" x2="672" y1="63" y2="63">
+</line>
+<text x="56" y="67" text-anchor="end">$375</text>
+<line class="gl" x1="64" x2="672" y1="10" y2="10">
+</line>
+<text x="56" y="14" text-anchor="end">$500</text>
+<rect x="86.66666666666666" y="182.8224" width="56" height="39.17760000000001" fill="var(--s1)" data-tip="Продукты · Июнь: $92.40" data-act="tseg" data-m="2026-06" data-cat="Groceries" data-all="" tabindex="0" role="button" aria-label="Продукты · Июнь: $92.40">
+</rect>
+<rect x="86.66666666666666" y="176.04264" width="56" height="4.779759999999982" fill="var(--s3)" data-tip="Подписки · Июнь: $15.99" data-act="tseg" data-m="2026-06" data-cat="Subscriptions" data-all="" tabindex="0" role="button" aria-label="Подписки · Июнь: $15.99">
+</rect>
+<path d="M86.66666666666666,174.28664V174.28664Q86.66666666666666,173.28664 87.66666666666666,173.28664H141.66666666666666Q142.66666666666666,173.28664 142.66666666666666,174.28664V174.28664Z" fill="var(--s0)" data-tip="Прочее · Июнь: $6.50" data-act="tseg" data-m="2026-06" data-cat="Other" data-all="" tabindex="0" role="button" aria-label="Прочее · Июнь: $6.50">
+</path>
+<text x="114.66666666666666" y="167.28664" text-anchor="middle" style="fill:var(--ink)">$115</text>
+<text x="114.66666666666666" y="242" text-anchor="middle">Июнь</text>
+<rect x="187.99999999999997" y="175.2964" width="56" height="46.703599999999994" fill="var(--s1)" data-tip="Продукты · Июль: $110.15" data-act="tseg" data-m="2026-07" data-cat="Groceries" data-all="" tabindex="0" role="button" aria-label="Продукты · Июль: $110.15">
+</rect>
+<rect x="187.99999999999997" y="168.51664" width="56" height="4.77976000000001" fill="var(--s3)" data-tip="Подписки · Июль: $15.99" data-act="tseg" data-m="2026-07" data-cat="Subscriptions" data-all="" tabindex="0" role="button" aria-label="Подписки · Июль: $15.99">
+</rect>
+<path d="M187.99999999999997,166.51664V162.34064Q187.99999999999997,158.34064 191.99999999999997,158.34064H239.99999999999997Q243.99999999999997,158.34064 243.99999999999997,162.34064V166.51664Z" fill="var(--s0)" data-tip="Прочее · Июль: $24.00" data-act="tseg" data-m="2026-07" data-cat="Other" data-all="" tabindex="0" role="button" aria-label="Прочее · Июль: $24.00">
+</path>
+<text x="215.99999999999997" y="152.34064" text-anchor="middle" style="fill:var(--ink)">$150</text>
+<text x="215.99999999999997" y="242" text-anchor="middle">Июль</text>
+<rect x="289.3333333333333" y="184.688" width="56" height="37.31200000000001" fill="var(--s1)" data-tip="Продукты · Авг.: $88.00" data-act="tseg" data-m="2026-08" data-cat="Groceries" data-all="" tabindex="0" role="button" aria-label="Продукты · Авг.: $88.00">
+</rect>
+<rect x="289.3333333333333" y="165.4808" width="56" height="17.2072" fill="var(--s2)" data-tip="Pets · Авг.: $45.30" data-act="tseg" data-m="2026-08" data-cat="Pets" data-all="" tabindex="0" role="button" aria-label="Pets · Авг.: $45.30">
+</rect>
+<path d="M289.3333333333333,163.4808V162.70103999999998Q289.3333333333333,158.70103999999998 293.3333333333333,158.70103999999998H341.3333333333333Q345.3333333333333,158.70103999999998 345.3333333333333,162.70103999999998V163.4808Z" fill="var(--s3)" data-tip="Подписки · Авг.: $15.99" data-act="tseg" data-m="2026-08" data-cat="Subscriptions" data-all="" tabindex="0" role="button" aria-label="Подписки · Авг.: $15.99">
+</path>
+<text x="317.3333333333333" y="152.70103999999998" text-anchor="middle" style="fill:var(--ink)">$149</text>
+<text x="317.3333333333333" y="242" text-anchor="middle">Авг.</text>
+<rect x="390.6666666666667" y="179.09120000000001" width="56" height="42.908799999999985" fill="var(--s1)" data-tip="Продукты · Сент.: $101.20" data-act="tseg" data-m="2026-09" data-cat="Groceries" data-all="" tabindex="0" role="button" aria-label="Продукты · Сент.: $101.20">
+</rect>
+<rect x="390.6666666666667" y="172.31144" width="56" height="4.77976000000001" fill="var(--s3)" data-tip="Подписки · Сент.: $15.99" data-act="tseg" data-m="2026-09" data-cat="Subscriptions" data-all="" tabindex="0" role="button" aria-label="Подписки · Сент.: $15.99">
+</rect>
+<path d="M390.6666666666667,170.87344000000002V170.87344000000002Q390.6666666666667,169.87344000000002 391.6666666666667,169.87344000000002H445.6666666666667Q446.6666666666667,169.87344000000002 446.6666666666667,170.87344000000002V170.87344000000002Z" fill="var(--s0)" data-tip="Прочее · Сент.: $5.75" data-act="tseg" data-m="2026-09" data-cat="Other" data-all="" tabindex="0" role="button" aria-label="Прочее · Сент.: $5.75">
+</path>
+<text x="418.6666666666667" y="163.87344000000002" text-anchor="middle" style="fill:var(--ink)">$123</text>
+<text x="418.6666666666667" y="242" text-anchor="middle">Сент.</text>
+<rect x="492" y="180.6176" width="56" height="41.38239999999999" fill="var(--s1)" data-tip="Продукты · Окт.: $97.60" data-act="tseg" data-m="2026-10" data-cat="Groceries" data-all="" tabindex="0" role="button" aria-label="Продукты · Окт.: $97.60">
+</rect>
+<rect x="492" y="173.83784" width="56" height="4.77976000000001" fill="var(--s3)" data-tip="Подписки · Окт.: $15.99" data-act="tseg" data-m="2026-10" data-cat="Subscriptions" data-all="" tabindex="0" role="button" aria-label="Подписки · Окт.: $15.99">
+</rect>
+<path d="M492,171.83784V165.96584000000001Q492,161.96584000000001 496,161.96584000000001H544Q548,161.96584000000001 548,165.96584000000001V171.83784Z" fill="var(--s0)" data-tip="Прочее · Окт.: $28.00" data-act="tseg" data-m="2026-10" data-cat="Other" data-all="" tabindex="0" role="button" aria-label="Прочее · Окт.: $28.00">
+</path>
+<text x="520" y="155.96584000000001" text-anchor="middle" style="fill:var(--ink)">$142</text>
+<text x="520" y="242" text-anchor="middle">Окт.</text>
+<rect x="593.3333333333333" y="186.2568" width="56" height="35.7432" fill="var(--s1)" data-tip="Продукты · Нояб.: $84.30" data-act="tseg" data-m="2026-11" data-cat="Groceries" data-all="" tabindex="0" role="button" aria-label="Продукты · Нояб.: $84.30">
+</rect>
+<rect x="593.3333333333333" y="162.9368" width="56" height="21.319999999999993" fill="var(--s2)" data-tip="Pets · Нояб.: $55.00" data-act="tseg" data-m="2026-11" data-cat="Pets" data-all="" tabindex="0" role="button" aria-label="Pets · Нояб.: $55.00">
+</rect>
+<rect x="593.3333333333333" y="140.46904" width="56" height="20.46776" fill="var(--s4)" data-tip="Покупки · Нояб.: $52.99" data-act="tseg" data-m="2026-11" data-cat="Shopping" data-all="" tabindex="0" role="button" aria-label="Покупки · Нояб.: $52.99">
+</rect>
+<path d="M593.3333333333333,138.46904V116.12888000000001Q593.3333333333333,112.12888000000001 597.3333333333333,112.12888000000001H645.3333333333333Q649.3333333333333,112.12888000000001 649.3333333333333,116.12888000000001V138.46904Z" fill="var(--s0)" data-tip="Прочее · Нояб.: $66.84" data-act="tseg" data-m="2026-11" data-cat="Other" data-all="" tabindex="0" role="button" aria-label="Прочее · Нояб.: $66.84">
+</path>
+<text x="621.3333333333333" y="106.12888000000001" text-anchor="middle" style="fill:var(--ink)">$259</text>
+<text x="621.3333333333333" y="242" text-anchor="middle">Нояб.</text>
+</svg>
+</div> <div class="scroll" style="margin-top:10px">
+<table>
+<thead>
+<tr>
+<th>Месяц</th>
+<th class="num">Продукты</th>
+<th class="num">Pets</th>
+<th class="num">Подписки</th>
+<th class="num">Покупки</th>
+<th class="num">Прочее</th>
+<th class="num">Итого</th>
+<th class="num">В день</th>
+<th class="num">Метка: coffee</th>
+<th class="num">Метка: work</th>
+<th class="num">Метка: date night</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Июнь 2026</td>
+<td class="num">$92</td>
+<td class="num">
+</td>
+<td class="num">$16</td>
+<td class="num">
+</td>
+<td class="num">$7</td>
+<td class="num">
+<b>$115</b>
+</td>
+<td class="num">$3.83</td>
+<td class="num">$7</td>
+<td class="num">
+</td>
+<td class="num">
+</td>
+</tr>
+<tr>
+<td>Июль 2026</td>
+<td class="num">$110</td>
+<td class="num">
+</td>
+<td class="num">$16</td>
+<td class="num">
+</td>
+<td class="num">$24</td>
+<td class="num">
+<b>$150</b>
+</td>
+<td class="num">$4.84</td>
+<td class="num">
+</td>
+<td class="num">$24</td>
+<td class="num">
+</td>
+</tr>
+<tr>
+<td>Авг. 2026</td>
+<td class="num">$88</td>
+<td class="num">$45</td>
+<td class="num">$16</td>
+<td class="num">
+</td>
+<td class="num">
+</td>
+<td class="num">
+<b>$149</b>
+</td>
+<td class="num">$4.82</td>
+<td class="num">
+</td>
+<td class="num">
+</td>
+<td class="num">
+</td>
+</tr>
+<tr>
+<td>Сент. 2026</td>
+<td class="num">$101</td>
+<td class="num">
+</td>
+<td class="num">$16</td>
+<td class="num">
+</td>
+<td class="num">$6</td>
+<td class="num">
+<b>$123</b>
+</td>
+<td class="num">$4.10</td>
+<td class="num">$6</td>
+<td class="num">
+</td>
+<td class="num">
+</td>
+</tr>
+<tr>
+<td>Окт. 2026</td>
+<td class="num">$98</td>
+<td class="num">
+</td>
+<td class="num">$16</td>
+<td class="num">
+</td>
+<td class="num">$28</td>
+<td class="num">
+<b>$142</b>
+</td>
+<td class="num">$4.57</td>
+<td class="num">
+</td>
+<td class="num">
+</td>
+<td class="num">$28</td>
+</tr>
+<tr>
+<td>Нояб. 2026</td>
+<td class="num">$84</td>
+<td class="num">$55</td>
+<td class="num">
+</td>
+<td class="num">$53</td>
+<td class="num">$67</td>
+<td class="num">
+<b>$259</b>
+</td>
+<td class="num">$8.64</td>
+<td class="num">$6</td>
+<td class="num">$19</td>
+<td class="num">
+</td>
+</tr>
+</tbody>
+</table>
+</div> <p class="muted small">Только записанные расходы. Платежи и оплата карт не входят, неполные месяцы показаны как есть. Нажмите на столбец, чтобы увидеть самые крупные расходы.</p>
+</div> <div class="sec">
+<h2>Все расходы по месяцам, включая оплаченные платежи</h2>
+<div class="viz">
+<div class="lg">
+<span>
+<i style="background:var(--s1)">
+</i>Жильё</span>
+<span>
+<i style="background:var(--s2)">
+</i>Продукты</span>
+<span>
+<i style="background:var(--s3)">
+</i>Транспорт</span>
+<span>
+<i style="background:var(--s4)">
+</i>Pets</span>
+<span>
+<i style="background:var(--s0)">
+</i>Прочее</span>
+</div>
+<svg viewBox="0 0 680 250" role="img" aria-label="Все расходы по месяцам и категориям">
+<line class="base" x1="64" x2="672" y1="222" y2="222">
+</line>
+<text x="56" y="226" text-anchor="end">$0</text>
+<line class="gl" x1="64" x2="672" y1="169" y2="169">
+</line>
+<text x="56" y="173" text-anchor="end">$500</text>
+<line class="gl" x1="64" x2="672" y1="116" y2="116">
+</line>
+<text x="56" y="120" text-anchor="end">$1k</text>
+<line class="gl" x1="64" x2="672" y1="63" y2="63">
+</line>
+<text x="56" y="67" text-anchor="end">$1.5k</text>
+<line class="gl" x1="64" x2="672" y1="10" y2="10">
+</line>
+<text x="56" y="14" text-anchor="end">$2k</text>
+<rect x="86.66666666666666" y="212.2056" width="56" height="9.794399999999996" fill="var(--s2)" data-tip="Продукты · Июнь: $92.40" data-act="tseg" data-m="2026-06" data-cat="Groceries" data-all="1" tabindex="0" role="button" aria-label="Продукты · Июнь: $92.40">
+</rect>
+<path d="M86.66666666666666,210.82166V210.82166Q86.66666666666666,209.82166 87.66666666666666,209.82166H141.66666666666666Q142.66666666666666,209.82166 142.66666666666666,210.82166V210.82166Z" fill="var(--s0)" data-tip="Прочее · Июнь: $22.49" data-act="tseg" data-m="2026-06" data-cat="Other" data-all="1" tabindex="0" role="button" aria-label="Прочее · Июнь: $22.49">
+</path>
+<text x="114.66666666666666" y="203.82166" text-anchor="middle" style="fill:var(--ink)">$115</text>
+<text x="114.66666666666666" y="242" text-anchor="middle">Июнь</text>
+<rect x="187.99999999999997" y="210.3241" width="56" height="11.675900000000013" fill="var(--s2)" data-tip="Продукты · Июль: $110.15" data-act="tseg" data-m="2026-07" data-cat="Groceries" data-all="1" tabindex="0" role="button" aria-label="Продукты · Июль: $110.15">
+</rect>
+<rect x="187.99999999999997" y="207.7801" width="56" height="1" fill="var(--s3)" data-tip="Транспорт · Июль: $24.00" data-act="tseg" data-m="2026-07" data-cat="Transport" data-all="1" tabindex="0" role="button" aria-label="Транспорт · Июль: $24.00">
+</rect>
+<path d="M187.99999999999997,207.08516V207.08516Q187.99999999999997,206.08516 188.99999999999997,206.08516H242.99999999999997Q243.99999999999997,206.08516 243.99999999999997,207.08516V207.08516Z" fill="var(--s0)" data-tip="Прочее · Июль: $15.99" data-act="tseg" data-m="2026-07" data-cat="Other" data-all="1" tabindex="0" role="button" aria-label="Прочее · Июль: $15.99">
+</path>
+<text x="215.99999999999997" y="200.08516" text-anchor="middle" style="fill:var(--ink)">$150</text>
+<text x="215.99999999999997" y="242" text-anchor="middle">Июль</text>
+<rect x="289.3333333333333" y="212.672" width="56" height="9.328000000000003" fill="var(--s2)" data-tip="Продукты · Авг.: $88.00" data-act="tseg" data-m="2026-08" data-cat="Groceries" data-all="1" tabindex="0" role="button" aria-label="Продукты · Авг.: $88.00">
+</rect>
+<rect x="289.3333333333333" y="207.8702" width="56" height="2.801799999999986" fill="var(--s4)" data-tip="Pets · Авг.: $45.30" data-act="tseg" data-m="2026-08" data-cat="Pets" data-all="1" tabindex="0" role="button" aria-label="Pets · Авг.: $45.30">
+</rect>
+<path d="M289.3333333333333,207.17526V207.17526Q289.3333333333333,206.17526 290.3333333333333,206.17526H344.3333333333333Q345.3333333333333,206.17526 345.3333333333333,207.17526V207.17526Z" fill="var(--s0)" data-tip="Прочее · Авг.: $15.99" data-act="tseg" data-m="2026-08" data-cat="Other" data-all="1" tabindex="0" role="button" aria-label="Прочее · Авг.: $15.99">
+</path>
+<text x="317.3333333333333" y="200.17526" text-anchor="middle" style="fill:var(--ink)">$149</text>
+<text x="317.3333333333333" y="242" text-anchor="middle">Авг.</text>
+<rect x="390.6666666666667" y="211.2728" width="56" height="10.72720000000001" fill="var(--s2)" data-tip="Продукты · Сент.: $101.20" data-act="tseg" data-m="2026-09" data-cat="Groceries" data-all="1" tabindex="0" role="button" aria-label="Продукты · Сент.: $101.20">
+</rect>
+<path d="M390.6666666666667,209.96836V209.96836Q390.6666666666667,208.96836 391.6666666666667,208.96836H445.6666666666667Q446.6666666666667,208.96836 446.6666666666667,209.96836V209.96836Z" fill="var(--s0)" data-tip="Прочее · Сент.: $21.74" data-act="tseg" data-m="2026-09" data-cat="Other" data-all="1" tabindex="0" role="button" aria-label="Прочее · Сент.: $21.74">
+</path>
+<text x="418.6666666666667" y="202.96836" text-anchor="middle" style="fill:var(--ink)">$123</text>
+<text x="418.6666666666667" y="242" text-anchor="middle">Сент.</text>
+<rect x="492" y="47.10000000000002" width="56" height="174.89999999999998" fill="var(--s1)" data-tip="Жильё · Окт.: $1,650.00" data-act="tseg" data-m="2026-10" data-cat="Housing" data-all="1" tabindex="0" role="button" aria-label="Жильё · Окт.: $1,650.00">
+</rect>
+<rect x="492" y="36.75440000000003" width="56" height="8.34559999999999" fill="var(--s2)" data-tip="Продукты · Окт.: $97.60" data-act="tseg" data-m="2026-10" data-cat="Groceries" data-all="1" tabindex="0" role="button" aria-label="Продукты · Окт.: $97.60">
+</rect>
+<path d="M492,34.75440000000003V34.75440000000003Q492,32.09146000000001 494.66294000000005,32.09146000000001H545.33706Q548,32.09146000000001 548,34.75440000000003V34.75440000000003Z" fill="var(--s0)" data-tip="Прочее · Окт.: $43.99" data-act="tseg" data-m="2026-10" data-cat="Other" data-all="1" tabindex="0" role="button" aria-label="Прочее · Окт.: $43.99">
+</path>
+<text x="520" y="26.091460000000012" text-anchor="middle" style="fill:var(--ink)">$1,792</text>
+<text x="520" y="242" text-anchor="middle">Окт.</text>
+<rect x="593.3333333333333" y="213.0642" width="56" height="8.9358" fill="var(--s2)" data-tip="Продукты · Нояб.: $84.30" data-act="tseg" data-m="2026-11" data-cat="Groceries" data-all="1" tabindex="0" role="button" aria-label="Продукты · Нояб.: $84.30">
+</rect>
+<rect x="593.3333333333333" y="177.1832" width="56" height="33.881" fill="var(--s3)" data-tip="Транспорт · Нояб.: $338.50" data-act="tseg" data-m="2026-11" data-cat="Transport" data-all="1" tabindex="0" role="button" aria-label="Транспорт · Нояб.: $338.50">
+</rect>
+<rect x="593.3333333333333" y="171.35320000000002" width="56" height="3.829999999999984" fill="var(--s4)" data-tip="Pets · Нояб.: $55.00" data-act="tseg" data-m="2026-11" data-cat="Pets" data-all="1" tabindex="0" role="button" aria-label="Pets · Нояб.: $55.00">
+</rect>
+<path d="M593.3333333333333,169.35320000000002V164.61221999999998Q593.3333333333333,160.61221999999998 597.3333333333333,160.61221999999998H645.3333333333333Q649.3333333333333,160.61221999999998 649.3333333333333,164.61221999999998V169.35320000000002Z" fill="var(--s0)" data-tip="Прочее · Нояб.: $101.33" data-act="tseg" data-m="2026-11" data-cat="Other" data-all="1" tabindex="0" role="button" aria-label="Прочее · Нояб.: $101.33">
+</path>
+<text x="621.3333333333333" y="154.61221999999998" text-anchor="middle" style="fill:var(--ink)">$579</text>
+<text x="621.3333333333333" y="242" text-anchor="middle">Нояб.</text>
+</svg>
+</div>
+<div class="scroll" style="margin-top:10px">
+<table>
+<thead>
+<tr>
+<th colspan="3">Продукты, Ноябрь 2026: самые крупные расходы</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2 ноября</td>
+<td>Trader Joe's</td>
+<td class="num">$84.30</td>
+</tr>
+</tbody>
+</table>
+</div> <p class="muted small">Записанные расходы и платежи, отмеченные оплаченными. Оплата карт и переводы не входят: то, что ими оплачено, уже учтено.</p>
 </div> <div class="sec">
 <h2>Капитал</h2>
 <div class="viz">

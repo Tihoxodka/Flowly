@@ -126,6 +126,9 @@ async function walk() {
   await tab('trends');
   await waitFor(`!!document.querySelector('[data-act="askchk"]')`, 'the AI check on Trends');
   await step('trends');
+  const bar = `document.querySelector('[data-act="tseg"][data-all="1"][data-m="2026-11"]').dispatchEvent(new MouseEvent('click', { bubbles: true }))`;
+  await js(bar); await settle(); await step('trends-bar-pressed');
+  await js(bar); await settle();
   await tab('overview');
   await click('[data-act="prev"]'); await step('overview-october');
   await click('[data-act="prev"]'); await step('overview-september-before-kickoff');

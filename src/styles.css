@@ -130,6 +130,8 @@ body.dragging,body.dragging *{user-select:none;-webkit-user-select:none;cursor:g
 .viz{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 14px 8px;position:relative}
 .viz svg{display:block;width:100%;height:auto;overflow:visible}
 .viz text{font:12px var(--body);fill:var(--muted)}
+.viz [data-act]{cursor:pointer}
+.viz [data-act]:focus-visible{outline:2px solid var(--accent)}
 .viz .gl{stroke:var(--line);stroke-width:1}
 .viz .base{stroke:var(--muted);stroke-width:1}
 .lg{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13px;color:var(--muted);margin:0 0 8px}
