@@ -82,7 +82,8 @@ Then open `dist/index.html`. Data stays in that browser, so use the same one eac
 ## Your data
 
 - **Back up** with **Download backup** at the bottom of the page. **Restore from backup** also moves data between the browser and the Mac app.
-- Nothing is sent anywhere. The Mac app blocks all network requests from the page; its only connection is to Ollama on your Mac.
+- **Share one budget between two Macs** with **Shared folder** at the bottom of the Mac app. Choose a folder that syncs (make one in iCloud Drive and share it with the other person, or use Dropbox, Syncthing or a network drive), then choose the same folder on the other Mac. What each Mac already has is combined, and from then on each shows what the other changes, a few seconds after the folder syncs. Both can have the app open and edit at once: changes are merged one transaction, bill, account or setting at a time, and only when both change the same one does the later change win. Each Mac keeps its own full copy, so it works offline and catches up afterwards.
+- Nothing is sent anywhere by the app. The Mac app blocks all network requests from the page; its only connection is to Ollama on your Mac. With a shared folder, the files in it (`plan.json` and a `tx-YYYY-MM.json` per month) travel through whichever sync service you chose.
 - Data is stored unencrypted (on the Mac, in `~/Library/Application Support/Flowly`). Turn on FileVault, and only restore backups you made yourself.
 
 ## Development

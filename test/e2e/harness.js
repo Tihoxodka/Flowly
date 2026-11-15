@@ -13,6 +13,9 @@ app.setPath('appData', userData);
 const newName = path.join(userData, 'Flowly'), oldMark = path.join(userData, 'Budgeter', 'Local Storage', 'mark');
 if (suite === 'migrate') { fs.mkdirSync(path.dirname(oldMark), { recursive: true }); fs.writeFileSync(oldMark, 'saved'); }
 app.setPath('userData', suite === 'migrate' ? newName : userData);
+// sync: a shared folder is already chosen (the folder picker is a system dialog a test can't click)
+const shared = path.join(userData, 'shared');
+if (suite === 'sync') { fs.mkdirSync(shared); fs.writeFileSync(path.join(userData, 'sync.json'), JSON.stringify({ dir: shared })); }
 process.env.OLLAMA_HOST = '127.0.0.1:9';
 // the same screens whatever the machine's appearance (the theme button shows ☾ in light mode)
 app.whenReady().then(() => { nativeTheme.themeSource = 'light'; });
@@ -196,6 +199,33 @@ async function transfer() {
   expect(await js(`document.querySelector('[data-act="stmt"][data-id="cc"]').value`) === '620', 'the card statement should be back to 620');
 }
 
+// The shared folder, with this test playing the other Mac: it reads and replaces the files the way a sync service would.
+async function sync() {
+  const file = k => path.join(shared, k + '.json'), read = k => JSON.parse(fs.readFileSync(file(k), 'utf8'));
+  const put = (k, o) => { fs.writeFileSync(file(k) + '.other', JSON.stringify(o)); fs.renameSync(file(k) + '.other', file(k)); };
+  const until = async (fn, what) => { const t = Date.now(); while (Date.now() - t < 8000) { try { if (fn()) return; } catch (err) {} await sleep(40); } throw new Error('timed out waiting for ' + what); };
+  const ids = () => read('tx-2026-11').items.map(t => t.id);
+  const check = (cond, msg) => { if (!cond) problems.push('sync: ' + msg); };
+  await until(() => read('plan').accounts.length && ids().includes('tb05') && fs.existsSync(file('tx-2026-06')), 'the plan and every month to reach the folder');
+  check(await js(`document.querySelector('#st').textContent`) === 'Saved to the shared folder and this device', 'the save status should name the shared folder');
+  // the other Mac logs a transaction and changes a balance: both show up here without a reload
+  const first = read('tx-2026-11');
+  put('tx-2026-11', { ...first, items: [...first.items, { id: 'other1', date: '2026-11-17', desc: 'From the other Mac', amt: -12.5, cat: 'Groceries', acct: 'chk', tag: '' }] });
+  const plan = read('plan');
+  put('plan', { ...plan, accounts: plan.accounts.map(a => a.id === 'sav' ? { ...a, bal: 8123 } : a), _m: { ...plan._m, accounts: { ...plan._m?.accounts, sav: 5e12 } } });
+  await tab('spend');
+  await waitFor(`document.querySelector('#main').innerText.includes('From the other Mac')`, 'the other Mac\'s transaction to appear');
+  await waitFor(`JSON.parse(localStorage.getItem('budgeter:plan')).accounts.find(a => a.id === 'sav').bal === 8123`, 'the other Mac\'s balance to arrive');
+  // deleting here reaches the folder, and keeps what the other Mac added
+  await click('[data-act="tdel"][data-id="tb05"]');
+  await until(() => !ids().includes('tb05'), 'the delete to reach the folder');
+  check(ids().includes('other1'), 'the other Mac\'s transaction should still be in the folder');
+  // the sync service puts an older copy back (both Macs saved at once and the other one won): this Mac repairs it
+  put('tx-2026-11', first);
+  await until(() => !ids().includes('tb05') && ids().includes('other1'), 'the older copy to be merged');
+  check(await js(`!document.querySelector('[data-act="tdel"][data-id="tb05"]') && document.querySelector('#main').innerText.includes('From the other Mac')`), 'the screen should still show the merged month');
+}
+
 app.on('browser-window-created', (e, w) => {
   if (win) return;
   win = w;
@@ -207,7 +237,7 @@ app.on('browser-window-created', (e, w) => {
         if (!fs.existsSync(oldMark)) problems.push('migrate: the old Budgeter data is gone');
       } else {
         await start();
-        if (suite === 'walk') await walk(); else await transfer();
+        if (suite === 'walk') await walk(); else if (suite === 'sync') await sync(); else await transfer();
       }
     } catch (err) { failed = err.stack || String(err); }
     fs.writeFileSync(outFile, JSON.stringify({ problems, failed, snaps, english: [...english].map(([s, step]) => ({ s, step })) }, null, 1));

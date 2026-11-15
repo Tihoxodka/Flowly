@@ -1,4 +1,4 @@
-const { app, BrowserWindow, shell, Menu, ipcMain, session, utilityProcess } = require('electron');
+const { app, BrowserWindow, shell, Menu, ipcMain, session, utilityProcess, dialog } = require('electron');
 const fs = require('fs');
 const path = require('path');
 const { fileURLToPath } = require('url');
@@ -149,6 +149,64 @@ ipcMain.handle('pdf:text', async (e, bytes) => {
   });
 });
 
+/* ---------- shared folder ---------- */
+// The plan and each month of transactions can also be kept as JSON files in a folder the person picks, normally in
+// iCloud Drive, so another Mac pointed at the same folder shows the same budget. The page merges the copies
+// (src/data/merge.js); this process only reads, writes and watches the files, and only ones with these names.
+const SYNC_CONF = path.join(app.getPath('userData'), 'sync.json');
+const DOC_OK = /^(plan|tx-\d{4}-\d{2})$/;
+let syncDir = null, watcher = null;
+try { syncDir = String(JSON.parse(fs.readFileSync(SYNC_CONF, 'utf8')).dir || '') || null; } catch (err) {}
+const docFile = k => {
+  if (!syncDir || !DOC_OK.test(k)) throw new Error('no shared folder, or not a document');
+  return path.join(syncDir, k + '.json');
+};
+// Tells the page which document changed. Its own saves come back too; merging those changes nothing.
+function watchFolder() {
+  watcher?.close(); watcher = null;
+  if (!syncDir) return;
+  try {
+    watcher = fs.watch(syncDir, (ev, name) => {
+      const k = path.basename(String(name || ''), '.json');
+      if (String(name).endsWith('.json') && DOC_OK.test(k) && win && !win.isDestroyed()) win.webContents.send('sync:changed', k);
+    });
+    watcher.on('error', () => {});
+  } catch (err) {} // the folder is missing: the page still checks it each time the window gets focus
+}
+function setSync(dir) {
+  syncDir = dir;
+  if (dir) fs.writeFileSync(SYNC_CONF, JSON.stringify({ dir })); else fs.rmSync(SYNC_CONF, { force: true });
+  watchFolder();
+}
+ipcMain.handle('sync:dir', e => fromApp(e) ? syncDir : null);
+ipcMain.handle('sync:choose', async e => {
+  if (!fromApp(e)) return null;
+  const icloud = path.join(app.getPath('home'), 'Library', 'Mobile Documents', 'com~apple~CloudDocs');
+  const r = await dialog.showOpenDialog(win, { properties: ['openDirectory', 'createDirectory'], defaultPath: fs.existsSync(icloud) ? icloud : undefined });
+  if (r.canceled || !r.filePaths[0]) return null;
+  setSync(r.filePaths[0]);
+  return syncDir;
+});
+ipcMain.handle('sync:off', e => { if (fromApp(e)) setSync(null); return true; });
+ipcMain.handle('sync:read', async (e, k) => {
+  if (!fromApp(e)) return null;
+  try { return await fs.promises.readFile(docFile(k), 'utf8'); }
+  catch (err) { if (err.code === 'ENOENT') return null; throw err; }
+});
+// Written whole under another name, then renamed, so neither the sync service nor the other Mac sees half a file.
+ipcMain.handle('sync:write', async (e, k, text) => {
+  if (!fromApp(e) || typeof text !== 'string') throw new Error('not allowed');
+  const file = docFile(k);
+  await fs.promises.writeFile(file + '.tmp', text);
+  await fs.promises.rename(file + '.tmp', file);
+  return true;
+});
+ipcMain.handle('sync:list', async e => {
+  if (!fromApp(e) || !syncDir) return [];
+  try { return (await fs.promises.readdir(syncDir)).filter(n => n.endsWith('.json')).map(n => n.slice(0, -5)).filter(k => DOC_OK.test(k)); }
+  catch (err) { return []; }
+});
+
 app.on('second-instance', () => { if (win) { if (win.isMinimized()) win.restore(); win.focus(); } });
 app.whenReady().then(() => {
   // The page makes no network requests: fonts ship with it, and Ollama is reached from this process.
@@ -158,6 +216,7 @@ app.whenReady().then(() => {
     { role: 'appMenu' }, { role: 'editMenu' }, { role: 'viewMenu' }, { role: 'windowMenu' }
   ]));
   createWindow();
+  watchFolder();
   app.on('activate', () => { if (BrowserWindow.getAllWindows().length === 0) createWindow(); });
 });
 app.on('window-all-closed', () => { if (process.platform !== 'darwin') app.quit(); });

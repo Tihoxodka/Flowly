@@ -3,7 +3,8 @@ import {f2,r2} from './core/format.js';
 import {T,catKey,cn,dl} from './core/i18n.js';
 import {$,$$} from './core/util.js';
 import {backup} from './data/backup.js';
-import {lget,lset,savePlan,saveTx} from './data/storage.js';
+import {DESK} from './ai/caps.js';
+import {S,lget,lset,savePlan,saveTx} from './data/storage.js';
 import {openImport} from './import/dialog.js';
 import {acct,snapNW} from './model/accounts.js';
 import {startDay,dueToast,setDue,setPay} from './model/schedule.js';
@@ -40,6 +41,12 @@ function addCategory(){
 function removeCategory(c){
   ask(T('Remove category “{name}”?',{name:cn(c)}),T('Remove'),()=>{state.plan.cats=state.plan.cats.filter(x=>x.name!==c);savePlan();render()});
 }
+/* Mac app: keep the data in a folder that syncs (iCloud Drive) too, so another Mac with the same folder shows the same budget */
+function shareFolder(){
+  const f=DESK.sync,then=p=>p.then(ok=>{if(ok)location.reload()});
+  if(S.sync)ask(T('This budget is shared through the folder “{dir}”. Stop sharing on this Mac? The budget stays on this Mac and in the folder.',{dir:S.sync.split('/').pop()}),T('Stop sharing'),()=>then(f.off()));
+  else ask(T('Share this budget with another Mac? Choose a folder that syncs, such as one in iCloud Drive, and choose the same folder on the other Mac. What is on this Mac and what is in the folder are combined.'),T('Choose folder'),()=>then(f.choose()));
+}
 /** @param {string} id @param {string} v */
 const setKickEstimate=(id,v)=>{const el=$(`[data-kb="${CSS.escape(id)}"]`);if(el)el.value=v};
 
@@ -69,6 +76,7 @@ const CLICK={
   ics(b){const {tips}=project(),sel=b.dataset.i==='all'?tips:[tips[+b.dataset.i]].filter(Boolean);if(sel.length)tipIcs(sel)},
   backup(){backup()},
   restore(){$('#rf').click()},
+  share(){shareFolder()},
   tadd(){editTx()},
   tedit(b){editTx(b.dataset.id)},
   tdel(b){deleteTx(b.dataset.id)},

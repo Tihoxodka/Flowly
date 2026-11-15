@@ -27,6 +27,8 @@
  * @property {Record<string,Merchant>} merch merchants by lowercased name (a dict(): no prototype)
  * @property {number} extra extra debt payment each month
  * @property {'avalanche'|'snowball'} strategy debt payoff order
+ * @property {number} [_ts] when this copy was saved
+ * @property {Record<string,any>} [_m] when each field and entry last changed, for merging a shared folder's copy (data/merge.js)
  */
 
 /**
@@ -96,7 +98,7 @@
  * @property {string} tag
  * @property {number} [at] when it was logged
  */
-/** One month of transactions (localStorage budgeter:tx-YYYY-MM) @typedef {{items:Tx[]}} TxMonth */
+/** One month of transactions (localStorage budgeter:tx-YYYY-MM). Saved copies also carry _ts and _m, like the plan. @typedef {{items:Tx[]}} TxMonth */
 
 /**
  * A backup file. Restore also accepts the old Monthly planner's (app 'monthly-planner', version 1).
@@ -158,5 +160,5 @@
 /* Globals the page may find. Declared here only for the type checker; the page checks that they exist before use. */
 /** claude.ai's artifact runtime: claude.use('db'|'user'|'downloads'|'sample') resolves a capability or null @type {any} */
 var claude;
-/** the Mac app's bridge to the local AI and the PDF reader (preload.js) @type {any} */
+/** the Mac app's bridge to the local AI, the PDF reader and the shared folder (preload.js) @type {any} */
 var flowlyDesktop;

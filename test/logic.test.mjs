@@ -244,3 +244,50 @@ test('a cash account now: its balance, plus checked-off items and logged spendin
   a.upd = '2026-11-12';
   assert.equal(cashNow(a), 1000, 'nothing before the balance date counts');
 });
+
+// Two Macs sharing a folder: each save stamps what changed, and the copies merge entry by entry
+test('shared folder: both Macs add, edit and delete in the same month', async () => {
+  const { merge, stamp } = await import('../src/data/merge.js');
+  const save = (prev, next, now) => ({ ...next, _ts: now, _m: stamp(prev, next, now) });
+  const tx = (id, amt) => ({ id, date: '2026-11-01', desc: id, amt });
+  const base = { items: [tx('a', -1), tx('b', -2), tx('c', -3)], _ts: 1 };
+  // mine: add d, delete a. theirs: add e, edit b, and (later) edit c, which I also edited earlier
+  const mine = save(save(base, { items: [tx('b', -2), tx('c', -30), tx('d', -4)] }, 100), { items: [tx('b', -2), tx('c', -30), tx('d', -4)] }, 100);
+  const theirs = save(base, { items: [tx('a', -1), tx('b', -20), tx('c', -300), tx('e', -5)] }, 200);
+  const r = merge(mine, theirs);
+  eq(r.doc.items.map(t => [t.id, t.amt]), [['b', -20], ['c', -300], ['d', -4], ['e', -5]]);
+  assert.ok(r.mine && r.theirs);
+  // the other Mac reaches the same items from its side, and merging the result again changes nothing
+  const back = merge(theirs, mine);
+  eq([...back.doc.items].sort((x, y) => x.id < y.id ? -1 : 1), [...r.doc.items].sort((x, y) => x.id < y.id ? -1 : 1));
+  for (const copy of [mine, theirs, r.doc]) { const again = merge(r.doc, copy); assert.ok(!again.theirs, 'merged copy already has everything'); }
+  const echo = merge(r.doc, JSON.parse(JSON.stringify(r.doc)));
+  assert.ok(!echo.mine && !echo.theirs, 'my own save coming back is not a change');
+  // an old copy of the file can't bring a deleted transaction back
+  const stale = merge(r.doc, base);
+  eq(stale.doc.items.map(t => t.id), ['b', 'c', 'd', 'e']);
+  assert.ok(stale.mine && !stale.theirs);
+});
+
+test('shared folder: plan fields, maps and category order; unstamped data is never dropped', async () => {
+  const { merge, stamp } = await import('../src/data/merge.js');
+  const save = (prev, next, now) => ({ ...next, _ts: now, _m: stamp(prev, next, now) });
+  const base = { currency: 'USD', extra: 0, cats: [{ name: 'A', budget: 1 }, { name: 'B', budget: 2 }, { name: 'C', budget: 3 }], done: { x: 1 }, accounts: [{ id: 'chk', bal: 10 }], _ts: 1 };
+  const mine = save(base, { ...base, extra: 50, done: { x: 1, y: 1 }, cats: [base.cats[2], base.cats[0], base.cats[1]] }, 100);
+  const theirs = save(base, { ...base, currency: 'SEK', done: {}, accounts: [{ id: 'chk', bal: 99 }], cats: [...base.cats, { name: 'D', budget: 4 }] }, 200);
+  const { doc } = merge(mine, theirs);
+  eq([doc.currency, doc.extra, doc.done, doc.accounts[0].bal], ['SEK', 50, { y: 1 }, 99]);
+  eq(doc.cats.map(c => c.name), ['C', 'A', 'B', 'D'], 'my reorder, their new category');
+  eq(merge(theirs, mine).doc.cats.map(c => c.name), ['C', 'A', 'B', 'D'], 'the reorder reaches the other Mac');
+  // no stamps at all (two Macs with their own data join one folder): the folder wins a tie, and nothing only one has is lost
+  const a = { currency: 'USD', accounts: [{ id: 'mine', bal: 1 }, { id: 'both', bal: 1 }], merch: { m: 1 } }, b = { currency: 'EUR', accounts: [{ id: 'both', bal: 2 }, { id: 'theirs', bal: 3 }] };
+  const j = merge(a, b);
+  eq([j.doc.currency, j.doc.accounts.map(x => [x.id, x.bal]), j.doc.merch], ['EUR', [['mine', 1], ['both', 2], ['theirs', 3]], { m: 1 }]);
+  // a first save has nothing to compare with, so it stamps nothing; a stamp always moves past one from a fast clock
+  eq(stamp(null, a, 5), {});
+  const ahead = { extra: 1, _m: { extra: 9e15 } };
+  assert.ok(stamp(ahead, { extra: 2 }, 5).extra > 9e15);
+  // names like "constructor" are ordinary keys, and junk stamps count as none
+  const odd = merge({ merch: { constructor: 1 }, _m: { merch: 'x', constructor: {} } }, { merch: {}, _m: { merch: { constructor: 'soon' } } });
+  eq(odd.doc.merch, { constructor: 1 });
+});

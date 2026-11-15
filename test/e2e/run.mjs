@@ -2,6 +2,7 @@
 //  - walk en: every tab and the main dialogs in English, compared with golden/en.txt and golden/en.html
 //  - walk ru: the same in Russian, compared with golden/ru.*, and a scan for interface text left in English
 //  - transfer: a transfer tip, Record transfer, Save, a card payment and its statement, Undo
+//  - sync: a shared folder, with the test as the other Mac: its changes appear, a delete here reaches it, an older copy is repaired
 //  - migrate: the first launch copies the data saved under the old Budgeter name and leaves the original
 // Every run also fails on console errors and warnings, uncaught exceptions and any network request from the page.
 import { spawnSync } from 'node:child_process';
@@ -50,7 +51,7 @@ function golden(lang, snaps) {
   }
 }
 
-for (const [suite, lang] of [['walk', 'en'], ['walk', 'ru'], ['transfer', 'en'], ['migrate', 'en']]) {
+for (const [suite, lang] of [['walk', 'en'], ['walk', 'ru'], ['transfer', 'en'], ['sync', 'en'], ['migrate', 'en']]) {
   console.log(`${suite} ${lang}`);
   const r = run(suite, lang);
   if (r.failed) fail(r.failed);
