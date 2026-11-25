@@ -135,14 +135,25 @@ export function transfer(pre={}){
   openForm('Transfer between accounts',[
     {k:'from',l:'From',t:'select',opts:src.map(a=>[a.id,`${a.name} · ${f0(xAvail(a))}`])},
     {k:'to',l:'To',t:'select',opts:dst.map(a=>[a.id,isDebt(a)?`${a.name} · ${T('owed {amt}',{amt:f0(+a.bal||0)})}`:`${a.name} · ${f0(xAvail(a))}`])},
-    {k:'amt',l:'Amount',t:'number',req:1,help:'Both balances change now. A payment to a card or loan lowers what you owe.'}],
-    {from,to:to||(dst.find(a=>a.id!==from)||dst[0]).id,amt:pre.amt||''},
-    o=>{
+    {k:'amt',l:'Amount',t:'number',req:1,help:'Both balances change now. A payment to a card or loan lowers what you owe.'},
+    {k:'date',l:'Date',t:'date',req:1,help:'The transfer is logged on this day under Transfer on the Spending tab. It isn’t counted as spending.'}],
+    {from,to:to||(dst.find(a=>a.id!==from)||dst[0]).id,amt:pre.amt||'',date:state.TODAY},
+    async o=>{
       const undo=moveMoney(o.from,o.to,o.amt);if(!undo)return;
-      snapNW();savePlan();render();
-      toast(T('Moved {amt} from {from} to {to}',{amt:f2(o.amt),from:acctName(o.from),to:acctName(o.to)}),()=>{undo();snapNW();savePlan();render()});
+      const amt=r2(o.amt),m=o.date.slice(0,7),ids=[uid(),uid()];
+      snapNW();savePlan();
+      /* both sides go in the history; Transfer isn't spending, and balances already moved, so nothing counts them twice */
+      await addTx({id:ids[0],date:o.date,desc:T('Transfer to {name}',{name:acctName(o.to)}),amt:-amt,cat:'Transfer',acct:o.from,tag:''});
+      await addTx({id:ids[1],date:o.date,desc:T('Transfer from {name}',{name:acctName(o.from)}),amt,cat:'Transfer',acct:o.to,tag:''});
+      render();
+      const msg=T('Moved {amt} from {from} to {to}',{amt:f2(amt),from:acctName(o.from),to:acctName(o.to)});
+      toast(undo.goal?`${msg}. ${T('Goal “{name}” grew by {amt}',{name:undo.goal,amt:f2(amt)})}`:msg,()=>{
+        undo();snapNW();savePlan();
+        if(state.tx[m]){state.tx[m].items=state.tx[m].items.filter(t=>!ids.includes(t.id));saveTx(m)}
+        render();
+      });
     },
-    o=>o.from===o.to?T('Pick two different accounts.'):!(o.amt>0)?T('Enter an amount above zero.'):'');
+    o=>o.from===o.to?T('Pick two different accounts.'):!(o.amt>0)?T('Enter an amount above zero.'):o.date>state.TODAY?T('A transfer can’t be dated in the future.'):'');
 }
 /** Deletes an item of a plan list, after asking @param {string} kind @param {string} id */
 export function del(kind,id){

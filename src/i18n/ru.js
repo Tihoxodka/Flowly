@@ -634,4 +634,9 @@ export const ru={
 "In your accounts now":"На счетах сейчас",
 "{amt} on {date}":"{amt} на {date}",
 "The balance you entered, plus the items you checked off below and the spending you logged since then.":"Остаток, который вы ввели, плюс отмеченные ниже платежи и записанные с тех пор траты.",
+"The transfer is logged on this day under Transfer on the Spending tab. It isn’t counted as spending.":"Перевод запишется этим днём в категорию «Перевод» на вкладке «Расходы». В траты он не входит.",
+"Transfer to {name}":"Перевод на {name}",
+"Transfer from {name}":"Перевод с {name}",
+"Goal “{name}” grew by {amt}":"Цель «{name}» выросла на {amt}",
+"A transfer can’t be dated in the future.":"Дата перевода не может быть в будущем.",
 };

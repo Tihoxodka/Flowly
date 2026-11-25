@@ -1725,6 +1725,8 @@ Visa · owed $950
 Auto loan · owed $12,000
 Amount
 Both balances change now. A payment to a card or loan lowers what you owe.
+Date
+The transfer is logged on this day under Transfer on the Spending tab. It isn’t counted as spending.
 
 Cancel
 Save

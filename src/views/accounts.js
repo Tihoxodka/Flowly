@@ -6,6 +6,7 @@ import {T,dl,mon,ord,wdl} from '../core/i18n.js';
 import {acctName,assetsDebts,hasInt,isDebt,mInt} from '../model/accounts.js';
 import {payoff} from '../model/debt.js';
 import {hsaNow,hsaSpent,hsaYear,isHSA} from '../model/hsa.js';
+import {cashNow} from '../model/project.js';
 import {sched} from '../model/schedule.js';
 import {state} from '../state.js';
 import {project} from '../ui/render.js';
@@ -23,9 +24,9 @@ const thEnd=p=>p.end?html`<th class="num">${T('End of {month}',{month:mon(state.
 const endCell=(a,p)=>p.end?html`<td class="num ${p.end[a.id]<0&&!isDebt(a)?'neg':''}">${f0(p.end[a.id])}</td>`:'';
 /** @param {Account} a @param {Ends} p */
 const endPlain=(a,p)=>p.end?html`<td class="num">${f0(p.end[a.id])}</td>`:'';
-/** @param {Account} a */
-const balCell=a=>html`<td class="num"><input class="mini" type="number" step="any" value="${+a.bal||0}" data-act="bal" data-id="${a.id}" aria-label="${
-  T('Balance of {name}',{name:a.name})}"><div class="since">${a.upd?dl(a.upd):''}</div></td>`;
+/** @param {Account} a @param {number} [now] what it holds now, when that differs from the recorded balance (cash accounts) */
+const balCell=(a,now=+a.bal||0)=>html`<td class="num"><input class="mini" type="number" step="any" value="${now}" data-act="bal" data-id="${a.id}" aria-label="${
+  T('Balance of {name}',{name:a.name})}"><div class="since">${!a.upd?'':now===(+a.bal||0)?dl(a.upd):T('{amt} on {date}',{amt:f2(+a.bal||0),date:dl(a.upd)})}</div></td>`;
 /** @param {Account} a */
 const btns=a=>html`<td class="act">${editBtn('accounts',a.id)} ${delBtn('accounts',a.id)}</td>`;
 /** @param {string} title @param {unknown} head @param {unknown} rows @param {unknown} [after] */
@@ -48,7 +49,7 @@ function cashSection(list,p){
   const intTot=list.filter(hasInt).reduce((s,a)=>s+mInt(a),0);
   const apy=a=>html`<input class="mini" style="width:76px" type="number" step="any" min="0" value="${+a.apy||''}" placeholder="0" data-act="apy" data-id="${
     a.id}" aria-label="${T('APY of {name}',{name:a.name})}">`;
-  const row=a=>html`<tr><td>${a.name}</td><td>${T(TYPES.find(t=>t[0]===a.type)?.[1]||'')}</td>${balCell(a)}<td class="num">${apy(a)}</td><td class="num">${
+  const row=a=>html`<tr><td>${a.name}</td><td>${T(TYPES.find(t=>t[0]===a.type)?.[1]||'')}</td>${balCell(a,cashNow(a))}<td class="num">${apy(a)}</td><td class="num">${
     hasInt(a)?f2(mInt(a)):'—'}</td>${endCell(a,p)}${btns(a)}</tr>`;
   const note=intTot?html`<p class="muted small">${T('Estimated interest: {amt} a month, about {year} a year.',{amt:f2(intTot),year:f0(intTot*12)})}</p>`:'';
   return section('Cash accounts',[th('Name'),th('Type'),thNum('Balance'),thNum('APY %'),thNum('Interest a month'),thEnd(p),th('')],list.map(row),note);

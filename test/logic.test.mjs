@@ -207,12 +207,17 @@ test('transfers between accounts', () => {
     { id: 'inv', name: 'Broker', type: 'investment', bal: 9000, cash: 100 },
     { id: 'cc', name: 'Card', type: 'credit', bal: 600, stmt: 400 },
     { id: 'loan', name: 'Loan', type: 'loan', bal: 50 },
-    { id: 'car', name: 'Car', type: 'property', bal: 20000 }] });
-  const bal = id => acct(id).bal;
+    { id: 'car', name: 'Car', type: 'property', bal: 20000 }],
+  goals: [{ id: 'trip', name: 'Trip', kind: 'short', target: 1000, saved: 900, acct: 'sav' }, { id: 'far', name: 'Far', kind: 'long', target: 500, saved: 0, acct: 'chk', date: '2030-01-01' },
+    { id: 'soon', name: 'Soon', kind: 'short', target: 500, saved: 0, acct: 'chk', date: '2027-01-01' }] });
+  const bal = id => acct(id).bal, saved = id => state.plan.goals.find(g => g.id === id).saved;
   const undo = moveMoney('sav', 'chk', 1234.567);
   assert.equal(bal('sav'), 2765.43); assert.equal(bal('chk'), 1734.57);
   assert.equal(acct('chk').upd, '2026-11-01', 'the as-of date stays');
-  undo(); assert.equal(bal('sav'), 4000); assert.equal(bal('chk'), 500);
+  eq([undo.goal, saved('soon'), saved('far')], ['Soon', 1234.57, 0], 'the soonest goal kept in the receiving account grows');
+  undo(); assert.equal(bal('sav'), 4000); assert.equal(bal('chk'), 500); assert.equal(saved('soon'), 0, 'undo takes it back');
+  const toSav = moveMoney('chk', 'sav', 50);
+  eq([toSav.goal, saved('trip')], ['Trip', 950]); toSav();
   moveMoney('chk', 'inv', 200);
   eq([bal('chk'), acct('inv').cash, bal('inv')], [300, 300, 9000], 'into an investment goes to buying power');
   moveMoney('chk', 'cc', 250);

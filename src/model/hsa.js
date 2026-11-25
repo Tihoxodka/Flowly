@@ -8,10 +8,10 @@ export const isHSA=a=>!!a&&a.type==='hsa';
 export const hsaPaid=t=>isHSA(acct(t.acct));
 /** A transaction on this account logged after its balance was recorded (a kickoff balance is at the start of that day) @param {Account} a @param {Tx} t */
 export const afterBal=(a,t)=>{const on=a.upd||'';return t.acct===a.id&&(a.updAt&&t.at?t.date>=on&&t.at>a.updAt:t.date>on||(!a.updAt&&!!on&&t.date===on&&on===kickoffDay()))};
-/* logged purchases (and refunds) on the HSA card after its balance was last recorded */
+/* logged purchases (and refunds) on the HSA card after its balance was last recorded; logged transfers already moved the balance */
 export function hsaSpent(a){
   let s=0;
-  Object.values(state.tx).forEach(m=>m.items.forEach(t=>{if(afterBal(a,t))s-=t.amt}));
+  Object.values(state.tx).forEach(m=>m.items.forEach(t=>{if(afterBal(a,t)&&t.cat!=='Transfer')s-=t.amt}));
   return r2(s);
 }
 /** What an HSA holds now: its balance less card purchases since @param {Account} a */
