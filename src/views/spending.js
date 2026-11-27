@@ -6,19 +6,29 @@ import {html,options} from '../core/html.js';
 import {$,dict} from '../core/util.js';
 import {acctName} from '../model/accounts.js';
 import {hsaPaid} from '../model/hsa.js';
-import {catList,logged,tagList} from '../model/spending.js';
+import {evs} from '../model/schedule.js';
+import {catList,isBudgetOut,logged,tagList} from '../model/spending.js';
 import {state} from '../state.js';
 import {qaHtml} from './quicklog.js';
+import {pill} from './shared.js';
 /** This month's transactions that match the search and filters, newest first */
 function txFiltered(){
   const items=(state.tx[monthKeyOf(state.view)]||{items:[]}).items,q=state.fq.toLowerCase();
   return items.filter(t=>(!q||t.desc.toLowerCase().includes(q))&&(!state.fcat||t.cat===state.fcat)&&(!state.ftag||t.tag===state.ftag))
     .sort((a,b)=>a.date<b.date?1:a.date>b.date?-1:0);
 }
+/** This month's bills checked off as paid that match the filters (bills have no tag) */
+function billsPaid(){
+  if(state.ftag)return[];
+  const q=state.fq.toLowerCase();
+  return evs(state.view.y,state.view.m).filter(e=>isBudgetOut(e)&&state.plan.done[e.key]&&(!q||e.name.toLowerCase().includes(q))&&(!state.fcat||(e.cat||'Other')===state.fcat));
+}
 /** "5 purchases, $120 spent" for the rows shown */
 export function txSum(){
   const l=txFiltered().filter(t=>!NOSPEND.includes(t.cat)),sp=-l.reduce((s,t)=>s+t.amt,0),h=-l.filter(hsaPaid).reduce((s,t)=>s+t.amt,0);
-  return T('{n}, {amt} spent',{n:`${l.length} ${TN(l.length,'purchase','purchases')}`,amt:f2(sp)})+(h?T(', {amt} of it from your HSA',{amt:f2(h)}):'');
+  const b=billsPaid(),bs=b.reduce((s,e)=>s+e.amt,0);
+  return T('{n}, {amt} spent',{n:`${l.length} ${TN(l.length,'purchase','purchases')}`,amt:f2(sp)})+(h?T(', {amt} of it from your HSA',{amt:f2(h)}):'')+
+    (b.length?T('; {n} paid, {amt}',{n:`${b.length} ${TN(b.length,'bill','bills')}`,amt:f2(bs)}):'');
 }
 /* Each row shows its category as a button; the dropdown is built only when it's clicked. A dropdown in every row
    meant thousands of options to lay out, which made a full month slow to show. */
@@ -41,12 +51,15 @@ export function catPick(b,id){
 const txRow=t=>html`<tr><td>${dl(t.date)}</td><td>${t.desc}${t.tag?html`<span class="pill tag">${t.tag}</span>`:''}</td><td>${catBtn(t)}</td><td>${
   acctName(t.acct)}</td><td class="num ${t.amt>0?'pos':''}">${f2(t.amt)}</td><td class="act"><button class="btn sm" data-act="tedit" data-id="${
   t.id}">${T('Edit')}</button> <button class="btn sm ghost danger" data-act="tdel" data-id="${t.id}" aria-label="${T('Delete')}">×</button></td></tr>`;
-/** The rows of this month's transactions that match the filters */
+/** A paid bill: shown, but edited on the Overview tab @param {Ev} e */
+const billRow=e=>html`<tr><td>${dl(e.date)}</td><td>${e.name}${pill(T('bill'))}</td><td>${cn(e.cat||'Other')}</td><td>${
+  acctName(e.acct)}</td><td class="num">${f2(-e.amt)}</td><td></td></tr>`;
+/** The rows of this month's transactions and paid bills that match the filters, newest first */
 export function txRows(){
-  const l=txFiltered();
+  const l=[...txFiltered().map(t=>({date:t.date,row:txRow(t)})),...billsPaid().map(e=>({date:e.date,row:billRow(e)}))].sort((a,b)=>a.date<b.date?1:a.date>b.date?-1:0);
   if(!l.length)return html`<tr><td colspan="6" class="muted">${
     T(state.fq||state.fcat||state.ftag?'Nothing logged matches these filters.':'Nothing logged this month yet.')}</td></tr>`;
-  return html`${l.map(txRow)}`;
+  return html`${l.map(x=>x.row)}`;
 }
 /** The search box and the category and tag filters @param {string[]} tags */
 const filters=tags=>html`<div class="row"><input class="grow" id="q" placeholder="${T('Search merchant')}" value="${state.fq}" aria-label="${

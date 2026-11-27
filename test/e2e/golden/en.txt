@@ -301,7 +301,7 @@ coffee
 date night
 work
 
-8 purchases, $259.13 spent, $32.10 of it from your HSA
+8 purchases, $259.13 spent, $32.10 of it from your HSA; 1 bill paid, $320.00
 
 Date	Merchant	Category	Account	Amount
 Nov 16	Vet	Pets	Visa	−$55.00	Edit ×
@@ -310,6 +310,7 @@ Nov 13	Hardware store refund	Shopping	Visa	$12.00	Edit ×
 Nov 12	Hardware store	Shopping	Visa	−$64.99	Edit ×
 Nov 9	Uberwork	Transport	Visa	−$18.50	Edit ×
 Nov 7	Pharmacy	Health	Health savings	−$32.10	Edit ×
+Nov 5	Car loan paymentbill	Transport	Checking	−$320.00
 Nov 4	Blue Bottlecoffee	Take Out	Visa	−$6.25	Edit ×
 Nov 2	Trader Joe's	Groceries	Checking	−$84.30	Edit ×
 
@@ -1951,7 +1952,7 @@ coffee
 date night
 work
 
-8 purchases, $259.13 spent, $32.10 of it from your HSA
+8 purchases, $259.13 spent, $32.10 of it from your HSA; 1 bill paid, $320.00
 
 Date	Merchant	Category	Account	Amount
 Nov 16	Vet	Pets	Visa	−$55.00	Edit ×
@@ -1980,5 +1981,6 @@ Nov 13	Hardware store refund	Shopping	Visa	$12.00	Edit ×
 Nov 12	Hardware store	Shopping	Visa	−$64.99	Edit ×
 Nov 9	Uberwork	Transport	Visa	−$18.50	Edit ×
 Nov 7	Pharmacy	Health	Health savings	−$32.10	Edit ×
+Nov 5	Car loan paymentbill	Transport	Checking	−$320.00
 Nov 4	Blue Bottlecoffee	Take Out	Visa	−$6.25	Edit ×
 Nov 2	Trader Joe's	Groceries	Checking	−$84.30	Edit ×

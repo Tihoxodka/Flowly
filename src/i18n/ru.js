@@ -533,6 +533,8 @@ export const ru={
 "Paying":"Оплата",
 "Keeping each card under 30% of its limit helps your credit score.":"Если использовать меньше 30% лимита каждой карты, это помогает кредитной истории.",
 "purchase|purchases":"покупка|покупки|покупок",
+"bill|bills":"платёж|платежа|платежей",
+"; {n} paid, {amt}":"; оплачено {n} на {amt}",
 "{n}, {amt} spent":"{n}, потрачено {amt}",
 ", {amt} of it from your HSA":", из них {amt} с HSA",
 "Category: {name}. Change it":"Категория: {name}. Изменить",
